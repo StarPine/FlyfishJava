@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/welcome" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="此DEMO仅用于功能演示，具体接入请参见SDK软件包内相关文档"
+        android:textColor="#FFFFFFFF"
+        android:textSize="16.0sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btn_account_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:onClick="login"
+        android:padding="5dip"
+        android:background="@drawable/asdk_fan_button"
+        android:text="登陆" />
+
+</RelativeLayout>

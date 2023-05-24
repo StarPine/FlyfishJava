@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/jxsdk_ball_menu_layout"
+    android:layout_width="200dp"
+    android:layout_height="@dimen/hn_menu_height"
+    android:orientation="horizontal" >
+
+    
+    <!-- 礼包 -->
+
+    <LinearLayout
+        android:id="@+id/menu_gift_layout"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/jx_giftBtn"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:background="@drawable/hn_ball_img_gift" />
+
+        <TextView
+            android:id="@+id/jx_giftTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="1dp"
+            android:text="@string/gift"
+            android:textColor="@color/black2"
+            android:textSize="13sp" />
+    </LinearLayout>
+    
+    <!-- 个人 -->
+
+    <LinearLayout
+        android:id="@+id/menu_account_layout"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/jx_memberbtn"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginTop="5dp"
+            android:layout_gravity="center"
+            android:background="@drawable/hn_ball_img_account" />
+
+        <TextView
+            android:id="@+id/jx_memberTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="3dp"
+            android:text="@string/geren"
+            android:textColor="@color/black2"
+            android:textSize="13sp" />
+    </LinearLayout>
+    
+    <!-- 充值
+    <LinearLayout
+        android:id="@+id/menu_pay_layout"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/jx_paybtn"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:background="@drawable/sdk_img_tel" />
+
+        <TextView
+            android:id="@+id/jx_payTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="2dp"
+            android:text="支付"
+            android:textColor="@color/lightgray"
+            android:textSize="12sp" />
+    </LinearLayout>
+     -->
+     
+    <!-- 客服 
+
+    <LinearLayout
+        android:id="@+id/menu_server_layout"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center_vertical" >
+
+        <TextView
+            android:id="@+id/jx_servicebtn"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:background="@drawable/sdk_img_waiter" />
+
+        <TextView
+            android:id="@+id/jx_serviceTxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="2dp"
+            android:text="@string/kefu"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+    </LinearLayout>
+    -->
+
+</LinearLayout>

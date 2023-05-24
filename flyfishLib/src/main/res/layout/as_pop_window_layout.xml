@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="290dp"
+    android:layout_height="225dp"
+    android:gravity="center"
+    android:background="@drawable/auto_login_bg">
+    <RelativeLayout
+        android:id="@+id/xx_rlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="公告"
+            android:textSize="18sp"
+            android:textColor="@android:color/black"/>
+        <ScrollView 
+            android:id="@+id/s_view"
+            android:layout_width="240dp"
+            android:layout_height="130dp"
+            android:layout_marginTop="60dp"
+            android:layout_centerInParent="true"
+            android:scrollbars="vertical"
+            android:background="@drawable/s_view_bg">
+            <TextView
+	            android:id="@+id/as_pop_window_webview"
+	            android:layout_width="match_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_gravity="center_horizontal"
+	            android:layout_marginTop="12dp"
+	            android:layout_marginLeft="15dp"
+	            android:layout_marginRight="15dp"
+	            android:layout_marginBottom="12dp"
+	            android:textSize="14sp"
+	            android:textColor="@android:color/black" />
+        </ScrollView>
+        
+        <Button
+            android:id="@+id/as_pop_window_close"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/com_icon_h5_xx" />
+        <TextView 
+            android:id="@+id/tip_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_alignRight="@id/s_view"
+            android:layout_below="@id/s_view"
+            android:textSize="13sp"
+            android:textColor="@android:color/black"
+            android:text="今日不再提示"/>
+        <Button 
+            android:id="@+id/kuang_btn"
+            android:layout_width="13dp"
+            android:layout_height="13dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="2dp"
+            android:layout_alignBottom="@id/tip_tv"
+            android:layout_toLeftOf="@id/tip_tv"
+            android:background="@drawable/s_view_kuang"/>
+        <Button 
+            android:id="@+id/gou_btn"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_alignLeft="@id/kuang_btn"
+            android:layout_alignBottom="@id/kuang_btn"
+            android:background="@drawable/s_view_gou"
+            android:visibility="gone"/>
+    </RelativeLayout>
+
+
+</LinearLayout>

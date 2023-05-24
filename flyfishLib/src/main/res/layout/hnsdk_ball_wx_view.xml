@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="400dp"
+    android:orientation="vertical"
+    android:layout_gravity="center_horizontal"
+    android:background="@drawable/hn_ball_wx_bg"
+    android:id="@+id/lay_ball_wxpubaddress" >
+    <!-- 
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp" >
+
+        <TextView
+            android:id="@+id/tv_weixin"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="@string/weixin_pub"
+            android:textColor="@color/black"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/back2"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/hn_back" />
+        <TextView
+            android:id="@+id/close"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+             android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/hn_cancle" />
+    </RelativeLayout>
+	<TextView
+        android:id="@+id/erweima_img"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/hn_erweima"
+        android:gravity="center" />
+	<TextView
+        android:id="@+id/tv_tips1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="15dp"
+        android:gravity="start"
+        android:textColor="@color/black"
+	    android:textSize="15sp"
+	    android:text="@string/weixin_tips1" />
+	<LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginLeft="30dp"
+	    android:layout_marginTop="10dp" >
+        <TextView
+	        android:id="@+id/tv_tips2"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:gravity="start"
+	        android:textColor="@color/black"
+		    android:textSize="15sp"
+		    android:text="@string/weixin_tips2" />
+        <TextView
+	        android:id="@+id/tv_tips2_"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:gravity="start"
+	        android:textColor="@color/orange"
+		    android:textSize="15sp"
+		    android:text="@string/weixin_youxi_content" />
+    </LinearLayout> 
+	
+	<TextView
+        android:id="@+id/tv_tips3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:lineSpacingExtra="5dp"
+        android:gravity="start"
+        android:textColor="@color/black"
+	    android:textSize="15sp"
+	    android:text="@string/weixin_tips3" />
+	 -->
+</LinearLayout>

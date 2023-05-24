@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="340dp"
+    android:layout_height="350dp"
+    android:orientation="vertical"
+    android:id="@+id/lay_ball_gift"
+    android:background="@drawable/hn_bg" >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="-1px"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:text="@string/gift_toptips"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:background="@drawable/hn_ball_toplog"/>
+    <TextView
+        android:layout_marginTop="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:text="@string/gift_tips1"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+    <TextView
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:text="@string/gift_tips2"
+        android:textColor="@color/black"
+        android:textSize="18sp" />
+    <LinearLayout 
+        android:id="@+id/lay_erweima"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:background="@drawable/hn_ball_gzh_bg">
+        <TextView
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:padding="5dp"
+	        android:gravity="center"
+	        android:text="@string/gift_gzh_tip"
+	        android:textColor="@color/white"
+	        android:textSize="18sp" />
+        <TextView
+	        android:layout_width="20dp"
+	        android:layout_height="20dp"
+	        android:layout_marginLeft="5dp"
+	        android:padding="5dp"
+	        android:gravity="center"
+	        android:background="@drawable/hn_ball_gzh_er" />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/qq_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:background="@drawable/hn_ball_gray_bg_up"
+        android:padding="5dp"
+        android:text="@string/gift_qq_tip"
+        android:textColor="@color/gray"
+        android:textSize="18sp" />
+    <TextView
+        android:id="@+id/email_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="1dp"
+        android:gravity="center"
+        android:background="@drawable/hn_ball_gray_bg_down"
+        android:padding="5dp"
+        android:text="@string/gift_email_tip"
+        android:textColor="@color/gray"
+        android:textSize="18sp" />
+    
+    
+</LinearLayout>

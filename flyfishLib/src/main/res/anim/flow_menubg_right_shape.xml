@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item>
+        <!-- 设置形状  -->
+        <shape>
+            <!-- 设置一个白色边框 -->
+            <stroke android:width="1dp" android:color="#ffffff" />
+             <!-- 设置透明背景色 -->
+            <solid android:color="#ffffff" />
+            <!-- 设置四个圆角的半径 -->
+            <corners
+                 android:bottomLeftRadius="25dp" 
+                android:bottomRightRadius="25dp" 
+                android:topLeftRadius="25dp" 
+                android:topRightRadius="25dp" />
+           <!-- 设置一下边距,让空间大一点 -->
+            <padding
+                 android:bottom="2dp" 
+                 android:left="5dp" 
+                 android:right="45dp"
+                 android:top="5dp" />
+        </shape>
+        
+        </item>
+
+</selector>

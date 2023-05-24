@@ -1,0 +1,4 @@
+rootProject.name = "FlyfishJava"
+include ':app'
+include ':flyfishLib'
+include ':jg_pusj'
