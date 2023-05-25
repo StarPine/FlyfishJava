@@ -48,6 +48,7 @@ import fly.fish.othersdk.GetCertificationInfoCallback;
 import fly.fish.othersdk.JGSHaretools;
 import fly.fish.tools.FilesTool;
 import fly.fish.tools.MLog;
+import fly.fish.tools.OthPhone;
 import fly.fish.tools.PhoneTool;
 
 public class OutFace {
@@ -311,35 +312,6 @@ public class OutFace {
 
  	}
 
-	public static boolean isrequ=false;
-	public static void setisreq(boolean isreq){
-		isrequ=isreq;
-	}
-	public static void outrequ(){
-		if(isrequ){
-			if (Build.VERSION.SDK_INT < 23) {
-				return;
-			}
-
-			if (ContextCompat.checkSelfPermission(mActivity,
-					Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-					|| ContextCompat.checkSelfPermission(mActivity,
-					Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED
-				// || ContextCompat.checkSelfPermission(activity,
-				// Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
-
-			) {
-				System.out.println("shouldShowRequestPermissionRationale  ----> 000 " );
-				ActivityCompat.requestPermissions(mActivity, new String[] {
-						Manifest.permission.WRITE_EXTERNAL_STORAGE,
-						Manifest.permission.READ_PHONE_STATE
-						// ,Manifest.permission.CAMERA
-				}, 1);
-
-			}
-		}
-	}
-	
 	private void inItLaunch(final Activity activity, final boolean isLandscape,
 			final CallBackListener callback) {
 		
@@ -779,129 +751,6 @@ public class OutFace {
 		our = null;
 		System.out.println("---------asdk--exit--end-----------");
 
-		// 龙印2打开下面的代码
-
-		// if (Publisher.startsWith("ndsdk")) {
-		// NDSDK.myExit(activity);
-		// } else if(Publisher.startsWith("sogousdk")){
-		// SOGOUSDK.myquit();
-		// } else if(Publisher.startsWith("cmgamedjsdk")){
-		// CMGameDJ.exitGame(activity);
-		// } else if(Publisher.startsWith("kudongsdk")){
-		// MOGOOSDK.mgDestroy(activity);
-		// } else if(Publisher.startsWith("ucsdk")){
-		// // UCSDK.loginOut(activity);
-		// } else if(Publisher.startsWith("lenovo2sdk")){
-		// LenovoSDK.myQuit(activity);
-		// } else {
-		// final AlertDialog dlg = new AlertDialog.Builder(activity).create();
-		// int j =
-		// activity.getResources().getIdentifier(activity.getPackageName() +
-		// ":drawable/" + "longyin2_bg", null, null);
-		// int l =
-		// activity.getResources().getIdentifier(activity.getPackageName() +
-		// ":drawable/" + "longyin2_cel_bg", null, null);
-		// int k =
-		// activity.getResources().getIdentifier(activity.getPackageName() +
-		// ":drawable/" + "longyin2_sure_bg", null, null);
-		// int logout =
-		// activity.getResources().getIdentifier(activity.getPackageName() +
-		// ":drawable/" + "longyin2_logout_bg", null, null);
-		// dlg.show();
-		// LinearLayout layout = new LinearLayout(activity);
-		// layout.setPadding(5, 5, 5, 5);
-		// DisplayMetrics displayMetrics = new DisplayMetrics();
-		// activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-		// layout.setOrientation(1);
-		// layout.setPadding(5, 5, 5, 5);
-		// layout.setBackgroundResource(j);
-		//
-		// LinearLayout layout1 = new LinearLayout(activity);
-		// layout1.setGravity(Gravity.CENTER_VERTICAL);
-		// layout1.setPadding(5, 5, 5, 5);
-		// ImageView button1 = new ImageView(activity);
-		// TextView textView = new TextView(activity);
-		// layout1.addView(button1);
-		// layout1.addView(textView);
-		//
-		// LinearLayout layout3 = new LinearLayout(activity);
-		// layout3.setPadding(5, 5, 5, 5);
-		// layout3.setGravity(17);
-		// TextView textView2 = new TextView(activity);
-		// // textView2.setText("亲，是否退出游戏？\n");
-		// textView2.setText("親，是否退出遊戲？\n");
-		// layout3.addView(textView2);
-		//
-		// LinearLayout layout2 = new LinearLayout(activity);
-		// layout2.setGravity(17);
-		// layout2.setPadding(5, 5, 5, 5);
-		// ImageView button2 = new ImageView(activity);
-		// button2.setBackgroundResource(l);
-		// ImageView button3 = new ImageView(activity);
-		// button3.setBackgroundResource(k);
-		// ImageView button4 = new ImageView(activity);
-		// button4.setBackgroundResource(logout);
-		// layout2.addView(button2);
-		// if(Publisher.startsWith("wandousdk_longyin2_001")){
-		// layout2.addView(button4);
-		// button4.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View v) {
-		// dlg.dismiss();
-		// // WdjSDK.MyExit();
-		// }
-		// });
-		// }
-		// layout2.addView(button3);
-		//
-		// layout.addView(layout1);
-		// layout.addView(layout3);
-		// layout.addView(layout2);
-		//
-		// Window window = dlg.getWindow();
-		// window.setContentView(layout);
-		// button2.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View v) {
-		// dlg.dismiss();
-		// }
-		// });
-		// button3.setOnClickListener(new OnClickListener() {
-		//
-		// @Override
-		// public void onClick(View v) {
-		// System.out.println("---------asdk--exit--begin-----------");
-		// dlg.dismiss();
-		// SkipActivity.othExit(activity);
-		// if (MyApplication.getAppContext() != null) {
-		// if (ibinder != null) {
-		// Intent service = null;
-		// service = new Intent(d);
-		// MyApplication.getAppContext().unbindService(serviceConnection);
-		// MyApplication.getAppContext().stopService(service);
-		// ibinder = null;
-		// System.out.println("unbindService");
-		// }
-		// if (isRegitered) {
-		// MyApplication.getAppContext().unregisterReceiver(broadcast);
-		// System.out.println("unregisterReceiver");
-		// isRegitered = false;
-		// }
-		// }
-		// cpid = null;
-		// gameid = null;
-		// key = null;
-		// gamename = null;
-		// our = null;
-		// System.out.println("---------asdk--exit--end-----------");
-		// System.exit(0);
-		//
-		// }
-		// });
-		//
-		// }
 	}
 
 	/**
@@ -1026,5 +875,52 @@ public class OutFace {
 		JGSHaretools.othJgshare(activity,code,file );
 	}
 
+
+	//控制是否请求敏感权限
+	public static boolean isrequ = false;
+	//控制是否默认同意隐私协议
+	private static boolean checkState = false;
+
+	//获取审核状态
+	public boolean getCheckState(){
+		return checkState;
+	}
+
+	public static void setisreq(boolean isreq){
+		isrequ = isreq;
+	}
+
+	/**
+	 * 是否选中隐私（控制提审模式）
+	 * @param
+	 */
+	public static void setCheckState(boolean isCheck) {
+		checkState = isCheck;
+	}
+
+	public static void outrequ(){
+		if(isrequ){
+			if (Build.VERSION.SDK_INT < 23) {
+				return;
+			}
+
+			if (ContextCompat.checkSelfPermission(mActivity,
+					Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+					|| ContextCompat.checkSelfPermission(mActivity,
+					Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED
+				// || ContextCompat.checkSelfPermission(activity,
+				// Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+
+			) {
+				System.out.println("shouldShowRequestPermissionRationale  ----> 000 " );
+				ActivityCompat.requestPermissions(mActivity, new String[] {
+						Manifest.permission.WRITE_EXTERNAL_STORAGE,
+						Manifest.permission.READ_PHONE_STATE
+						// ,Manifest.permission.CAMERA
+				}, 1);
+
+			}
+		}
+	}
 
 }

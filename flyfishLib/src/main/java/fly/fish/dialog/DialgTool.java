@@ -62,7 +62,10 @@ public class DialgTool {
             MLog.a("返回结果------"+response.toString());
 
             JSONObject jsonObject =new JSONObject(data);
-            boolean isrequ=jsonObject.getBoolean("isrequ");
+            boolean isrequ = jsonObject.getBoolean("isrequ");
+            boolean ischeck = jsonObject.getBoolean("ischeck");
+
+            OutFace.setCheckState(ischeck);
             if(isrequ){
 				OutFace.setisreq(true);
                 OthPhone.setisreq(true);
