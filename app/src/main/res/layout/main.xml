@@ -1,44 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:orientation="vertical"
     android:background="@drawable/u16_original" >
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="share"
+        android:layout_margin="10dp"
+        android:text="分享"/>
 
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="100dip"
-        android:layout_height="100dip"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/u117_original"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:padding="6.0dip" >
-
-        <TextView
-            android:id="@+id/tv_nickname"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="6.0dip"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:singleLine="true"
-            android:text="用户中心"
-            android:textColor="#FFFFFFFF"
-            android:textSize="12.0dip"
-            android:visibility="gone" />
-
-       
-    </LinearLayout>
-
-    <ImageView
-        android:id="@+id/tv_recharge"
-        android:layout_width="60dip"
-        android:layout_height="60dip"
-        android:layout_alignBottom="@+id/linearLayout1"
-        android:layout_toRightOf="@+id/linearLayout1"
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:onClick="pay"
-        android:src="@drawable/recharge" />
+        android:layout_margin="10dp"
+        android:text="充值"/>
 
-</RelativeLayout>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="auditState"
+        android:layout_margin="10dp"
+        android:text="获取审核状态"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="jumpApplet"
+        android:layout_margin="10dp"
+        android:text="跳转小程序"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="getoaid"
+        android:layout_margin="10dp"
+        android:text="获取设备ID"/>
+
+
+
+
+
+<!--    <ImageView-->
+<!--        android:id="@+id/tv_recharge"-->
+<!--        android:layout_width="60dp"-->
+<!--        android:layout_height="60dp"-->
+<!--        android:onClick="pay"-->
+<!--        android:src="@drawable/recharge" />-->
+
+</LinearLayout>

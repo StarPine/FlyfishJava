@@ -113,7 +113,6 @@ public class Reyunsdk {
 			clazz = Class.forName("fly.fish.othersdk.TouTiaoSDK");
 		} catch (ClassNotFoundException e) {
 			MLog.a("no-tt");
-			;
 		}
 		if (clazz != null) {
 			Method method1 = getMethod(clazz, "toutiaoinit", Activity.class);

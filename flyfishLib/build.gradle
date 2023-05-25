@@ -35,5 +35,5 @@ android {
 
 dependencies {
     implementation fileTree(include: ['*.jar','*.aar'], dir: 'libs')
-    implementation project(":jg_pusj")
+    implementation project(':jg_push')
 }

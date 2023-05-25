@@ -3,20 +3,34 @@ package com.example.flyfishjava;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 import fly.fish.aidl.CallBackListener;
 import fly.fish.aidl.OutFace;
+import fly.fish.asdk.MyApplication;
+import fly.fish.tools.FilesTool;
 import fly.fish.tools.MLog;
+import fly.fish.tools.PhoneTool;
 
 public class MainActivity extends Activity {
 
@@ -111,6 +125,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         // 隐去标题栏（应用程序的名字）
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        MLog.setDebug(true);
         out = OutFace.getInstance(this);
         out.setDebug(true);
         out.outInitLaunch(this, true, new CallBackListener() {
@@ -205,9 +220,11 @@ public class MainActivity extends Activity {
      * @param view
      */
     public void login(View view) throws RemoteException {
-
         String appkey= getAppKey(this);
+        MLog.setDebug(true);
         MLog.a("appkey---------"+appkey);
+        MLog.a("getCheckState---------"+out.getCheckState());
+
         if (dialog == null) {
             dialog = new ProgressDialog(this);
             dialog.setMessage("请求中...");
@@ -225,22 +242,6 @@ public class MainActivity extends Activity {
 
         }else{
             out.init(cpid, gameid, gamekey, gamename);
-        }
-    }
-
-    /**
-     * 充值
-     * @param view
-     */
-    public void pay(View view) throws RemoteException {
-        if (isValidHits()) {
-            if (isinit) {
-                //订单号，回调URL，充值金额，商品描述，游戏自定义参数
-
-                out.pay(this, System.currentTimeMillis() + "", "", "0.01","12","1元礼包", "myself", gamekey);
-            } else {
-                out.init(cpid, gameid, gamekey, gamename);
-            }
         }
     }
 
@@ -284,4 +285,99 @@ public class MainActivity extends Activity {
             builder.create().show();
         }
     }
+
+    public void getoaid(View view) {
+//        Toast.makeText(this,"oaid："+ PhoneTool.getOAID(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"devid："+ PhoneTool.getIMEI(this),Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * 充值
+     * @param view
+     */
+    public void pay(View view) throws RemoteException {
+        if (isValidHits()) {
+            if (isinit) {
+                //订单号，回调URL，充值金额，商品描述，游戏自定义参数
+
+                out.pay(this, System.currentTimeMillis() + "", "", "0.01","12","1元礼包", "myself", gamekey);
+            } else {
+                out.init(cpid, gameid, gamekey, gamename);
+            }
+        }
+    }
+
+    //跳转小程序
+    public void jumpApplet(View view) {
+        out.outshare(this,2);
+    }
+
+    public void auditState(View view) {
+        Toast.makeText(this,"当前审核状态："+out.getCheckState(),Toast.LENGTH_SHORT).show();
+    }
+
+    public void share(View view) {
+//        FilesTool.copyAssetsToFiles("fenxiang.png","/data/data/" + getPackageName() + "/files/fenxiang.png");
+//        File file = new File("/data/data/" + getPackageName() + "/files/fenxiang.png");
+        File file = finddecodeFactoryTestConfigFile("fenxiang.png", this);
+        out.outJGshare(this,2,file);
+    }
+
+    /**
+     * 将Asset下的文件复制到/data/data/.../files/目录下
+     * @param context
+     * @param fileName
+     */
+    public static boolean copyFromAsset(Context context, String fileName, boolean recreate) {
+        byte[] buf = new byte[20480];
+        try {
+            File fileDir = context.getExternalFilesDir(fileName);
+            if(!fileDir.exists()){
+                fileDir.mkdirs();
+            }
+            String destFilePath = fileDir.getAbsolutePath()+File.separator+fileName;
+            File destFile = new File(destFilePath);
+            if(!destFile.exists() || recreate){
+                destFile.createNewFile();
+            }else{
+                return true;
+            }
+            FileOutputStream os = new FileOutputStream(destFilePath);// 得到数据库文件的写入流
+            InputStream is = context.getAssets().open(fileName);// 得到数据库文件的数据流
+            int cnt = -1;
+            while ((cnt = is.read(buf)) != -1) {
+                os.write(buf, 0, cnt);
+            }
+            os.flush();
+            is.close();
+            os.close();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            buf = null;
+        }
+    }
+
+    public static String getDataFileFullPath(Context context, String fileName){
+        File fileDir = context.getExternalFilesDir(fileName);
+        String destFilePath = fileDir.getAbsolutePath()+File.separator+fileName;
+        return destFilePath;
+    }
+
+
+    public static File finddecodeFactoryTestConfigFile(String file, Context mContext){
+        File existedFile = null;
+        String path ;
+        copyFromAsset(mContext,file, true);
+        path = getDataFileFullPath(mContext,file);
+        existedFile = new File( path );
+        if(existedFile.exists()){
+            return existedFile;
+        }
+        return null;
+    }
+
+
 }

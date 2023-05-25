@@ -863,13 +863,13 @@ public class OutFace {
 		act.startActivity(mIntent);
 	}
 
-	//分享
+	//跳转小程序
 	public void outshare(Activity activity,int code ){
 
-		JGSHaretools.othshare(activity,code );
+		JGSHaretools.othshare(activity,code);
 	}
 
-	//跳转小程序
+	//分享
 	public void outJGshare(Activity activity,int code,File file ){
 
 		JGSHaretools.othJgshare(activity,code,file );

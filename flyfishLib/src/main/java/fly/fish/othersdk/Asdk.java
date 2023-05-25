@@ -69,13 +69,13 @@ public class Asdk {
 			invoke(method1, application);
 		}
 		//onekeylogin一键登录
-		try {
-			clazz_onekeylogin = Class.forName("fly.fish.othersdk.OnekeyLogin");
-			Method onekeylogin_method = getMethod(clazz_onekeylogin, "applicationOnCreate", Application.class);
-			invoke(onekeylogin_method, application);
-		} catch (ClassNotFoundException e) {
-			MLog.a("no-clazz_onekeylogin");
-		}
+//		try {
+//			clazz_onekeylogin = Class.forName("fly.fish.othersdk.OnekeyLogin");
+//			Method onekeylogin_method = getMethod(clazz_onekeylogin, "applicationOnCreate", Application.class);
+//			invoke(onekeylogin_method, application);
+//		} catch (ClassNotFoundException e) {
+//			MLog.a("no-clazz_onekeylogin");
+//		}
 	}
 	public static void initSDK(final Activity act){
 		//获取OAID
