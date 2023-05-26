@@ -21,20 +21,16 @@ import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.RemoteException;
-import android.util.Log;
 
 import fly.fish.asdk.MyApplication;
 import fly.fish.asdk.SkipActivity;
 import fly.fish.beans.GameArgs;
 import fly.fish.config.Configs;
 import fly.fish.othersdk.Asdk;
-import fly.fish.othersdk.Reyunsdk;
-import fly.fish.tools.Base64;
 import fly.fish.tools.FilesTool;
 import fly.fish.tools.HttpUtils;
 import fly.fish.tools.LuaTools;
 import fly.fish.tools.MLog;
-import fly.fish.tools.PhoneTool;
 
 /**
  * 服务自己不以处理延时操作 要借助线程才可以 startService 启动的服务

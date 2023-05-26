@@ -252,11 +252,8 @@ public class Reyunsdk {
 				}
 	}
 	
-	
-	
-
 	// 支付完成
-	public static void reyunsetPay(String order, String paytype, String money,
+	public static void reyunsetPay(String desc,String order, String paytype, String money,
 			boolean issuccess) {
 		if (issuccess) {
 			// ry
