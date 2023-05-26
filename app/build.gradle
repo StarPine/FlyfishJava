@@ -12,7 +12,7 @@ android {
         minSdk 22
         targetSdk 26
         versionCode 1
-        versionName "1.0"
+        versionName "5.5"
         ndk {abiFilters 'armeabi-v7a','arm64-v8a'}
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -55,6 +55,18 @@ android {
             jniLibs.srcDirs = ['libs','src/main/jniLibs']
         }
     }
+
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            // 名称_时间.apk
+            outputFileName = "asdk_v${defaultConfig.versionName}_${releaseTime()}.apk"
+        }
+    }
+}
+
+// 获取当前系统时间
+def releaseTime() {
+    return new Date().format("yyMMdd_hh_mm")
 }
 
 dependencies {
