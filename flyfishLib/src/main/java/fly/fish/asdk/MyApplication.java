@@ -21,9 +21,12 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 //import android.support.multidex.MultiDex;
+import android.util.Log;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import fly.fish.aidl.ITestListener;
@@ -194,6 +197,13 @@ public class MyApplication extends Application{
 //		mCrashHandler.init(this);
 		
 		super.onCreate();
+		try {
+			ApplicationInfo appInfo = this.getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
+			boolean isDebug = appInfo.metaData.getBoolean("ASDK_LOG");
+			MLog.setDebug(isDebug);
+		} catch (PackageManager.NameNotFoundException e) {
+			Log.i("asdk", "log标识获取失败");
+		}
 		
 		if (context == null) {
 			context = this;

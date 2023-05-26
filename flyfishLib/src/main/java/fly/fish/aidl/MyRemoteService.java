@@ -24,6 +24,7 @@ import android.os.RemoteException;
 import android.util.Log;
 
 import fly.fish.asdk.MyApplication;
+import fly.fish.asdk.SkipActivity;
 import fly.fish.beans.GameArgs;
 import fly.fish.config.Configs;
 import fly.fish.othersdk.Asdk;
@@ -272,6 +273,16 @@ public class MyRemoteService extends Service {
                     } catch (RemoteException e) {
                         e.printStackTrace();
                     }
+
+                    try {
+                        if (bu.getString("status").equals("0")){
+                            SkipActivity.reyunandttsetPay(bu.getString("msg"),bu.getString("customorderid"), bu.getString("chargetype"), bu.getString("sum"),true);
+                        }else {
+                            SkipActivity.reyunandttsetPay(bu.getString("msg"),bu.getString("customorderid"), bu.getString("chargetype"), bu.getString("sum"),false);
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 } else if (bu.getString("flag").equals("getOrder")) {
 
                 } else if (bu.getString("flag").equals("sec_confirmation")) {// 二次验证
@@ -306,7 +317,7 @@ public class MyRemoteService extends Service {
                                                     //应用宝热云,广点通支付回调
                                                     if (publisher != null && (publisher.startsWith("qqsdk") || (publisher.startsWith("asdk")))) {
                                                         try {
-                                                            //Reyunsdk.reyunsetPay(merchantsOrder, "weixinpay", account,true);
+                                                            SkipActivity.reyunandttsetPay(desc,merchantsOrder, "weixinpay", account,true);
                                                         } catch (Exception e) {
                                                             // TODO Auto-generated catch block
                                                             e.printStackTrace();

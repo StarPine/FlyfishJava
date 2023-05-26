@@ -579,11 +579,11 @@ public class SkipActivity extends Activity {
     }
 
     // 热云头条支付上报
-    public static void reyunandttsetPay(String orderid, String type,
+    public static void reyunandttsetPay(String desc,String orderid, String type,
             String sum, boolean issuccess) {
-        Method method = getMethod("reyunandttsetPay", String.class,
+        Method method = getMethod("reyunandttsetPay", String.class,String.class,
                 String.class, String.class, boolean.class);
-        invoke(method, orderid, type, sum, issuccess);
+        invoke(method, desc,orderid, type, sum, issuccess);
     }
 
     public static void getCertificateInfo(Activity act,

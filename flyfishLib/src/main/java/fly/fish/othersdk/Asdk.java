@@ -280,11 +280,11 @@ public class Asdk {
 		}
 	}
 	//ry支付完成
-	public static void reyunandttsetPay(String orderid, String type, String sum, boolean issuccess) {
+	public static void reyunandttsetPay(String desc,String orderid, String type, String sum, boolean issuccess) {
 		MLog.a("ASDK", "reyunandttPay");
 		if(clazz1!=null){
-			Method method1 = getMethod(clazz1, "reyunsetPay", String.class,String.class,String.class,boolean.class);
-			invoke(method1,orderid,type,sum,issuccess);
+			Method method1 = getMethod(clazz1, "reyunsetPay", String.class,String.class,String.class,String.class,boolean.class);
+			invoke(method1,desc,orderid,type,sum,issuccess);
 		}
 		
 	}
