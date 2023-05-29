@@ -48,10 +48,16 @@ public class MainActivity extends Activity {
 //    private String gamekey = "0bd7ed3fe56c1393";
 //    private String gamename = "szwl";
 
+//    private String cpid = "100079";
+//    private String gameid = "100910";
+//    private String gamekey = "bfe6f3bfd4415423";
+//    private String gamename = "pfdmw2";
+
     private String cpid = "100079";
-    private String gameid = "100910";
-    private String gamekey = "bfe6f3bfd4415423";
-    private String gamename = "pfdmw2";
+    private String gameid = "100973";
+    private String gamekey = "67d8d675b78bdb3c";
+    private String gamename = "dhxj";
+
 
 
     //余额，角色id，帮派，VIP等级，服务器名称，角色等级，服务器id，角色名称，阵营（若没有可不传）

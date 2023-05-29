@@ -62,6 +62,10 @@
         <uses-library android:name="org.apache.http.legacy" android:required="false" />
         <!-- 以下可设置横竖屏 -->
         <activity
+            android:name="fly.fish.othersdk.OnekeyAutoActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:theme="@style/ay_dialog_style" />
+        <activity
             android:name="fly.fish.asdk.AsdkActivity"
             android:configChanges="keyboardHidden|orientation|navigation|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
@@ -178,7 +182,7 @@
         <!-- 注意authorities修改包名+.fileprovider -->
         <provider
             android:name="fly.fish.tools.ASProvider"
-            android:authorities="com.example.asdkmycard.fileprovider"
+            android:authorities="${packagename}.fileprovider"
             android:grantUriPermissions="true"
             android:exported="false">
             <!--元数据-->
@@ -222,7 +226,7 @@
             <intent-filter>
                 <action android:name="cn.jpush.android.ui.PushActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="com.yymxj.shdy" />
+                <category android:name="${packagename}" />
             </intent-filter>
         </activity>
 
@@ -241,7 +245,7 @@
 
         <!-- since 3.0.9 Required SDK 核心功能-->
         <provider
-            android:authorities="com.yymxj.shdy.DataProvider"
+            android:authorities="${packagename}.DataProvider"
             android:name="cn.jpush.android.service.DataProvider"
             android:process=":pushcore"
             android:exported="false"
@@ -254,13 +258,13 @@
             android:taskAffinity="jpush.custom">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.DActivity"/>
-                <category android:name="com.yymxj.shdy" />
+                <category android:name="${packagename}" />
             </intent-filter>
         </activity>
 
         <!-- since 3.1.0 Required SDK 核心功能-->
         <provider
-            android:authorities="com.yymxj.shdy.DownloadProvider"
+            android:authorities="${packagename}.DownloadProvider"
             android:name="cn.jpush.android.service.DownloadProvider"
             android:exported="true"
             />
@@ -271,7 +275,7 @@
             android:enabled="true">
             <intent-filter android:priority="1000">
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />   <!--Required  显示通知栏 -->
-                <category android:name="com.yymxj.shdy" />
+                <category android:name="${packagename}" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT" />
@@ -297,7 +301,7 @@
         <receiver android:name="com.android.zs.push.PushMessageReceiver">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
-                <category android:name="com.yymxj.shdy"></category>
+                <category android:name="${packagename}"></category>
             </intent-filter>
         </receiver>
 
@@ -309,7 +313,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.JNotifyActivity" />
-                <category android:name="com.yymxj.shdy" />
+                <category android:name="${packagename}" />
             </intent-filter>
         </activity>
 
@@ -328,8 +332,8 @@
         <receiver android:name="cn.jpush.android.asus.AsusPushMessageReceiver"></receiver>
 
         <!-- Required -->
-        <meta-data android:name="JPUSH_APPKEY" android:value="01294239c0a79f66445bc03a"/>
-        <meta-data android:name="JPUSH_CHANNEL" android:value="d7e0bb20bcbbd5881c76b850"/>
+        <meta-data android:name="JPUSH_APPKEY" android:value="27bf8cf6a5d48b37b5a8d97f"/>
+        <meta-data android:name="JPUSH_CHANNEL" android:value="381fc138f517d63280d2c3d7"/>
 <!--        极光配置  end-->
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
