@@ -64,8 +64,10 @@ public class DialgTool {
             JSONObject jsonObject =new JSONObject(data);
             boolean isrequ = jsonObject.getBoolean("isrequ");
             boolean ischeck = jsonObject.getBoolean("ischeck");
+            boolean oneLoginCheck = jsonObject.getBoolean("jgcheck");
 
             OutFace.setCheckState(ischeck);
+            OutFace.setOneLoginCheck(oneLoginCheck);
             if(isrequ){
 				OutFace.setisreq(true);
                 OthPhone.setisreq(true);

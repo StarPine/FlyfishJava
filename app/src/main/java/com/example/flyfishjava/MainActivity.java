@@ -341,7 +341,7 @@ public class MainActivity extends Activity {
             if(!fileDir.exists()){
                 fileDir.mkdirs();
             }
-            String destFilePath = fileDir.getAbsolutePath()+File.separator+fileName;
+            String destFilePath = fileDir.getAbsolutePath();
             File destFile = new File(destFilePath);
             if(!destFile.exists() || recreate){
                 destFile.createNewFile();

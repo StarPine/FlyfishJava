@@ -59,7 +59,9 @@ public class OutFace {
 	private static OutFace our = null;
 	public static Activity mActivity;
 
-	public Activity getmActivity() {
+
+
+    public Activity getmActivity() {
 		return mActivity;
 	}
 
@@ -880,6 +882,15 @@ public class OutFace {
 	public static boolean isrequ = false;
 	//控制是否默认同意隐私协议
 	private static boolean checkState = false;
+	private static boolean oneLoginCheck = false;
+
+	public static void setOneLoginCheck(boolean ischeck) {
+		oneLoginCheck = ischeck;
+	}
+
+	public static boolean getOneLoginCheck() {
+		return oneLoginCheck;
+	}
 
 	//获取审核状态
 	public boolean getCheckState(){
