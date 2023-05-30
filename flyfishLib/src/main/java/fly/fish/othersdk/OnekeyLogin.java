@@ -39,8 +39,8 @@ import fly.fish.tools.PhoneTool;
 public class OnekeyLogin {
 	private static boolean isclickOtherlogin = false;
 
-	public static void applicationOnCreate(Application application){
-		JVerificationInterface.init(application.getApplicationContext(), 5000, new RequestCallback<String>() {
+	public static void initJVerification(Context context){
+		JVerificationInterface.init(context, 5000, new RequestCallback<String>() {
 			
 			@Override
 			public void onResult(int code, String msg) {
@@ -51,7 +51,7 @@ public class OnekeyLogin {
 		JVerificationInterface.setDebugMode(true);
 		//推送
 		JPushInterface.setDebugMode(true);
-        JPushInterface.init(application);
+        JPushInterface.init(context);
 	}
 	public static void preLogin(final Activity activity){
 		JVerificationInterface.preLogin(activity, 5000, new PreLoginListener() {

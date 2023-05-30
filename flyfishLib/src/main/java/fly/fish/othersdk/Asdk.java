@@ -68,19 +68,20 @@ public class Asdk {
 			Method method1 = getMethod(clazz1, "reyunApplicationInit", Application.class);
 			invoke(method1, application);
 		}
+
+
+	}
+	public static void initSDK(final Activity act){
 		//onekeylogin一键登录
 		if (OutFace.getOneLoginCheck()){
 			try {
 				clazz_onekeylogin = Class.forName("fly.fish.othersdk.OnekeyLogin");
-				Method onekeylogin_method = getMethod(clazz_onekeylogin, "applicationOnCreate", Application.class);
-				invoke(onekeylogin_method, application);
+				Method onekeylogin_method = getMethod(clazz_onekeylogin, "initJVerification", Context.class);
+				invoke(onekeylogin_method, act);
 			} catch (ClassNotFoundException e) {
 				MLog.a("no-clazz_onekeylogin");
 			}
 		}
-
-	}
-	public static void initSDK(final Activity act){
 		//获取OAID
 		if(clazz_mp!=null){
 			Method mp_method = getMethod(clazz_mp, "getDeviceIds", Context.class);
@@ -188,11 +189,11 @@ public class Asdk {
 		}
 		
 		//onekeylogin
-		if(clazz_onekeylogin!=null){
+		String othersdkextdata5 = share.getString("othersdkextdata5", "");
+		if(clazz_onekeylogin!=null && othersdkextdata5.equals("1")){
 			Method method1 = getMethod(clazz_onekeylogin, "loginAuth", Activity.class,Intent.class,boolean.class);
 			//检查是否有一键登录过
-			String othersdkextdata5 = share.getString("othersdkextdata5", "");
-			boolean ischeck = isphoneoracc.equals("10") && othersdkextdata5.equals("1");
+			boolean ischeck = isphoneoracc.equals("10");
 			invoke(method1,act,intent,ischeck);
 		}else{
 			intent.setClass(act, LoginActivity.class);
