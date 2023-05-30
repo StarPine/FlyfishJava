@@ -432,7 +432,7 @@ public class OutFace {
 		this.gamename = MyApplication.getAppContext().getApplicationInfo()
 				.loadLabel(MyApplication.getAppContext().getPackageManager())
 				.toString();
-		;
+		OthPhone.setGamekey(cpid+""+gameid);
 
 		// 判断是走sdk还是jar包
 		if (ibinder == null) {
