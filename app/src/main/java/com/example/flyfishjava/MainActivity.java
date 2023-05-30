@@ -30,6 +30,7 @@ import fly.fish.aidl.OutFace;
 import fly.fish.asdk.MyApplication;
 import fly.fish.tools.FilesTool;
 import fly.fish.tools.MLog;
+import fly.fish.tools.OthPhone;
 import fly.fish.tools.PhoneTool;
 
 public class MainActivity extends Activity {
@@ -62,6 +63,9 @@ public class MainActivity extends Activity {
         @Override
         public void initback(String status) throws RemoteException {
             System.out.println("initback ----> " + status);
+            OthPhone.Initgetnum(MainActivity.this);
+            String s = OthPhone.ForAsdkGetnum();
+            MLog.a("ddddd"+s);
             if ("0".equals(status)){
                 isinit = true;
                 out.login(MainActivity.this, "myself", gamekey);
