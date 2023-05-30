@@ -191,7 +191,8 @@ public class Asdk {
 		if(clazz_onekeylogin!=null){
 			Method method1 = getMethod(clazz_onekeylogin, "loginAuth", Activity.class,Intent.class,boolean.class);
 			//检查是否有一键登录过
-			boolean ischeck = isphoneoracc.equals("10")?true:false;
+			String othersdkextdata5 = share.getString("othersdkextdata5", "");
+			boolean ischeck = isphoneoracc.equals("10") && othersdkextdata5.equals("1");
 			invoke(method1,act,intent,ischeck);
 		}else{
 			intent.setClass(act, LoginActivity.class);

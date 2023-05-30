@@ -139,6 +139,7 @@ public class OnekeyLogin {
                     	isclickOtherlogin = true;
                     	intent.setClass(activity, LoginActivity.class);
                     	intent.putExtra("fromonekeylogin", "2");//1-转到历史账号页；2转到手机验证码登录
+                    	intent.putExtra("otheronekey", "2");//1-转到历史账号页；2转到手机验证码登录
                     	activity.startActivity(intent);
                     }
                 })

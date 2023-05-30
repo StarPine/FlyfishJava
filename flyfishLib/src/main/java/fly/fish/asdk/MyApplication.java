@@ -201,7 +201,7 @@ public class MyApplication extends Application{
 			ApplicationInfo appInfo = this.getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
 			boolean isDebug = appInfo.metaData.getBoolean("ASDK_LOG");
 			MLog.setDebug(isDebug);
-		} catch (PackageManager.NameNotFoundException e) {
+		} catch (Exception e) {
 			Log.i("asdk", "log标识获取失败");
 		}
 		
