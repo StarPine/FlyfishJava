@@ -230,6 +230,7 @@ public class YXWebActivity extends Activity {
 		bundle.putString("flag", "sec_confirmation");
 		locIntent.putExtras(bundle);
 		this.startService(locIntent);
+		MyApplication.getAppContext().backToGame();
 		this.finish();
 	}
 	
