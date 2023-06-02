@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import fly.fish.aidl.MyRemoteService;
 import fly.fish.beans.GameArgs;
 import fly.fish.othersdk.WXinSDK;
+import fly.fish.othersdk.YXWebActivity;
 import fly.fish.tools.FilesTool;
 import fly.fish.tools.LuaTools;
 import fly.fish.tools.MLog;
@@ -43,6 +44,11 @@ public class ChargeActivity extends MyActivity{
 	@Override
 	protected void onResume() {
 		super.onResume();
+		if (YXWebActivity.isIspayfinish())
+		{
+			YXWebActivity.setIspayfinish(false);
+			finish();
+		}
 //		if(!"".equals(WXinSDK.getPrepayid())){
 //			new CheckOderManager().checkState(ChargeActivity.this, WXinSDK.getPrepayUrl(),WXinSDK.getPrepayid(), new QueryPayListener() {
 //				
