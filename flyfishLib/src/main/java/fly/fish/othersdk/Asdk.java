@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.org.suspension.model.JXActivityUtils;
 import com.org.suspension.model.JXGameBall;
@@ -44,9 +45,17 @@ public class Asdk {
 	private static Class<?> clazz_mp = null;//MH
 	private static Class<?> clazz_onekeylogin = null;//onekeylogin
 	private static boolean hasball = false;
+	private static boolean isLoginSuccess = false;
+	private static Intent loginIntent ;
+
 	public static void setHasball(boolean hasball) {
 		Asdk.hasball = hasball;
 		MLog.a("setHasball-hasball--"+hasball);
+	}
+
+	public static void setLogiinState(boolean isLoginSuccess, Intent intent) {
+		Asdk.isLoginSuccess = isLoginSuccess;
+		Asdk.loginIntent = intent;
 	}
 
 	private static SharedPreferences share = null;
@@ -71,6 +80,7 @@ public class Asdk {
 
 
 	}
+
 	public static void initSDK(final Activity act){
 		//onekeylogin一键登录
 		if (OutFace.getOneLoginCheck()){
@@ -96,6 +106,7 @@ public class Asdk {
 		JXActivityUtils.getInstance().setGameActivity(act);
 		
 	}
+
 	public static void InitLaunch(final Activity activity, final boolean isLandsape,
 			final CallBackListener mcallback) {
 		//ry
@@ -112,6 +123,7 @@ public class Asdk {
 		share = MyApplication.getAppContext().getSharedPreferences("user_info", 0);
 		mcallback.callback(0, false);
 	}
+
 	public static void onResume(Activity act) {
 		//ry
 		if(clazz1!=null){
@@ -123,6 +135,7 @@ public class Asdk {
 			JXGameBall.showWd();
 		}
 	}
+
 	public static void onPause(Activity act) {
 		//ry
 		if(clazz1!=null){
@@ -147,6 +160,11 @@ public class Asdk {
 	}
 	//登录
 	public static void loginSDK(Activity act, Intent intent){
+		if (isLoginSuccess){
+			loginIntent.setClass(act, MyRemoteService.class);
+			act.startService(loginIntent);
+			return;
+		}
 		
 		//ry
 		if(clazz1!=null){
