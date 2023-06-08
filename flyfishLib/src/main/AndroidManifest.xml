@@ -66,10 +66,7 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
         <!-- 以下可设置横竖屏 -->
-        <activity
-            android:name="fly.fish.othersdk.OnekeyAutoActivity"
-            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
-            android:theme="@style/ay_dialog_style" />
+
         <activity
             android:name="fly.fish.asdk.AsdkActivity"
             android:configChanges="keyboardHidden|orientation|navigation|screenSize"

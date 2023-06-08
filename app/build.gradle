@@ -9,6 +9,7 @@ android {
     defaultConfig {
 //        applicationId "com.example.flyfishjava"
         applicationId "com.yymxj.shdy"
+        manifestPlaceholders = [packagename: applicationId]
         minSdk 22
         targetSdk 26
         versionCode 1
