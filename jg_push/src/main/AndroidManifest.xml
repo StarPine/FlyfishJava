@@ -127,7 +127,8 @@
         </service>
         <!-- since 3.5.6 新增华硕通道  -->
         <receiver android:name="cn.jpush.android.asus.AsusPushMessageReceiver"></receiver>
-
+        <meta-data android:name="JPUSH_APPKEY" android:value="JPUSH_APPKEY_VALUE"/>
+        <meta-data android:name="JPUSH_CHANNEL" android:value="JPUSH_CHANNEL_VALUE"/>
 
         <!--        极光配置  end-->
     </application>
