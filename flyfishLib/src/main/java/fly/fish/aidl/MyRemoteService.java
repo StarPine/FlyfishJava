@@ -644,7 +644,7 @@ public class MyRemoteService extends Service {
             gameargs.setGameno(gameid);
             gameargs.setKey(key);
             gameargs.setName(name);
-            gameargs.setPublisher(FilesTool.getPublisherString()[0]);
+            gameargs.setPublisher(OutFace.getInstance(null).getPublisher());
 
             MLog.s("service Publisher -------> " + gameargs.getPublisher());
             MLog.s("service cpidid -------> " + cpid);

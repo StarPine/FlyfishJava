@@ -363,6 +363,14 @@ public class OutFace {
 		}
 	};
 
+	public String getPublisher() {
+		return Publisher;
+	}
+
+	public void setPublisher(String publisher) {
+		Publisher = publisher;
+	}
+
 	private OutFace() {
 		// 创建广播实现类
 		broadcast = new MyBroadCast(this);
