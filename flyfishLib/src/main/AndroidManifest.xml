@@ -39,7 +39,7 @@
             </intent-filter>
             <intent-filter>
                 <!--协议部分，随便设置-->
-                <data android:scheme="yymxj" />
+                <data android:scheme="GAME_NAME_BROWER" />
                 <!--下面这几行也必须得设置-->
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
