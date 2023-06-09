@@ -35,6 +35,7 @@ import android.widget.LinearLayout;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import fly.fish.asdk.BuildConfig;
 import fly.fish.asdk.ChargeActivity;
 import fly.fish.asdk.LoginActivity;
 import fly.fish.asdk.MyApplication;
@@ -56,6 +57,12 @@ public class OutFace {
 	private String DOWN_ACTION = MyApplication.getAppContext().getPackageName()
 			+ ".fly.fish.aidl.MyRemoteService.MYBROADCAST";
 
+	public static final int SDK_VERSION_CODE = BuildConfig.SDK_VERSION_CODE;
+
+	/**
+	 * SDK版本名称(插件/宿主)
+	 */
+	public static final String SDK_VERSION_NAME = BuildConfig.SDK_VERSION_NAME;
 	private static OutFace our = null;
 	public static Activity mActivity;
 
