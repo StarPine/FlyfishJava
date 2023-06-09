@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.keplerproject.luajava.LuaState;
 
+import fly.fish.aidl.OutFace;
 import fly.fish.beans.FileHeader;
 import fly.fish.beans.GameArgs;
 import fly.fish.config.Configs;
@@ -137,7 +138,7 @@ public class LogicMain {
 			GameArgs gameargs = MyApplication.getAppContext().getGameArgs();
 
 			gameargs.setCpid(gameargs.getCpid() == null ? "" : gameargs.getCpid());
-			String publisher = FilesTool.getPublisherString()[0];
+			String publisher = OutFace.getInstance(null).getPublisher();
 			gameargs.setPublisher(publisher);
 			gameargs.setPublisher(gameargs.getPublisher() == null ? "" : gameargs.getPublisher());
 			gameargs.setGameno(gameargs.getGameno() == null ? "" : gameargs.getGameno());

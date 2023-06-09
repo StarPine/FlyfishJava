@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 //import com.ulopay.android.h5_library.manager.CheckOderManager.QueryPayListener;
 
 import fly.fish.aidl.MyRemoteService;
+import fly.fish.aidl.OutFace;
 import fly.fish.beans.GameArgs;
 import fly.fish.othersdk.WXinSDK;
 import fly.fish.othersdk.YXWebActivity;
@@ -124,7 +125,7 @@ public class ChargeActivity extends MyActivity{
 				gameargs.setCallbackurl(e);
 				gameargs.setSum(f);
 				gameargs.setDesc(g);
-				String publisher = FilesTool.getPublisherString()[0];
+				String publisher = OutFace.getInstance(null).getPublisher();
 				gameargs.setPublisher(publisher);
 
 				if (getApp().curKey != null) {
