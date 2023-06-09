@@ -3,6 +3,8 @@ package fly.fish.asdk;
 import java.util.HashMap;
 import java.util.Map;
 import org.keplerproject.luajava.LuaState;
+
+import fly.fish.aidl.OutFace;
 import fly.fish.beans.GameArgs;
 import fly.fish.tools.FilesTool;
 import fly.fish.tools.LuaTools;
@@ -127,7 +129,7 @@ public class LoginActivity extends MyActivity {
 				gameargs.setCpid(a);
 				gameargs.setGameno(b);
 				gameargs.setKey(c);
-				gameargs.setPublisher(FilesTool.getPublisherString()[0]);
+				gameargs.setPublisher(OutFace.getInstance(null).getPublisher());
 				gameargs.setName(d);
 				gameargs.setSelf(e);
 
