@@ -49,33 +49,29 @@ public class SDKReport {
     private static final String KEY_INT2 = "int2";
     private static final String KEY_INT3 = "int3";
 
-
-
     public static Map<String, String> getPamars(Context context) throws JSONException {
         return applicationStart(context);
-
     }
-
 
     public static Map<String, String> applicationStart(Context context) throws JSONException {
         String baseParams = createBaseParams(context);
-        Map<String, String> trackParams = createTrackParams(context);
+        String trackParams = createTrackParams(context);
         Map<String, String> bodyParams = new TreeMap<>();
         bodyParams.put(TRACK_ID, "1000000");
-        bodyParams.put(PUBLIC_PROPERTIES, baseParams.toString());
-//        bodyParams.put(TRACK_PROPERTIES, trackParams.toString());
+        bodyParams.put(PUBLIC_PROPERTIES, baseParams);
+        bodyParams.put(TRACK_PROPERTIES, trackParams);
         return bodyParams;
     }
 
-    private static Map<String, String> createTrackParams(Context context) {
-        Map<String, String> map = new TreeMap<>();
-        map.put(KEY_STR1,"9850c7ada261cc073af8d802bdf03c93");
-        map.put(KEY_STR2,"");
-        map.put(KEY_STR3,"");
-        map.put(KEY_INT1,"6");
-        map.put(KEY_INT2,"");
-        map.put(KEY_INT3,"");
-        return map;
+    private static String createTrackParams(Context context) throws JSONException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(KEY_STR1,"9850c7ada261cc073af8d802bdf03c93");
+        jsonObject.put(KEY_STR2,"");
+        jsonObject.put(KEY_STR3,"");
+        jsonObject.put(KEY_INT1,"6");
+        jsonObject.put(KEY_INT2,"");
+        jsonObject.put(KEY_INT3,"");
+        return jsonObject.toString();
     }
 
     private static String createBaseParams(Context context) throws JSONException {
@@ -87,11 +83,11 @@ public class SDKReport {
             map = new TreeMap<>();
         }
         Date date = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         JSONObject jsonObject = new JSONObject();
         //包体默认参数
-        jsonObject.put(KEY_TIME, dateFormat.format(date)+"");
+        jsonObject.put(KEY_TIME, dateFormat.format(date));
         jsonObject.put(KEY_FLAT, "Android");
         jsonObject.put(KEY_PUB, OutFace.getInstance(context).getPublisher());
         jsonObject.put(KEY_GID, PhoneTool.getIMEI(context));
@@ -103,7 +99,7 @@ public class SDKReport {
         jsonObject.put(KEY_GAME_BV, PhoneTool.getVersionName(context));
 
         //账号相关参数
-        jsonObject.put(KEY_GAME_ID, "100079100973");
+        jsonObject.put(KEY_GAME_ID, "100973");
         jsonObject.put(KEY_ACCOUNT_ID, "");
 
         //游戏服务器相关参数

@@ -86,7 +86,7 @@ public class RequestUtils {
                     break;
                 case METHOD_TYPE.POST:
                     connection.setRequestMethod("POST");
-                    connection.setRequestProperty("Content-Type", "application/x-www-url-encoded");
+                    connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                     connection.setRequestProperty("Content-Length", String.valueOf(body.getBytes(ENCODING_UTF8).length));
                     OutputStream outputStream = new BufferedOutputStream(connection.getOutputStream());
                     outputStream.write(body.getBytes(ENCODING_UTF8));
@@ -133,18 +133,12 @@ public class RequestUtils {
 
     public static String createBody(Map<String, String> params) throws UnsupportedEncodingException, JSONException {
         StringBuilder builder = new StringBuilder();
-        JSONObject jsonObject = new JSONObject();
         for (Map.Entry<String, String> entries : params.entrySet()) {
             String key = entries.getKey();
             String value = entries.getValue();
-            Object o = jsonObject.get(key);
             builder.append(key);
             builder.append("=");
-//            if (TextUtils.isEmpty(value)) {
-//                builder.append("");
-//            } else {
-//                builder.append(URLEncoder.encode(value, ENCODING_UTF8));
-//            }
+//            builder.append(value + "");
             builder.append(value);
             builder.append("&");
         }

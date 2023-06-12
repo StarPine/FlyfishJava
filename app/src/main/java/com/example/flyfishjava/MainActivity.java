@@ -30,7 +30,6 @@ import java.util.Map;
 import fly.fish.aidl.CallBackListener;
 import fly.fish.aidl.OutFace;
 import fly.fish.asdk.MyApplication;
-import fly.fish.report.Net;
 import fly.fish.report.RequestConfig;
 import fly.fish.report.RequestUtils;
 import fly.fish.report.SDKReport;
