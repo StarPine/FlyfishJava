@@ -47,6 +47,8 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnKeyListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.ConnectivityManager;
@@ -106,6 +108,18 @@ public class PhoneTool {
 	}
 	public static String getOAID(){
 		return OAID;
+	}
+
+	public static String getVersionName(Context context){
+		try {
+			PackageManager manager = context.getPackageManager();
+			PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
+			String version = info.versionName;
+			return version;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "1.0";
 	}
 
 	/**
@@ -463,6 +477,44 @@ public class PhoneTool {
 		return null;
 	}
 
+	public static String getIP(Context context) {
+		String ip = "";
+		try {
+			ConnectivityManager conMann = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo mobileNetworkInfo = conMann.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+			NetworkInfo wifiNetworkInfo = conMann.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+			if (mobileNetworkInfo != null) {
+				if (mobileNetworkInfo.isConnected()) {
+					ip = getLocalIpAddress();
+					System.out.println("本地ip-----" + ip);
+				}
+				return ip;
+			}
+			if (wifiNetworkInfo != null) {
+				if (wifiNetworkInfo.isConnected()) {
+					WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+					WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+					int ipAddress = wifiInfo.getIpAddress();
+					ip = intToIp(ipAddress);
+					System.out.println("wifi_ip地址为------" + ip);
+				}
+			}
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+
+		return ip;
+	}
+
+	public static String intToIp(int ipInt) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(ipInt & 0xFF).append(".");
+		sb.append((ipInt >> 8) & 0xFF).append(".");
+		sb.append((ipInt >> 16) & 0xFF).append(".");
+		sb.append((ipInt >> 24) & 0xFF);
+		return sb.toString();
+	}
+
 	/**
 	 * 判断网络连接是否打开
 	 * 
@@ -544,7 +596,7 @@ public class PhoneTool {
 	/**
 	 * 获取设备系统版本名
 	 *
-	 * @return 设备系统版本号
+	 * @return 设备系统版本名
 	 */
 	public static String getOSVersion() {
 		return Build.VERSION.RELEASE;
@@ -585,6 +637,11 @@ public class PhoneTool {
 		String serviceName = tm.getSimOperatorName(); // 运营商
 		String numer = tm.getLine1Number(); // 手机号码
 		return imei + "|" + version + "|" + mtype + "|" + mtyb;
+	}
+
+	public static String getPhoneNet(Context context){
+		TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+		return tm.getSimOperatorName(); // 运营商
 	}
 
 	/**

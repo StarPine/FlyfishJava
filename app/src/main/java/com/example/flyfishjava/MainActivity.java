@@ -24,10 +24,16 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.Map;
 
 import fly.fish.aidl.CallBackListener;
 import fly.fish.aidl.OutFace;
 import fly.fish.asdk.MyApplication;
+import fly.fish.report.Net;
+import fly.fish.report.RequestConfig;
+import fly.fish.report.RequestUtils;
+import fly.fish.report.SDKReport;
 import fly.fish.tools.FilesTool;
 import fly.fish.tools.MLog;
 import fly.fish.tools.OthPhone;
@@ -230,6 +236,29 @@ public class MainActivity extends Activity {
      * @param view
      */
     public void login(View view) throws RemoteException {
+        if (true) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+//                    String url = "https://www.baidu.com";
+                    String url = "http://allapi.xinxinjoy.com:8084/outerinterface/track.php?";
+                    String body = null;
+                    try {
+                        Map<String, String> baseParams = SDKReport.getPamars(MainActivity.this);
+                        body = RequestUtils.createBody(baseParams);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                    RequestConfig config = new RequestConfig(url,body);
+                    String result = RequestUtils.POST(config);
+
+//                    String result = RequestUtils.GET(url);
+                    MLog.a("config---------" + config.getUrl()+config.getBody());
+                    MLog.a("result---------" + result);
+                }
+            }).start();
+            return;
+        }
         String appkey= getAppKey(this);
         MLog.setDebug(true);
         MLog.a("appkey---------"+appkey);
