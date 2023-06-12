@@ -131,14 +131,13 @@ public class RequestUtils {
         return urlConnection;
     }
 
-    public static String createBody(Map<String, String> params) throws UnsupportedEncodingException, JSONException {
+    public static String createBody(Map<String, Object> params) throws UnsupportedEncodingException, JSONException {
         StringBuilder builder = new StringBuilder();
-        for (Map.Entry<String, String> entries : params.entrySet()) {
+        for (Map.Entry<String, Object> entries : params.entrySet()) {
             String key = entries.getKey();
-            String value = entries.getValue();
+            Object value = entries.getValue();
             builder.append(key);
             builder.append("=");
-//            builder.append(value + "");
             builder.append(value);
             builder.append("&");
         }

@@ -19,6 +19,8 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import org.json.JSONException;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -234,28 +236,9 @@ public class MainActivity extends Activity {
      * 登录
      * @param view
      */
-    public void login(View view) throws RemoteException {
+    public void login(View view) throws RemoteException, JSONException {
         if (true) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-//                    String url = "https://www.baidu.com";
-                    String url = "http://allapi.xinxinjoy.com:8084/outerinterface/track.php?";
-                    String body = null;
-                    try {
-                        Map<String, String> baseParams = SDKReport.getPamars(MainActivity.this);
-                        body = RequestUtils.createBody(baseParams);
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                    RequestConfig config = new RequestConfig(url,body);
-                    String result = RequestUtils.POST(config);
-
-//                    String result = RequestUtils.GET(url);
-                    MLog.a("config---------" + config.getUrl()+config.getBody());
-                    MLog.a("result---------" + result);
-                }
-            }).start();
+            SDKReport.startReport(MainActivity.this);
             return;
         }
         String appkey= getAppKey(this);

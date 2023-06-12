@@ -11,10 +11,14 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import fly.fish.aidl.OutFace;
+import fly.fish.tools.MLog;
 import fly.fish.tools.PhoneTool;
 
 public class SDKReport {
-    //第一层key
+
+    //上报地址
+    private static final String URL = "http://allapi.xinxinjoy.com:8084/outerinterface/track.php?";
+
     //事件ID
     private static final String TRACK_ID = "TrackId";
     //公共属性
@@ -49,18 +53,68 @@ public class SDKReport {
     private static final String KEY_INT2 = "int2";
     private static final String KEY_INT3 = "int3";
 
-    public static Map<String, String> getPamars(Context context) throws JSONException {
-        return applicationStart(context);
+    public static class Event{
+
+        //启动游戏
+        public static final int START_APPLICATION = 1000000;
+        //游戏热更新开始
+        public static final int START_GAME_HOT_REFRESH = 1001000;
+        //游戏热更新成功
+        public static final int GAME_HOT_REFRESH_FINISH = 1002000;
+        //游戏加载本地资源开始
+        public static final int START_LOAD_LOCAL_RES = 1003000;
+        //游戏加载本地资源成功
+        public static final int LOAD_LOCAL_RES_FINISH = 1004000;
+        //游戏调用SDK初始化
+        public static final int INVOKE_SDK_INIT = 1005000;
+        //SDK初始化成功
+        public static final int SDK_INIT_SUCCESS = 1006000;
+        //SDK初始化失败
+        public static final int SDK_INIT_FAIL = 1007000;
+        //游戏调用SDK登陆页
+        public static final int INVOKE_SDK_LOGIN = 1008000;
+        //SDK返回登陆成功
+        public static final int SDK_LOGIN_SUCCESS = 1009000;
+        //SDK返回登陆失败
+        public static final int SDK_LOGIN_FAIL = 1010000;
+        //游戏选服界面弹出
+        public static final int GAME_SERVER_SELECTION_SHOW = 1011000;
+        //游戏公告界面弹出
+        public static final int GAME_ANNOUNCEMENT_SHOW = 1012000;
+        //玩家创角界面弹出
+        public static final int GAME_CREATE_ROLE_SHOW = 1013000;
+        //玩家创建角色成功
+        public static final int GAME_CREATE_ROLE_SUCCESS = 1014000;
+        //正式进入游戏
+        public static final int ENTER_THE_GAME = 1015000;
     }
 
-    public static Map<String, String> applicationStart(Context context) throws JSONException {
-        String baseParams = createBaseParams(context);
-        String trackParams = createTrackParams(context);
-        Map<String, String> bodyParams = new TreeMap<>();
-        bodyParams.put(TRACK_ID, "1000000");
-        bodyParams.put(PUBLIC_PROPERTIES, baseParams);
-        bodyParams.put(TRACK_PROPERTIES, trackParams);
-        return bodyParams;
+    public static Map<String, Object> startReport(Context context) throws JSONException {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                String body = null;
+                try {
+                    String commonParams = createCommonParams(context);
+                    String trackParams = createTrackParams(context);
+
+                    Map<String, Object> bodyParams = new TreeMap<>();
+                    bodyParams.put(TRACK_ID, Event.START_APPLICATION);
+                    bodyParams.put(PUBLIC_PROPERTIES, commonParams);
+                    bodyParams.put(TRACK_PROPERTIES, trackParams);
+                    body = RequestUtils.createBody(bodyParams);
+                    RequestConfig config = new RequestConfig(URL,body);
+                    String result = RequestUtils.POST(config);
+                    MLog.a("上报结果---------" + result);
+                    MLog.a("RequestConfig---------" + config.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+        return null;
     }
 
     private static String createTrackParams(Context context) throws JSONException {
@@ -74,11 +128,11 @@ public class SDKReport {
         return jsonObject.toString();
     }
 
-    private static String createBaseParams(Context context) throws JSONException {
-        return createBaseParams(context, null);
+    private static String createCommonParams(Context context) throws JSONException {
+        return createCommonParams(context, null);
     }
 
-    private static String createBaseParams(Context context, Map<String, String> map) throws JSONException {
+    private static String createCommonParams(Context context, Map<String, String> map) throws JSONException {
         if (map == null) {
             map = new TreeMap<>();
         }
