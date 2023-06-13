@@ -1,16 +1,22 @@
 package fly.fish.report;
 
 import android.content.Context;
+import android.support.annotation.IntDef;
+import android.text.TextUtils;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
 import fly.fish.aidl.OutFace;
+import fly.fish.tools.FilesTool;
 import fly.fish.tools.MLog;
 import fly.fish.tools.PhoneTool;
 
@@ -28,83 +34,123 @@ public class SDKReport {
 
     //第二层key
     private static final String KEY_TIME = "time";
-    private static final String KEY_GAME_ID = "gameid";
-    private static final String KEY_ACCOUNT_ID = "accountid";
     private static final String KEY_FLAT = "flat";
     private static final String KEY_PUB = "pub";
-    private static final String KEY_GID = "gid";
+    private static final String KEY_IMEI = "imei";
     private static final String KEY_SDK_BV = "sdkbv";
     private static final String KEY_IP = "ip";
     private static final String KEY_OS = "os";
     private static final String KEY_UA = "ua";
     private static final String KEY_NET = "net";
     private static final String KEY_GAME_BV = "gamebv";
-    private static final String KEY_ROLE_ID = "roleid";
-    private static final String KEY_SERVER_ID = "serverid";
-    private static final String KEY_SERVER_NAME = "servername";
-    private static final String KEY_ROLE_LEVEL = "rolelevel";
-    private static final String KEY_VIP_LEVEL = "viplevel";
+
+    public static final String KEY_GID = "gid";
+    public static final String KEY_GAME_ID = "gameid";
+    public static final String KEY_ACCOUNT_ID = "accountid";
+    public static final String KEY_ROLE_ID = "roleid";
+    public static final String KEY_ROLE_NAME = "rolename";
+    public static final String KEY_SERVER_ID = "serverid";
+    public static final String KEY_SERVER_NAME = "servername";
+    public static final String KEY_ROLE_LEVEL = "rolelevel";
+    public static final String KEY_VIP_LEVEL = "viplevel";
 
     //自定义key
-    private static final String KEY_STR1 = "str1";
-    private static final String KEY_STR2 = "str2";
-    private static final String KEY_STR3 = "str3";
-    private static final String KEY_INT1 = "int1";
-    private static final String KEY_INT2 = "int2";
-    private static final String KEY_INT3 = "int3";
+    public static final String KEY_STR1 = "str1";
+    public static final String KEY_STR2 = "str2";
+    public static final String KEY_STR3 = "str3";
+    public static final String KEY_INT1 = "int1";
+    public static final String KEY_INT2 = "int2";
+    public static final String KEY_INT3 = "int3";
 
-    public static class Event{
+    private static volatile SDKReport mInstance;
 
-        //启动游戏
-        public static final int START_APPLICATION = 1000000;
-        //游戏热更新开始
-        public static final int START_GAME_HOT_REFRESH = 1001000;
-        //游戏热更新成功
-        public static final int GAME_HOT_REFRESH_FINISH = 1002000;
-        //游戏加载本地资源开始
-        public static final int START_LOAD_LOCAL_RES = 1003000;
-        //游戏加载本地资源成功
-        public static final int LOAD_LOCAL_RES_FINISH = 1004000;
-        //游戏调用SDK初始化
-        public static final int INVOKE_SDK_INIT = 1005000;
-        //SDK初始化成功
-        public static final int SDK_INIT_SUCCESS = 1006000;
-        //SDK初始化失败
-        public static final int SDK_INIT_FAIL = 1007000;
-        //游戏调用SDK登陆页
-        public static final int INVOKE_SDK_LOGIN = 1008000;
-        //SDK返回登陆成功
-        public static final int SDK_LOGIN_SUCCESS = 1009000;
-        //SDK返回登陆失败
-        public static final int SDK_LOGIN_FAIL = 1010000;
-        //游戏选服界面弹出
-        public static final int GAME_SERVER_SELECTION_SHOW = 1011000;
-        //游戏公告界面弹出
-        public static final int GAME_ANNOUNCEMENT_SHOW = 1012000;
-        //玩家创角界面弹出
-        public static final int GAME_CREATE_ROLE_SHOW = 1013000;
-        //玩家创建角色成功
-        public static final int GAME_CREATE_ROLE_SUCCESS = 1014000;
-        //正式进入游戏
-        public static final int ENTER_THE_GAME = 1015000;
+    private SDKReport() {
     }
 
-    public static Map<String, Object> startReport(Context context) throws JSONException {
+    public static SDKReport getInstance() {
+        if (mInstance == null) {
+            synchronized (SDKReport.class) {
+                if (mInstance == null) {
+                    mInstance = new SDKReport();
+                }
+            }
+        }
+        return mInstance;
+    }
+
+    @Retention(RetentionPolicy.SOURCE)
+    @Target(ElementType.PARAMETER)
+    @IntDef(value = {Event.ENTER_THE_GAME,
+            Event.START_APPLICATION,
+            Event.START_GAME_HOT_REFRESH,
+            Event.GAME_HOT_REFRESH_FINISH,
+            Event.START_LOAD_LOCAL_RES,
+            Event.LOAD_LOCAL_RES_FINISH,
+            Event.INVOKE_SDK_INIT,
+            Event.SDK_INIT_SUCCESS,
+            Event.SDK_INIT_FAIL,
+            Event.INVOKE_SDK_LOGIN,
+            Event.SDK_LOGIN_SUCCESS,
+            Event.SDK_LOGIN_FAIL,
+            Event.GAME_SERVER_SELECTION_SHOW,
+            Event.GAME_ANNOUNCEMENT_SHOW,
+            Event.GAME_CREATE_ROLE_SHOW,
+            Event.GAME_CREATE_ROLE_SUCCESS,
+            Event.NOVICE_GUIDE,
+            Event.SDK_PAY_SUCCESS,
+            Event.SERVICE_GET_PAY_SUCCESS,
+            Event.SERVICE_DISPOSE_PAY_FAIL,
+            Event.PLAYER_CURRENCY_GENERATE,
+            Event.PLAYER_CURRENCY_CONSUME,
+            Event.PLAYER_PROPERTY_GENERATE,
+            Event.PLAYER_PROPERTY_CONSUME,
+            Event.PLAYER_ROEL_UPDATE,
+            Event.PLAYER_VIP_UPDATE,
+            Event.PLAYER_MAIN_LINE_TASK,
+            Event.PLAYER_MAIN_LEVEL,
+            Event.PLAYER_EXIT_GAME,
+            Event.ROLE_RENAME,
+            Event.SERVER_LAUNCH
+    })
+    private @interface EventID {
+    }
+
+    @Deprecated
+    public void startCommonReport(Context context, @EventID int eventId) {
+        startCommonReport(context, eventId, null);
+    }
+
+    public void startCommonReport(Context context, @EventID int eventId, Map<String, Object> commonMap) {
+        startReport(context, eventId, commonMap, null);
+    }
+
+    @Deprecated
+    public void startReportCustom(Context context, @EventID int eventId, Map<String, Object> customMap) {
+        startReportCustom(context, eventId, null, customMap);
+    }
+
+    public void startReportCustom(Context context, @EventID int eventId, Map<String, Object> commonMap, Map<String, Object> customMap) {
+        startReport(context, eventId, commonMap, customMap);
+    }
+
+    private void startReport(Context context, @EventID int eventId, Map<String, Object> commonMap, Map<String, Object> customMap) {
+        String commonParams = createCommonParams(context, commonMap);
+        String trackParams = map2JsonString(customMap);
+        Map<String, Object> bodyMap = new TreeMap<>();
+        bodyMap.put(TRACK_ID, eventId);
+        bodyMap.put(PUBLIC_PROPERTIES, commonParams);
+        if (!TextUtils.isEmpty(trackParams))
+            bodyMap.put(TRACK_PROPERTIES, trackParams);
+        String body = RequestUtils.createBody(bodyMap);
+        request(body);
+    }
+
+    private void request(String body) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-
-                String body = null;
                 try {
-                    String commonParams = createCommonParams(context);
-                    String trackParams = createTrackParams(context);
-
-                    Map<String, Object> bodyParams = new TreeMap<>();
-                    bodyParams.put(TRACK_ID, Event.START_APPLICATION);
-                    bodyParams.put(PUBLIC_PROPERTIES, commonParams);
-                    bodyParams.put(TRACK_PROPERTIES, trackParams);
-                    body = RequestUtils.createBody(bodyParams);
-                    RequestConfig config = new RequestConfig(URL,body);
+                    RequestConfig config = new RequestConfig(URL, body);
                     String result = RequestUtils.POST(config);
                     MLog.a("上报结果---------" + result);
                     MLog.a("RequestConfig---------" + config.toString());
@@ -113,57 +159,58 @@ public class SDKReport {
                 }
             }
         }).start();
-
-        return null;
     }
 
-    private static String createTrackParams(Context context) throws JSONException {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put(KEY_STR1,"9850c7ada261cc073af8d802bdf03c93");
-        jsonObject.put(KEY_STR2,"");
-        jsonObject.put(KEY_STR3,"");
-        jsonObject.put(KEY_INT1,"6");
-        jsonObject.put(KEY_INT2,"");
-        jsonObject.put(KEY_INT3,"");
+    private String map2JsonString(Map<String, Object> customParams) {
+        if (customParams == null || customParams.size() <= 0)return "";
+        JSONObject jsonObject = new JSONObject(customParams);
         return jsonObject.toString();
     }
 
-    private static String createCommonParams(Context context) throws JSONException {
-        return createCommonParams(context, null);
-    }
-
-    private static String createCommonParams(Context context, Map<String, String> map) throws JSONException {
+    /**
+     * 配置默认参数
+     * @param context
+     * @param map
+     * @return
+     */
+    private String createCommonParams(Context context, Map<String, Object> map) {
         if (map == null) {
             map = new TreeMap<>();
         }
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        JSONObject jsonObject = new JSONObject();
+        String publisher = OutFace.getInstance(context).getPublisher();
+        if (TextUtils.isEmpty(publisher)) {
+            publisher = FilesTool.getPublisherStringContent();
+        }
+
         //包体默认参数
-        jsonObject.put(KEY_TIME, dateFormat.format(date));
-        jsonObject.put(KEY_FLAT, "Android");
-        jsonObject.put(KEY_PUB, OutFace.getInstance(context).getPublisher());
-        jsonObject.put(KEY_GID, PhoneTool.getIMEI(context));
-        jsonObject.put(KEY_SDK_BV, "5.4.7");
-        jsonObject.put(KEY_IP, PhoneTool.getIP(context));
-        jsonObject.put(KEY_OS, "android" + PhoneTool.getOSVersion());
-        jsonObject.put(KEY_UA, PhoneTool.getPT(context));
-        jsonObject.put(KEY_NET, PhoneTool.getPhoneNet(context));
-        jsonObject.put(KEY_GAME_BV, PhoneTool.getVersionName(context));
+        map.put(KEY_TIME, dateFormat.format(date));
+        map.put(KEY_FLAT, "Android");
+        map.put(KEY_PUB, publisher);
+        map.put(KEY_IMEI, PhoneTool.getIMEI(context));
+        map.put(KEY_SDK_BV, "5.5.0");
+        map.put(KEY_IP, PhoneTool.getIP(context));
+        map.put(KEY_OS, "android" + PhoneTool.getOSVersion());
+        map.put(KEY_UA, PhoneTool.getPT(context));
+        map.put(KEY_NET, PhoneTool.getPhoneNet(context));
+        map.put(KEY_GAME_BV, PhoneTool.getVersionName(context));
 
         //账号相关参数
-        jsonObject.put(KEY_GAME_ID, "100973");
-        jsonObject.put(KEY_ACCOUNT_ID, "");
+        map.put(KEY_GAME_ID,  map.containsKey(KEY_GAME_ID) ? map.get(KEY_GAME_ID) : "");
+        map.put(KEY_GID, map.containsKey(KEY_GID) ? map.get(KEY_GID) : "");
+        map.put(KEY_ACCOUNT_ID, map.containsKey(KEY_ACCOUNT_ID) ? map.get(KEY_ACCOUNT_ID) : "");
 
         //游戏服务器相关参数
-        jsonObject.put(KEY_ROLE_ID, "");
-        jsonObject.put(KEY_SERVER_ID, "");
-        jsonObject.put(KEY_SERVER_NAME, "");
-        jsonObject.put(KEY_ROLE_LEVEL, "");
-        jsonObject.put(KEY_VIP_LEVEL, "");
+        map.put(KEY_ROLE_ID, map.containsKey(KEY_ROLE_ID) ? map.get(KEY_ROLE_ID) : "");
+        map.put(KEY_ROLE_NAME, map.containsKey(KEY_ROLE_NAME) ? map.get(KEY_ROLE_NAME) : "");
+        map.put(KEY_SERVER_ID, map.containsKey(KEY_SERVER_ID) ? map.get(KEY_SERVER_ID) : "");
+        map.put(KEY_SERVER_NAME, map.containsKey(KEY_SERVER_NAME) ? map.get(KEY_SERVER_NAME) : "");
+        map.put(KEY_ROLE_LEVEL, map.containsKey(KEY_ROLE_LEVEL) ? map.get(KEY_ROLE_LEVEL) : "");
+        map.put(KEY_VIP_LEVEL, map.containsKey(KEY_VIP_LEVEL) ? map.get(KEY_VIP_LEVEL) : "");
 
-        return jsonObject.toString();
+        return map2JsonString(map);
 
     }
 

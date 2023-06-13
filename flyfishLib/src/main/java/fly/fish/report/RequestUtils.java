@@ -131,7 +131,7 @@ public class RequestUtils {
         return urlConnection;
     }
 
-    public static String createBody(Map<String, Object> params) throws UnsupportedEncodingException, JSONException {
+    public static String createBody(Map<String, Object> params){
         StringBuilder builder = new StringBuilder();
         for (Map.Entry<String, Object> entries : params.entrySet()) {
             String key = entries.getKey();

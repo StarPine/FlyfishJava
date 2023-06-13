@@ -28,10 +28,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
+import java.util.TreeMap;
 
 import fly.fish.aidl.CallBackListener;
 import fly.fish.aidl.OutFace;
 import fly.fish.asdk.MyApplication;
+import fly.fish.report.Event;
 import fly.fish.report.RequestConfig;
 import fly.fish.report.RequestUtils;
 import fly.fish.report.SDKReport;
@@ -237,9 +239,28 @@ public class MainActivity extends Activity {
      * 登录
      * @param view
      */
-    public void login(View view) throws RemoteException, JSONException {
+    public void login(View view) {
         if (true) {
-            SDKReport.startReport(MainActivity.this);
+            Map<String, Object> commonMap = new TreeMap<>();
+            commonMap.put(SDKReport.KEY_GID,"867139044011151");
+            commonMap.put(SDKReport.KEY_ACCOUNT_ID,"7416313");
+            commonMap.put(SDKReport.KEY_GAME_ID,"100973");
+            commonMap.put(SDKReport.KEY_ROLE_ID,"45612");
+            commonMap.put(SDKReport.KEY_ROLE_NAME,"角色1");
+            commonMap.put(SDKReport.KEY_SERVER_ID,"123");
+            commonMap.put(SDKReport.KEY_SERVER_NAME,"测试1服");
+            commonMap.put(SDKReport.KEY_ROLE_LEVEL,"5");
+            commonMap.put(SDKReport.KEY_VIP_LEVEL,"3");
+
+            Map<String, Object> customMap = new TreeMap<>();
+            customMap.put(SDKReport.KEY_STR1,"inoutway");
+            customMap.put(SDKReport.KEY_STR2,"proptypeid");
+            customMap.put(SDKReport.KEY_STR3,"name");
+            customMap.put(SDKReport.KEY_INT1,"id");
+            customMap.put(SDKReport.KEY_INT2,"num");
+            customMap.put(SDKReport.KEY_INT3,"balance");
+            SDKReport.getInstance().startCommonReport(this, Event.START_APPLICATION,commonMap);
+            SDKReport.getInstance().startReportCustom(this, Event.NOVICE_GUIDE, commonMap, customMap);
             return;
         }
         String appkey= getAppKey(this);
