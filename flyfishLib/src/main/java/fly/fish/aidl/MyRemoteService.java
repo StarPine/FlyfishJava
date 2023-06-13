@@ -298,7 +298,7 @@ public class MyRemoteService extends Service {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            for (int i = 0; i < 6; i++) {
+                            for (int i = 0; i < 10; i++) {
                                 String conf_info = HttpUtils.postMethod(server, "{\"exorderno\":\"" + exorderno + "\"}", "utf-8");
                                 MLog.a(tag, "------------------------" + conf_info);
                                 try {
@@ -345,7 +345,7 @@ public class MyRemoteService extends Service {
                                             myhand.sendMessage(new Message().obtain(myhand, 201, order.getString("msg")));
                                         }
                                     }
-                                    Thread.sleep(1000);
+                                    Thread.sleep(1000*(i+1));
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 } catch (RemoteException e) {
