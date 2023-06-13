@@ -14,8 +14,8 @@ android {
         versionName "1.0"
         ndk {abiFilters 'armeabi-v7a','arm64-v8a'}
 
-        buildConfigField "String", "SDK_VERSION_NAME", "\"7.0.0\""
-        buildConfigField "int", "SDK_VERSION_CODE", "700"
+        buildConfigField "String", "SDK_VERSION_NAME", "\"7.0.1\""
+        buildConfigField "int", "SDK_VERSION_CODE", "701"
 
     }
 
