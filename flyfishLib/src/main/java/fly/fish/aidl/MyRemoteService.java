@@ -245,6 +245,7 @@ public class MyRemoteService extends Service {
 //										sendBroadcast(new Intent("fly.fish.aidl.MyRemoteService.MYBROADCAST.LOGIN").putExtra("extdata1", jo2.getString("extdata1")).putExtra("extdata2", jo2.getString("extdata2")));
                                         app.getSharedPreferences("user_info", 0).edit().putString("pipaw_payerId", jo2.getString("accountid")).putString("pipaw_sessId", jo2.getString("sessionid")).putBoolean("islogin", true).commit();
                                         try {
+                                            SkipActivity.reyunsetLogin(jo2.getString("accountid"));
                                             ilistener.loginback(jo2.getString("sessionid"), jo2.getString("accountid"), jo1.getString("code"), customstring);
                                             // 保存登陆回调数据
                                             getGameArgs().setAccount_id(jo2.getString("accountid"));
