@@ -68,10 +68,10 @@ public class PrivacyActivity extends Activity {
                     boolean isFirstRun = sharedPreferences.getBoolean("isFirstRun", true);
                     final SharedPreferences.Editor editor = sharedPreferences.edit();
 
-                    if ((isFirstRun) && (state.equals("1"))) { // 第一次则跳转到引导页面
+                    if (isFirstRun && state.equals("1")) { // 第一次则跳转到引导页面
                         showDialog(editor);
 
-                    } else if ((!isFirstRun)) { // 如果是第二次启动则直接跳转到主页面
+                    } else if (!isFirstRun) { // 如果是第二次启动则直接跳转到主页面
                         MLog.a("非第一次安装-----------");
                         startGameActivity();
 

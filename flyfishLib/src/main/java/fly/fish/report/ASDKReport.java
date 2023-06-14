@@ -1,6 +1,9 @@
 package fly.fish.report;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.IntDef;
 import android.text.TextUtils;
 
@@ -12,25 +15,27 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 import fly.fish.aidl.OutFace;
 import fly.fish.tools.FilesTool;
 import fly.fish.tools.MLog;
 import fly.fish.tools.PhoneTool;
 
-public class SDKReport {
+public class ASDKReport {
 
     //上报地址
     private static final String URL = "http://allapi.xinxinjoy.com:8084/outerinterface/track.php?";
 
-    //事件ID
-    private static final String TRACK_ID = "TrackId";
-    //公共属性
-    private static final String PUBLIC_PROPERTIES = "PublicProperties";
-    //自定义属性
-    private static final String TRACK_PROPERTIES = "TrackProperties";
+    private static final String TRACK_ID = "TrackId";                   //事件ID
+    private static final String PUBLIC_PROPERTIES = "PublicProperties"; //公共属性
+    private static final String TRACK_PROPERTIES = "TrackProperties";   //自定义属性
+    private static final String TAG = "ASDKReport";
+
+    private static String gameId = "";
+    private static String gid = "";
+    private static String accountId = "";
 
     //第二层key
     private static final String KEY_TIME = "time";
@@ -62,16 +67,16 @@ public class SDKReport {
     public static final String KEY_INT2 = "int2";
     public static final String KEY_INT3 = "int3";
 
-    private static volatile SDKReport mInstance;
+    private static volatile ASDKReport mInstance;
 
-    private SDKReport() {
+    private ASDKReport() {
     }
 
-    public static SDKReport getInstance() {
+    public static ASDKReport getInstance() {
         if (mInstance == null) {
-            synchronized (SDKReport.class) {
+            synchronized (ASDKReport.class) {
                 if (mInstance == null) {
-                    mInstance = new SDKReport();
+                    mInstance = new ASDKReport();
                 }
             }
         }
@@ -80,47 +85,47 @@ public class SDKReport {
 
     @Retention(RetentionPolicy.SOURCE)
     @Target(ElementType.PARAMETER)
-    @IntDef(value = {Event.ENTER_THE_GAME,
-            Event.START_APPLICATION,
-            Event.START_GAME_HOT_REFRESH,
-            Event.GAME_HOT_REFRESH_FINISH,
-            Event.START_LOAD_LOCAL_RES,
-            Event.LOAD_LOCAL_RES_FINISH,
-            Event.INVOKE_SDK_INIT,
-            Event.SDK_INIT_SUCCESS,
-            Event.SDK_INIT_FAIL,
-            Event.INVOKE_SDK_LOGIN,
-            Event.SDK_LOGIN_SUCCESS,
-            Event.SDK_LOGIN_FAIL,
-            Event.GAME_SERVER_SELECTION_SHOW,
-            Event.GAME_ANNOUNCEMENT_SHOW,
-            Event.GAME_CREATE_ROLE_SHOW,
-            Event.GAME_CREATE_ROLE_SUCCESS,
-            Event.NOVICE_GUIDE,
-            Event.SDK_PAY_SUCCESS,
-            Event.SERVICE_GET_PAY_SUCCESS,
-            Event.SERVICE_DISPOSE_PAY_FAIL,
-            Event.PLAYER_CURRENCY_GENERATE,
-            Event.PLAYER_CURRENCY_CONSUME,
-            Event.PLAYER_PROPERTY_GENERATE,
-            Event.PLAYER_PROPERTY_CONSUME,
-            Event.PLAYER_ROEL_UPDATE,
-            Event.PLAYER_VIP_UPDATE,
-            Event.PLAYER_MAIN_LINE_TASK,
-            Event.PLAYER_MAIN_LEVEL,
-            Event.PLAYER_EXIT_GAME,
-            Event.ROLE_RENAME,
-            Event.SERVER_LAUNCH
+    @IntDef(value = {EventManager.EVENT_ENTER_THE_GAME,
+            EventManager.EVENT_START_APPLICATION,
+            EventManager.EVENT_START_GAME_HOT_REFRESH,
+            EventManager.EVENT_GAME_HOT_REFRESH_FINISH,
+            EventManager.EVENT_START_LOAD_LOCAL_RES,
+            EventManager.EVENT_LOAD_LOCAL_RES_FINISH,
+            EventManager.EVENT_INVOKE_SDK_INIT,
+            EventManager.EVENT_SDK_INIT_SUCCESS,
+            EventManager.EVENT_SDK_INIT_FAIL,
+            EventManager.EVENT_INVOKE_SDK_LOGIN,
+            EventManager.EVENT_SDK_LOGIN_SUCCESS,
+            EventManager.EVENT_SDK_LOGIN_FAIL,
+            EventManager.EVENT_GAME_SERVER_SELECTION_SHOW,
+            EventManager.EVENT_GAME_ANNOUNCEMENT_SHOW,
+            EventManager.EVENT_GAME_CREATE_ROLE_SHOW,
+            EventManager.EVENT_GAME_CREATE_ROLE_SUCCESS,
+            EventManager.EVENT_NOVICE_GUIDE,
+            EventManager.EVENT_SDK_PAY_SUCCESS,
+            EventManager.EVENT_SERVICE_GET_PAY_SUCCESS,
+            EventManager.EVENT_SERVICE_DISPOSE_PAY_FAIL,
+            EventManager.EVENT_PLAYER_CURRENCY_GENERATE,
+            EventManager.EVENT_PLAYER_CURRENCY_CONSUME,
+            EventManager.EVENT_PLAYER_PROPERTY_GENERATE,
+            EventManager.EVENT_PLAYER_PROPERTY_CONSUME,
+            EventManager.EVENT_PLAYER_ROEL_UPDATE,
+            EventManager.EVENT_PLAYER_VIP_UPDATE,
+            EventManager.EVENT_PLAYER_MAIN_LINE_TASK,
+            EventManager.EVENT_PLAYER_MAIN_LEVEL,
+            EventManager.EVENT_PLAYER_EXIT_GAME,
+            EventManager.EVENT_ROLE_RENAME,
+            EventManager.EVENT_SERVER_LAUNCH
     })
     private @interface EventID {
     }
 
     @Deprecated
-    public void startCommonReport(Context context, @EventID int eventId) {
-        startCommonReport(context, eventId, null);
+    public void startReportCommon(Context context, @EventID int eventId) {
+        startReportCommon(context, eventId, null);
     }
 
-    public void startCommonReport(Context context, @EventID int eventId, Map<String, Object> commonMap) {
+    public void startReportCommon(Context context, @EventID int eventId, Map<String, Object> commonMap) {
         startReport(context, eventId, commonMap, null);
     }
 
@@ -134,9 +139,10 @@ public class SDKReport {
     }
 
     private void startReport(Context context, @EventID int eventId, Map<String, Object> commonMap, Map<String, Object> customMap) {
+        MLog.a(TAG, "上报事件ID：" + eventId);
         String commonParams = createCommonParams(context, commonMap);
         String trackParams = map2JsonString(customMap);
-        Map<String, Object> bodyMap = new TreeMap<>();
+        Map<String, Object> bodyMap = new HashMap<>();
         bodyMap.put(TRACK_ID, eventId);
         bodyMap.put(PUBLIC_PROPERTIES, commonParams);
         if (!TextUtils.isEmpty(trackParams))
@@ -152,8 +158,8 @@ public class SDKReport {
                 try {
                     RequestConfig config = new RequestConfig(URL, body);
                     String result = RequestUtils.POST(config);
-                    MLog.a("上报结果---------" + result);
-                    MLog.a("RequestConfig---------" + config.toString());
+                    MLog.a(TAG, "上报结果---------" + result);
+                    MLog.a(TAG, "RequestConfig---------" + config.toString());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -162,20 +168,21 @@ public class SDKReport {
     }
 
     private String map2JsonString(Map<String, Object> customParams) {
-        if (customParams == null || customParams.size() <= 0)return "";
+        if (customParams == null || customParams.size() <= 0) return "";
         JSONObject jsonObject = new JSONObject(customParams);
         return jsonObject.toString();
     }
 
     /**
      * 配置默认参数
+     *
      * @param context
      * @param map
      * @return
      */
     private String createCommonParams(Context context, Map<String, Object> map) {
         if (map == null) {
-            map = new TreeMap<>();
+            map = new HashMap<>();
         }
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -185,22 +192,36 @@ public class SDKReport {
             publisher = FilesTool.getPublisherStringContent();
         }
 
+        SharedPreferences sharedPreferences = context.getSharedPreferences("asdk", MODE_PRIVATE);
+        boolean isFirstRun = sharedPreferences.getBoolean("isFirstRun", true);
+
         //包体默认参数
         map.put(KEY_TIME, dateFormat.format(date));
         map.put(KEY_FLAT, "Android");
         map.put(KEY_PUB, publisher);
-        map.put(KEY_IMEI, PhoneTool.getIMEI(context));
+        map.put(KEY_IMEI, isFirstRun ? PhoneTool.getRandomCode() : PhoneTool.getIMEI(context));
         map.put(KEY_SDK_BV, "5.5.0");
         map.put(KEY_IP, PhoneTool.getIP(context));
         map.put(KEY_OS, "android" + PhoneTool.getOSVersion());
         map.put(KEY_UA, PhoneTool.getPT(context));
-        map.put(KEY_NET, PhoneTool.getPhoneNet(context));
+        map.put(KEY_NET, PhoneTool.getNetworkOperatorName(context));
         map.put(KEY_GAME_BV, PhoneTool.getVersionName(context));
 
         //账号相关参数
-        map.put(KEY_GAME_ID,  map.containsKey(KEY_GAME_ID) ? map.get(KEY_GAME_ID) : "");
-        map.put(KEY_GID, map.containsKey(KEY_GID) ? map.get(KEY_GID) : "");
-        map.put(KEY_ACCOUNT_ID, map.containsKey(KEY_ACCOUNT_ID) ? map.get(KEY_ACCOUNT_ID) : "");
+        if (map.containsKey(KEY_GAME_ID) && !TextUtils.isEmpty((String) map.get(KEY_GAME_ID))) {
+            gameId = (String) map.get(KEY_GAME_ID);
+        }
+        map.put(KEY_GAME_ID, gameId);
+
+        if (map.containsKey(KEY_GID) && !TextUtils.isEmpty((String) map.get(KEY_GID))) {
+            gid = (String) map.get(KEY_GID);
+        }
+        map.put(KEY_GID, gid);
+
+        if (map.containsKey(KEY_ACCOUNT_ID) && !TextUtils.isEmpty((String) map.get(KEY_ACCOUNT_ID))) {
+            accountId = (String) map.get(KEY_ACCOUNT_ID);
+        }
+        map.put(KEY_ACCOUNT_ID, accountId);
 
         //游戏服务器相关参数
         map.put(KEY_ROLE_ID, map.containsKey(KEY_ROLE_ID) ? map.get(KEY_ROLE_ID) : "");

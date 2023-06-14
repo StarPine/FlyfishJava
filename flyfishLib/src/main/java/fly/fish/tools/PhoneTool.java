@@ -639,9 +639,15 @@ public class PhoneTool {
 		return imei + "|" + version + "|" + mtype + "|" + mtyb;
 	}
 
-	public static String getPhoneNet(Context context){
-		TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-		return tm.getSimOperatorName(); // 运营商
+	/**
+	 * 获取网络运营商名称
+	 * <p>中国移动、如中国联通、中国电信</p>
+	 *
+	 * @return 运营商名称
+	 */
+	public static String getNetworkOperatorName(Context ctx) {
+		TelephonyManager tm = (TelephonyManager) ctx.getApplicationContext().getSystemService(Context.TELEPHONY_SERVICE);
+		return tm != null ? tm.getNetworkOperatorName() : null;
 	}
 
 	/**

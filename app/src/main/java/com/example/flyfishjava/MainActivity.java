@@ -8,36 +8,24 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.RemoteException;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.Button;
-import android.widget.RadioButton;
 import android.widget.Toast;
-
-import org.json.JSONException;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
 import fly.fish.aidl.CallBackListener;
 import fly.fish.aidl.OutFace;
-import fly.fish.asdk.MyApplication;
-import fly.fish.report.Event;
-import fly.fish.report.RequestConfig;
-import fly.fish.report.RequestUtils;
-import fly.fish.report.SDKReport;
-import fly.fish.tools.FilesTool;
+import fly.fish.report.EventManager;
+import fly.fish.report.ASDKReport;
 import fly.fish.tools.MLog;
 import fly.fish.tools.OthPhone;
 import fly.fish.tools.PhoneTool;
@@ -240,29 +228,7 @@ public class MainActivity extends Activity {
      * @param view
      */
     public void login(View view) {
-        if (true) {
-            Map<String, Object> commonMap = new TreeMap<>();
-            commonMap.put(SDKReport.KEY_GID,"867139044011151");
-            commonMap.put(SDKReport.KEY_ACCOUNT_ID,"7416313");
-            commonMap.put(SDKReport.KEY_GAME_ID,"100973");
-            commonMap.put(SDKReport.KEY_ROLE_ID,"45612");
-            commonMap.put(SDKReport.KEY_ROLE_NAME,"角色1");
-            commonMap.put(SDKReport.KEY_SERVER_ID,"123");
-            commonMap.put(SDKReport.KEY_SERVER_NAME,"测试1服");
-            commonMap.put(SDKReport.KEY_ROLE_LEVEL,"5");
-            commonMap.put(SDKReport.KEY_VIP_LEVEL,"3");
 
-            Map<String, Object> customMap = new TreeMap<>();
-            customMap.put(SDKReport.KEY_STR1,"inoutway");
-            customMap.put(SDKReport.KEY_STR2,"proptypeid");
-            customMap.put(SDKReport.KEY_STR3,"name");
-            customMap.put(SDKReport.KEY_INT1,"id");
-            customMap.put(SDKReport.KEY_INT2,"num");
-            customMap.put(SDKReport.KEY_INT3,"balance");
-            SDKReport.getInstance().startCommonReport(this, Event.START_APPLICATION,commonMap);
-            SDKReport.getInstance().startReportCustom(this, Event.NOVICE_GUIDE, commonMap, customMap);
-            return;
-        }
         String appkey= getAppKey(this);
         MLog.setDebug(true);
         MLog.a("appkey---------"+appkey);
@@ -332,6 +298,29 @@ public class MainActivity extends Activity {
     public void getoaid(View view) {
 //        Toast.makeText(this,"oaid："+ PhoneTool.getOAID(),Toast.LENGTH_SHORT).show();
         Toast.makeText(this,"devid："+ PhoneTool.getIMEI(this),Toast.LENGTH_SHORT).show();
+        if (true) {
+            Map<String, Object> commonMap = new HashMap<>();
+            commonMap.put(ASDKReport.KEY_GAME_ID,"100973");
+            commonMap.put(ASDKReport.KEY_GID,"867139044011151");
+            commonMap.put(ASDKReport.KEY_ACCOUNT_ID,"7416313");
+            commonMap.put(ASDKReport.KEY_ROLE_ID,"45612");
+            commonMap.put(ASDKReport.KEY_ROLE_NAME,"角色1");
+            commonMap.put(ASDKReport.KEY_SERVER_ID,"123");
+            commonMap.put(ASDKReport.KEY_SERVER_NAME,"测试1服");
+            commonMap.put(ASDKReport.KEY_ROLE_LEVEL,"5");
+            commonMap.put(ASDKReport.KEY_VIP_LEVEL,"3");
+
+            Map<String, Object> customMap = new HashMap<>();
+            customMap.put(ASDKReport.KEY_STR1,"主线");
+            customMap.put(ASDKReport.KEY_STR2,"5001");
+            customMap.put(ASDKReport.KEY_STR3,"宝石");
+            customMap.put(ASDKReport.KEY_INT1,"1001");
+            customMap.put(ASDKReport.KEY_INT2,"5");
+            customMap.put(ASDKReport.KEY_INT3,"500");
+            ASDKReport.getInstance().startReportCommon(this, 66,commonMap);
+//            ASDKReport.getInstance().startReportCustom(this, Event.NOVICE_GUIDE, commonMap, customMap);
+            return;
+        }
     }
 
     /**
@@ -339,6 +328,20 @@ public class MainActivity extends Activity {
      * @param view
      */
     public void pay(View view) throws RemoteException {
+        if (true) {
+            Map<String, Object> commonMap = new TreeMap<>();
+//            commonMap.put(ASDKReport.KEY_GID, "867139044011151");
+//            commonMap.put(ASDKReport.KEY_ACCOUNT_ID, "7416313");
+//            commonMap.put(ASDKReport.KEY_GAME_ID, "100973");
+            commonMap.put(ASDKReport.KEY_ROLE_ID, "45612");
+            commonMap.put(ASDKReport.KEY_ROLE_NAME, "角色1");
+            commonMap.put(ASDKReport.KEY_SERVER_ID, "123");
+            commonMap.put(ASDKReport.KEY_SERVER_NAME, "测试1服");
+            commonMap.put(ASDKReport.KEY_ROLE_LEVEL, "5");
+            commonMap.put(ASDKReport.KEY_VIP_LEVEL, "3");
+            ASDKReport.getInstance().startReportCommon(this, EventManager.EVENT_START_APPLICATION,commonMap);
+            return ;
+        }
         if (isValidHits()) {
             if (isinit) {
                 //订单号，回调URL，充值金额，商品描述，游戏自定义参数
