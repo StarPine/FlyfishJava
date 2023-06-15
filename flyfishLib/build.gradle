@@ -14,8 +14,8 @@ android {
         versionName "1.0"
         ndk {abiFilters 'armeabi-v7a','arm64-v8a'}
 
-        buildConfigField "String", "SDK_VERSION_NAME", "\"7.0.1\""
-        buildConfigField "int", "SDK_VERSION_CODE", "701"
+        buildConfigField "String", "SDK_VERSION_NAME", "\"${rootProject.ext.hostVersionName}\""
+        buildConfigField "int", "SDK_VERSION_CODE", "${rootProject.ext.hostVersionCode}"
 
     }
 
@@ -36,7 +36,46 @@ android {
     }
 }
 
+tasks.configureEach { task ->
+    if (task.name.equals("lint")) {
+        //this is for speed up build
+        task.enabled = false
+    }
+    if (task.name.contains("Test")) {
+        //this is what you need
+        task.enabled = false
+    }
+}
+
 dependencies {
     implementation fileTree(include: ['*.jar','*.aar'], dir: 'libs')
     implementation project(':jg_push')
+}
+
+afterEvaluate {
+    assembleRelease.doLast {
+        def lib_out = file(rootProject.ext.outputDir + "/lib_out")
+        def lib_out_libs = file(rootProject.ext.outputDir + "/lib_out/libs")
+        def lib_out_assets = file(rootProject.ext.outputDir + "/lib_out/assets")
+        def aarPath = "./build/outputs/aar/flyfishLib-release.aar"
+        copy {
+            from file(aarPath)
+            rename("flyfishLib-release.aar", "${rootProject.ext.sdkName}_V${rootProject.ext.hostVersionCode}_lib.aar")
+            into lib_out
+        }
+        copy {
+            from zipTree(aarPath)
+            include "classes.jar"
+            rename("classes.jar", "${rootProject.ext.sdkName}_V${rootProject.ext.hostVersionCode}_lib.jar")
+            into lib_out_libs
+        }
+        copy {
+            from file("./libs")
+            into(lib_out_libs)
+        }
+        copy {
+            from file("./src/main/assets")
+            into(lib_out_assets)
+        }
+    }
 }
