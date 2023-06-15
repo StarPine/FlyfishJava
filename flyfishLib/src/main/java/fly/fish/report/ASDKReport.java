@@ -19,7 +19,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fly.fish.aidl.OutFace;
+import fly.fish.tools.AppUtils;
 import fly.fish.tools.FilesTool;
+import fly.fish.tools.MD5Util;
 import fly.fish.tools.MLog;
 import fly.fish.tools.PhoneTool;
 
@@ -48,8 +50,8 @@ public class ASDKReport {
     private static final String KEY_UA = "ua";
     private static final String KEY_NET = "net";
     private static final String KEY_GAME_BV = "gamebv";
+    private static final String KEY_GID = "gid";
 
-    public static final String KEY_GID = "gid";
     public static final String KEY_GAME_ID = "gameid";
     public static final String KEY_ACCOUNT_ID = "accountid";
     public static final String KEY_ROLE_ID = "roleid";
@@ -120,7 +122,6 @@ public class ASDKReport {
     private @interface EventID {
     }
 
-    @Deprecated
     public void startReportCommon(Context context, @EventID int eventId) {
         startReportCommon(context, eventId, null);
     }
@@ -143,7 +144,14 @@ public class ASDKReport {
     }
 
     private void startReport(Context context, @EventID int eventId, Map<String, Object> commonMap, Map<String, Object> customMap) {
+
+        //拦截二次启动上报
+        if (eventId == EventManager.EVENT_START_APPLICATION && !context.getPackageName().equals(AppUtils.getProcessName(context))) {
+            return;
+        }
+
         MLog.a(TAG, "上报事件ID：" + eventId);
+
         String commonParams = createCommonParams(context, commonMap);
         String trackParams = map2JsonString(customMap);
         Map<String, Object> bodyMap = new HashMap<>();
@@ -203,24 +211,20 @@ public class ASDKReport {
         map.put(KEY_TIME, dateFormat.format(date));
         map.put(KEY_FLAT, "Android");
         map.put(KEY_PUB, publisher);
-        map.put(KEY_IMEI, isFirstRun ? PhoneTool.getRandomCode() : PhoneTool.getIMEI(context));
+        map.put(KEY_IMEI, isFirstRun ? "" : PhoneTool.getIMEI(context));
         map.put(KEY_SDK_BV, "5.5.0");
         map.put(KEY_IP, PhoneTool.getIP(context));
         map.put(KEY_OS, "android" + PhoneTool.getOSVersion());
         map.put(KEY_UA, PhoneTool.getPT(context));
         map.put(KEY_NET, PhoneTool.getNetworkOperatorName(context));
         map.put(KEY_GAME_BV, PhoneTool.getVersionName(context));
+        map.put(KEY_GID, getGID(context));
 
         //账号相关参数
         if (map.containsKey(KEY_GAME_ID) && !TextUtils.isEmpty((String) map.get(KEY_GAME_ID))) {
             gameId = (String) map.get(KEY_GAME_ID);
         }
         map.put(KEY_GAME_ID, gameId);
-
-        if (map.containsKey(KEY_GID) && !TextUtils.isEmpty((String) map.get(KEY_GID))) {
-            gid = (String) map.get(KEY_GID);
-        }
-        map.put(KEY_GID, gid);
 
         if (map.containsKey(KEY_ACCOUNT_ID) && !TextUtils.isEmpty((String) map.get(KEY_ACCOUNT_ID))) {
             accountId = (String) map.get(KEY_ACCOUNT_ID);
@@ -237,6 +241,23 @@ public class ASDKReport {
 
         return map2JsonString(map);
 
+    }
+
+    /**
+     * 获取本地随机码
+     * @return
+     */
+    public String getGID(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("user_info", 0);
+        String asdkGid = sharedPreferences.getString("asdk_gid", "");
+        if (!asdkGid.equals("")){
+            return asdkGid;
+        }
+
+        String randomCode = PhoneTool.getRandomCode();
+        String md5Code = MD5Util.getMD5String(randomCode);
+        sharedPreferences.edit().putString("asdk_gid", md5Code).commit();
+        return md5Code;
     }
 
 }
