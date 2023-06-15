@@ -138,6 +138,10 @@ public class ASDKReport {
         startReport(context, eventId, commonMap, customMap);
     }
 
+    public void startReportExtension(Context context, @EventID int eventId, Map<String, Object> ...extensionMap) {
+        startReport(context, eventId, extensionMap[0], extensionMap[1]);
+    }
+
     private void startReport(Context context, @EventID int eventId, Map<String, Object> commonMap, Map<String, Object> customMap) {
         MLog.a(TAG, "上报事件ID：" + eventId);
         String commonParams = createCommonParams(context, commonMap);
