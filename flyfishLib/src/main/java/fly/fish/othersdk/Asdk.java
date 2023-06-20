@@ -40,26 +40,26 @@ import fly.fish.tools.PhoneTool;
  * @author 56547
  *
  */
-public class Asdk {
-	private static Class<?> clazz1 = null;//ry
-	private static Class<?> clazz_mp = null;//MH
-	private static Class<?> clazz_onekeylogin = null;//onekeylogin
-	private static boolean hasball = false;
-	private static boolean isLoginSuccess = false;
-	private static Intent loginIntent ;
+public class Asdk implements ISdk{
+	private Class<?> clazz1 = null;//ry
+	private Class<?> clazz_mp = null;//MH
+	private Class<?> clazz_onekeylogin = null;//onekeylogin
+	private boolean hasball = false;
+	private boolean isLoginSuccess = false;
+	private Intent loginIntent ;
 
-	public static void setHasball(boolean hasball) {
-		Asdk.hasball = hasball;
+	public void setHasball(boolean hasball) {
+		this.hasball = hasball;
 		MLog.a("setHasball-hasball--"+hasball);
 	}
 
-	public static void setLogiinState(boolean isLoginSuccess, Intent intent) {
-		Asdk.isLoginSuccess = isLoginSuccess;
-		Asdk.loginIntent = intent;
+	public void setLogiinState(boolean isLoginSuccess, Intent intent) {
+		this.isLoginSuccess = isLoginSuccess;
+		this.loginIntent = intent;
 	}
 
-	private static SharedPreferences share = null;
-	public static void applicationOnCreate(Application application){
+	private SharedPreferences share = null;
+	public void applicationOnCreate(Application application){
 		try {
 			clazz_mp = Class.forName("fly.fish.othersdk.MiitHelper");
 			Method mp_method = getMethod(clazz_mp, "InitEntry", Application.class);
@@ -81,7 +81,7 @@ public class Asdk {
 
 	}
 
-	public static void initSDK(final Activity act){
+	public void initSDK(final Activity act){
 		//onekeylogin一键登录
 		if (OutFace.getOneLoginCheck()){
 			try {
@@ -107,7 +107,7 @@ public class Asdk {
 		
 	}
 
-	public static void InitLaunch(final Activity activity, final boolean isLandsape,
+	public void InitLaunch(final Activity activity, final boolean isLandsape,
 			final CallBackListener mcallback) {
 		//ry
 		if(clazz1!=null){
@@ -124,7 +124,7 @@ public class Asdk {
 		mcallback.callback(0, false);
 	}
 
-	public static void onResume(Activity act) {
+	public void onResume(Activity act) {
 		//ry
 		if(clazz1!=null){
 			Method method1 = getMethod(clazz1, "reyunResume", Activity.class);
@@ -136,7 +136,7 @@ public class Asdk {
 		}
 	}
 
-	public static void onPause(Activity act) {
+	public void onPause(Activity act) {
 		//ry
 		if(clazz1!=null){
 			Method method = getMethod(clazz1, "reyunPause", Activity.class);
@@ -148,7 +148,7 @@ public class Asdk {
 		}
 	}
 	
-	public static void onDestroy(Activity act) {
+	public void onDestroy(Activity act) {
 		//ry
 		if(clazz1!=null){
 			Method method1 = getMethod(clazz1, "reyunDestroy", new Class<?>[0]);
@@ -159,7 +159,7 @@ public class Asdk {
 		}
 	}
 	//登录
-	public static void loginSDK(Activity act, Intent intent){
+	public void loginSDK(Activity act, Intent intent){
 		if (isLoginSuccess){
 			loginIntent.setClass(act, MyRemoteService.class);
 			act.startService(loginIntent);
@@ -221,7 +221,7 @@ public class Asdk {
 		
 	}
 	//支付
-	public static void paySDK(Activity act, Intent intent){
+	public void paySDK(Activity act, Intent intent){
 		Bundle bundle = intent.getExtras();
 		//ry下单设置
 		if(clazz1!=null){
@@ -250,7 +250,7 @@ public class Asdk {
 		intent.setClass(act, ChargeActivity.class);
 		act.startActivity(intent);
 	}
-	public static void submitData(String data){
+	public void submitData(String data){
 		//ry
 		if(clazz1!=null){
 			Method method2 = getMethod(clazz1, "reyunSetUserData", String.class);
@@ -265,7 +265,7 @@ public class Asdk {
 		intent.putExtras(bundle);
 		MyApplication.getAppContext().getApplicationContext().startService(intent);
 	}
-	public static void exit(Activity context) {
+	public void exit(Activity context) {
 		//ry
 		if(clazz1!=null){
 			Method method1 = getMethod(clazz1, "reyunexit", new Class<?>[0]);
@@ -278,7 +278,7 @@ public class Asdk {
 	}
 	
 	//ry登录完成
-	public static void reyunsetLogin(String acc) {
+	public void reyunsetLogin(String acc) {
 		MLog.a("ASDK", "reyunlogin");
 		if(clazz1!=null){
 			Method method1 = getMethod(clazz1, "reyunsetLogin", String.class);
@@ -303,7 +303,7 @@ public class Asdk {
 		}
 	}
 	//ry支付完成
-	public static void reyunandttsetPay(String desc,String orderid, String type, String sum, boolean issuccess) {
+	public void reyunandttsetPay(String desc,String orderid, String type, String sum, boolean issuccess) {
 		MLog.a("ASDK", "reyunandttPay");
 		if(clazz1!=null){
 			Method method1 = getMethod(clazz1, "reyunsetPay", String.class,String.class,String.class,String.class,boolean.class);
@@ -312,7 +312,7 @@ public class Asdk {
 		
 	}
 	
-	public static void logout(Activity act){
+	public void logout(Activity act){
 		Intent locIntent = new Intent();
 		locIntent.setClass(act, MyRemoteService.class);
 		Bundle locBundle = new Bundle();
@@ -325,8 +325,8 @@ public class Asdk {
 		act.startService(locIntent);
 	}
 	
-	private static GetCertificationInfoCallback certificationInfoCallback = null;
-	public static void getCertificateInfo(final Activity act, GetCertificationInfoCallback callback) {
+	private GetCertificationInfoCallback certificationInfoCallback = null;
+	public void getCertificateInfo(final Activity act, GetCertificationInfoCallback callback) {
 		certificationInfoCallback = callback;
 		String username_ = "";
 		GameArgs ga = MyApplication.getAppContext().getGameArgs();
@@ -389,7 +389,7 @@ public class Asdk {
 		
 	}
 	
-	private static Method getMethod(Class<?> clazz,String flag,Class<?>...clas){
+	private Method getMethod(Class<?> clazz,String flag,Class<?>...clas){
 		if(clazz==null){
 			return null;
 		}
@@ -402,7 +402,7 @@ public class Asdk {
 		}
 		return null;
 	}
-	private static void invoke(Method method,Object...prams){
+	private void invoke(Method method,Object...prams){
 		if(method==null){
 			return;
 		}
@@ -421,10 +421,10 @@ public class Asdk {
 	}
 	
 	
-	private static String gonggao_time = "";//0登录前弹；1登录后弹
-	private static String gonggao_content = "";
-	private final static String gaogong_url = "http://iospingtai.xinxinjoy.com:8084/outerinterface/getgonggao.php?";
-	public static void getGonggao(){
+	private String gonggao_time = "";//0登录前弹；1登录后弹
+	private String gonggao_content = "";
+	private final String gaogong_url = "http://iospingtai.xinxinjoy.com:8084/outerinterface/getgonggao.php?";
+	public void getGonggao(){
 		//检查是否当日弹过公告
 		PhoneTool.checkGGShowedToday(share);
 		
@@ -459,7 +459,7 @@ public class Asdk {
 			}).start();
 		}
 	}
-	private static void showGonggao(final Activity mAct,final String content){
+	private void showGonggao(final Activity mAct,final String content){
 		//保存首次公告时间
 		PhoneTool.saveFirstGGTime(share);
 		mAct.runOnUiThread(new Runnable() {

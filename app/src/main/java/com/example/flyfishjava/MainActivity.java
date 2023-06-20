@@ -301,7 +301,6 @@ public class MainActivity extends Activity {
         if (true) {
             Map<String, Object> commonMap = new HashMap<>();
             commonMap.put(ASDKReport.KEY_GAME_ID,"100973");
-            commonMap.put(ASDKReport.KEY_GID,"867139044011151");
             commonMap.put(ASDKReport.KEY_ACCOUNT_ID,"7416313");
             commonMap.put(ASDKReport.KEY_ROLE_ID,"45612");
             commonMap.put(ASDKReport.KEY_ROLE_NAME,"角色1");

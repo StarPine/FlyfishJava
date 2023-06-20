@@ -8,10 +8,8 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.HashMap;
 
 import fly.fish.aidl.CallBackListener;
 import fly.fish.aidl.MyRemoteService;
@@ -25,229 +23,7 @@ import fly.fish.tools.MLog;
 
 public class SkipActivity extends Activity {
     private static Class<?> clazz = null;
-    private static String Publisher = FilesTool.getPublisherStringContent()
-            .split("_")[0];
-    private static HashMap<String, String> map = new HashMap<String, String>();
-    private static String gu_str = "fly.fish.othersdk.";
-    public static String userInfo = "";
-    static {
-        map.put("asdk", gu_str + "Asdk");
-        map.put("cmgamesdk", gu_str + "CMCame");
-        map.put("mmsdk", gu_str + "MobileSDK");
-        map.put("cmgamedjsdk", gu_str + "CMGameDJ");
-        map.put("youkusdk", gu_str + "YOUKUSDK");
-        map.put("lenovo2sdk", gu_str + "LenovoSDK");
-        map.put("jodo2sdk", gu_str + "JODOSDK2");
-        map.put("jodo3sdk", gu_str + "JODOSDK2");
-        map.put("qihoo2sdk", gu_str + "QiHooSDK3");
-        map.put("meizusdk", gu_str + "MeiZuSDK2");
-        map.put("kuaiwansdk", gu_str + "KuaiWanSDK");
-        map.put("oppo2sdk", gu_str + "OPPOSDK200");
-        map.put("qqsdk", gu_str + "QQSDK2");
-        map.put("kuwosdk", gu_str + "KuWoSDK");
-        map.put("baidu4sdk", gu_str + "BDSDK");
-        map.put("sky2sdk", gu_str + "Sky2SDK");
-        map.put("lbyxsdk", gu_str + "LiebaoSDK");
-        map.put("tt2sdk", gu_str + "TTSDK");
-        map.put("youlongsdk", gu_str + "YLongSDK21");
-        map.put("youlong2sdk", gu_str + "YLongSDK30");
-        map.put("kaopu2sdk", gu_str + "KaopuSDK514");
-        map.put("xwansdk", gu_str + "XwanSDK");
-        map.put("guopansdk", gu_str + "GuoPanSDK");
-        map.put("jufengsdk", gu_str + "JuFengSDK");
-        map.put("xwqqsdk", gu_str + "Xwan2SDK");
-        map.put("cmqqsdk", gu_str + "CMQQSDK");
-        map.put("ucsdk", gu_str + "UCSDK610");
-        map.put("cmqq2sdk", gu_str + "CMQQSDK2");
-        map.put("mogesdk", gu_str + "MogeSDK");
-        map.put("bkmhsdk", gu_str + "TongbulvSDK");
-        map.put("hulusdk", gu_str + "HuluxiaSDK");
-        map.put("hulu3sdk", gu_str + "HuluxiaSDK3");
-        map.put("wandou2sdk", gu_str + "wandoujia");
-        map.put("downjoy2sdk", gu_str + "DownJoySDK");
-        map.put("sohusdk", gu_str + "SoHuSDK");
-        map.put("migamesdk", gu_str + "MIGAMESDK");
-        map.put("amsdk", gu_str + "AMSDK");
-        map.put("am2sdk", gu_str + "AMSDK");
-        map.put("yywansdk", gu_str + "YAYAWANSDK");
-        map.put("ywydsdk", gu_str + "YWYDSDK");
-        map.put("qilesdk", gu_str + "QILESDK");
-        map.put("mzwsdk", gu_str + "MZWSDK301");
-        map.put("anzhi2sdk", gu_str + "AnzhiSDK420");
-        map.put("huaweisdk", gu_str + "HuaWeiSDK253302");
-        map.put("huawei2sdk", gu_str + "HuaWeiSDK253302");
-        map.put("yyh3sdk", gu_str + "YYHSDK700");
-        map.put("youxiskysdk", gu_str + "YXSkySDK");
-        map.put("kudongsdk", gu_str + "MOGOOSDK");
-        map.put("pipawsdk", gu_str + "PipaSDK");
-        map.put("kupad4sdk", gu_str + "KUPADSDK212");
-        map.put("pjsdk", gu_str + "PaoJiaoSDK353");
-        map.put("gfansdk", gu_str + "GFANSDK43");
-        map.put("vivo3sdk", gu_str + "VivoSDK220");
-        map.put("jolosdk", gu_str + "JoLoSDK");
-        map.put("mumayisdk", gu_str + "MumayiSDK");
-        map.put("kugou2sdk", gu_str + "KUGOUSDK2");
-        map.put("umisdk", gu_str + "UMISDK");
-        map.put("ouwansdk", gu_str + "OUWANSDK");
-        map.put("oupengsdk", gu_str + "OperaSDK");
-        map.put("itoolssdk", gu_str + "IToolsSDK");
-        map.put("letvsdk", gu_str + "LeTVSDK227");
-        map.put("ewansdk", gu_str + "EwanSDK");
-        map.put("foxsdk", gu_str + "HuliSDK");
-        map.put("ccsdk", gu_str + "CcSDK");
-        map.put("baofengsdk", gu_str + "BaoFengSDK");
-        map.put("tiantuosdk", gu_str + "TianTuoSDK");
-        map.put("qikesdk", gu_str + "QikeSDK");
-        map.put("egame3sdk", gu_str + "Egame");
-        map.put("sogousdk", gu_str + "SoGouGameSDK");
-        map.put("m4399sdk", gu_str + "M4399SDK");
-        map.put("pptvsdk", gu_str + "PPTVSDK");
-        map.put("sysdk", gu_str + "Sy07073SDK");
-        map.put("nduosdk", gu_str + "NDuoSDK");
-        map.put("ppssdk", gu_str + "PPSGameSDK");
-        map.put("pps2sdk", gu_str + "PPSGameSDK");
-        map.put("xyzssdk", gu_str + "XYSDK");
-        map.put("hmsdk", gu_str + "HaiMaSDK");
-        map.put("woniusdk", gu_str + "SnailSDK");
-        map.put("xmwsdk", gu_str + "XmwSDK");
-        map.put("youkugamesdk", gu_str + "YKSDK");
-        map.put("shoumengsdk", gu_str + "ShouMengSDK246");
-        map.put("meitusdk", gu_str + "MeiTuSDK313");
-        map.put("m37sdk", gu_str + "SQSYSDK");
-        map.put("lewansdk", gu_str + "LeWanSDK");
-        map.put("pyw2sdk", gu_str + "PYWSDK2");
-        map.put("morefunsdk", gu_str + "MoreFunSDK");
-        map.put("yxfansdk", gu_str + "YXfanSDK");
-        map.put("yxfan4sdk", gu_str + "YXfanSDK3");
-        map.put("yxfan5sdk", gu_str + "YXfanSDK3");
-        map.put("anliesdk", gu_str + "AnlieSDK");
-        map.put("xinjisdk", gu_str + "XinJiSDK");
-        map.put("yihuansdk", gu_str + "YiHuanSDK");
-        map.put("cainiaosdk", gu_str + "CNWSDK");
-        map.put("aqqzgsdk", gu_str + "QQzgSDK");
-        map.put("pptv2sdk", gu_str + "PPTVSDK100");
-        map.put("xinlang2sdk", gu_str + "SinaSDK");
-        map.put("mtxxsdk", gu_str + "meituxiuxiuSDk");
-        map.put("mengyousdk", gu_str + "MengyouSDK");
-        map.put("wangyisdk", gu_str + "wangyiSDK");
-        map.put("douyu2sdk", gu_str + "DouYuSDK200");
-        map.put("pandasdk", gu_str + "Pandasdk");
-        map.put("yinliansdk", gu_str + "YinlianSDK");
-        map.put("kuaishousdk", gu_str + "kuaishousdk");
-        map.put("tianxingsdk", gu_str + "DhjtSDK");
-        map.put("zhiniusdk", gu_str + "ZhiNiuSDK");
-        map.put("dachensdk", gu_str + "DachenSDK");
-        map.put("yuewensdk", gu_str + "YueWenSDK");
-        map.put("jiuyaosdk", gu_str + "JiuYaoSDK");
-        map.put("xiaoniusdk", gu_str + "XiaoniuSDK");
-        map.put("xiaoqi2sdk", gu_str + "XiaoQiSDK");
-        map.put("lhhbtsdk", gu_str + "LhhBTSDK");
-        map.put("swsdk", gu_str + "ShunWangSDK");
-        map.put("sw2sdk", gu_str + "ShunWang2SDK");
-        map.put("duomengsdk", gu_str + "Duomengsdk");
-        map.put("aqqzgsdk", gu_str + "AQQSDK");
-        map.put("asamsungsdk", gu_str + "ASamsungSDK");
-        map.put("samsung3sdk", gu_str + "Samsung4SDK");
-        map.put("amigamesdk", gu_str + "AMIGAMESDK");
-        map.put("papagamesdk", gu_str + "PaPaGameSDK");
-        map.put("bilisdk", gu_str + "BilbilSDK");
-        map.put("huawei3sdk", gu_str + "HuaWeiSDK401300");
-        map.put("ahuawei3sdk", gu_str + "AHuaWeiSDK401300");
-        map.put("huawei4sdk", gu_str + "HuaWeiSDK_old401300");
-        map.put("ggsdk", gu_str + "GGSDK");
-        map.put("quicksdk", gu_str + "quickSDK");
-        map.put("m233sdk", gu_str + "M233SDK");
-        map.put("kukusdk", gu_str + "KUKUSDK");
-        map.put("sy233sdk", gu_str + "SY233SDK");
-        map.put("xtsdk", gu_str + "XTSDK");
-        map.put("manbasdk", gu_str + "ManBaSDK");
-        map.put("yuewansdk", gu_str + "YWSDK");
-       // map.put("bsgamesdk", gu_str + "BSGameSDK");
-        map.put("hysdk", gu_str + "HYSDK");
-        map.put("chaotusdk", gu_str + "ChaoTuSDK");
-        //map.put("papagamesdk", gu_str + "wufunSDK");
-        map.put("baidu5sdk", gu_str + "BDSDK105");
-        map.put("dybsdk", gu_str + "DiYiBoSDK");
-        map.put("appasdk", gu_str + "Asdk");
-        map.put("ypasdk", gu_str + "Asdk");
-        map.put("nubiasdk", gu_str + "NubiaSDK");
-        map.put("cabbagesdk", gu_str + "CabbageSDK");
-        map.put("qutongsdk", gu_str + "QutongSDK");
-        map.put("tbsdk", gu_str + "TongBuTuiSDK");
-        map.put("yingpaisdk", gu_str + "YingpaiSDK");
-        map.put("tanwansdk", gu_str + "TanwanSDK");
-        map.put("youaisdk", gu_str + "YouaiSDK");
-        map.put("yougusdk", gu_str + "YouGuBTSDK");
-        map.put("aidousdk", gu_str + "AiDouSDK");
-        map.put("orangersdk", gu_str + "ChengChengSDK");
-        map.put("asyxsdk", gu_str + "ASYXSDK");
-        map.put("changyusdk", gu_str + "ChangYuSDK");
-        map.put("daqiansdk", gu_str + "DaQianSDK");
-        map.put("dddsdk", gu_str + "DddSDK");
-        map.put("ddsdk", gu_str + "DDyxSDK");
-        map.put("firesdk", gu_str + "FireTypeSDK");
-        map.put("fuyusdk", gu_str + "FuYuSDK");
-        map.put("skyyusdk", gu_str + "GZ_TianYuSDK");
-        map.put("m178ggsdk", gu_str + "HuoSuSDK");
-        map.put("jianwansdk", gu_str + "JianWanSDK");
-        map.put("kuaikansdk", gu_str + "KKMHSDK");
-        map.put("landiesdk", gu_str + "LanDieSDK");
-        map.put("landie2sdk", gu_str + "LanDieSDK1511");
-        map.put("lhh2sdk", gu_str + "LeHHSDK");
-        map.put("lexinsdk", gu_str + "LeXinSDK");
-        map.put("sy233sdk", gu_str + "M233SDK241");
-        map.put("m7477sdk", gu_str + "M7477SDK");
-        map.put("toutiaosdk", gu_str + "TouTiaoLianYunSDK");// 頭條聯運
-        map.put("m7723sdk", gu_str + "M7723SDK");// 7233sdk
-        map.put("zhongchuansdk", gu_str + "ZhongChuanSDK");// 中传sdk
-        map.put("m6533sdk", gu_str + "M6533SDK");// 6533sdk
-        map.put("xinji2sdk", gu_str + "XinJisSDKU14");// 心迹SDK
-        map.put("quick2sdk", gu_str + "Quick2SDK");// quickSDK
-        map.put("kuaipansdk", gu_str + "KuaiPanSDK");// 快盘
-        map.put("vivodjsdk", gu_str + "VivoDJSDK");// vivo单机
-        map.put("dangwansdk", gu_str + "DangWanSDK");
-        map.put("jiuqusdk", gu_str + "JiuQuSDk");
-        map.put("binghusdk", gu_str + "BingHuSDK");
-        map.put("wangyisdk", gu_str + "WangYiSDK");
-        map.put("mangosdk", gu_str + "MangGuoSDK");
-        map.put("bsgamesdk", gu_str + "SharkGameSDK");
-        map.put("hulu4sdk", gu_str + "HuluxiaSDK4");
-        map.put("guopansdk2", gu_str + "GuoPanSDK");
-        map.put("guopansdk3", gu_str + "GuoPanSDK");
-        map.put("yougusdk2", gu_str + "YouGuBTSDK");
-        map.put("quick2sdk2", gu_str + "Quick2SDK");// quickSDK  kuaishousdk
-        map.put("kuaishousdk", gu_str + "KuaiShouSDK");
-        map.put("mgsdk", gu_str + "MGSDK");
-        map.put("kupad5sdk", gu_str + "KUPAD2112");
-        //map.put("xinji2sdk", gu_str + "Asdk");
-        map.put("cdlsdk", gu_str + "Cdlsdk");
-        map.put("huyasdk", gu_str + "HuYasdk");
-        map.put("samsung5sdk", gu_str + "Samsung5SDK");
-        map.put("samsung6sdk", gu_str + "Samsung6SDK");
-        map.put("leidian2sdk", gu_str + "LeiDianSDK");
-        map.put("xindongsdk", gu_str + "XinDongSDK");
-        map.put("punkdjsdk", gu_str + "PunkDJSDK");
-        map.put("daqinsdk", gu_str + "DaQinSDK");
-        map.put("daqin2sdk", gu_str + "DaQinSDK");
-        map.put("amdjsdk", gu_str + "AMDJSDK");
-        map.put("m1699sdk", gu_str + "M1699SDK");
-        map.put("guaimaosdk", gu_str + "GUAIMAOSDK");
-        map.put("quick2sdk3", gu_str + "Quick2SDK");// quickSDK
-        map.put("xiaoqi3sdk", gu_str + "XiaoQiSDK");
-        map.put("yiyuansdk", gu_str + "YiYuanSDK");
-        map.put("tianssdk", gu_str + "TianShengSDK");
-        map.put("yofun2sdk", gu_str + "YoFunSDK");
-        map.put("eusdk", gu_str + "NEWEUSDK");
-        map.put("yuewensdk2", gu_str + "YueWenSDK");
-        map.put("wufanabsdk", gu_str + "wufunABSDK");
-        map.put("chitusdk", gu_str + "ChiTuSDK");
-        map.put("huosdk", gu_str + "HUOSDK");
-        map.put("daxisdk", gu_str + "DXhdSDK");
-        map.put("quick3sdk", gu_str + "Quick3SDK");
-        map.put("douyinsdk", gu_str + "DouYinLianYunSDK");
-        map.put("wufanjhsdk", gu_str + "WUFANJHSDK");
-        map.put("m7477sdk", gu_str + "M7477SDK");
-    }
+    private static Object object;
 
     private static Method getMethod(String flag, Class<?>... clas) {
         try {
@@ -263,7 +39,10 @@ public class SkipActivity extends Activity {
             return;
         }
         try {
-            method.invoke(null, prams);
+            if (object == null){
+                object = clazz.newInstance();
+            }
+            method.invoke(object, prams);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -354,12 +133,9 @@ public class SkipActivity extends Activity {
     // ----------------以下为application调用的方法----------------
     public static void APPAttachBaseContext(MyApplication app, Context base) {
         if (clazz == null) {
-            String name = map.get(Publisher);
-            MLog.a("Publisher=" + name);
-            String name_ = (name == null) ? map.get(Publisher.substring(0,
-                    Publisher.length() - 1)) : name;
+            String channelClassName = FilesTool.getChannelOpenClassName();
             try {
-                clazz = Class.forName(name_);
+                clazz = Class.forName(channelClassName);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
@@ -368,7 +144,6 @@ public class SkipActivity extends Activity {
         Method method = getMethod("applicationAttachBaseContext",
                 Application.class, Context.class);
         invoke(method, app, base);
-        System.out.println("X7SDK");
     }
 
     public static void APPOnCreate(MyApplication app) {
@@ -558,8 +333,6 @@ public class SkipActivity extends Activity {
     // 上报角色信息
     public static void othInGame(String userdata) {
         MLog.a("ASDK", "info------------------>" + userdata);
-        userInfo = userdata;
-
         Method method = getMethod("submitData", String.class);
         invoke(method, userdata);
     }
@@ -598,6 +371,12 @@ public class SkipActivity extends Activity {
 		Method method = getMethod("CloseAccountWithUserInfo",Activity.class, String.class,CloseAccountCallBack.class);
 		invoke(method,act, userdata,exitcallback);
 	}
+
+    public static void setLogiinState(boolean isLoginSuccess, Intent intent) {
+        Method method = getMethod("setLogiinState", Boolean.class,
+                Intent.class);
+        invoke(method, isLoginSuccess, intent);
+    }
     /* public static void Closead(boolean isclose){
         try {
             Method method = getMethod("closead",boolean.class);

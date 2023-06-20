@@ -384,6 +384,21 @@ public class FilesTool {
 	}
 
 	/**
+	 * 开放给渠道对接的SDK类名（用于反射调起）
+	 * @return
+	 */
+	public static String getChannelOpenClassName() {
+		String className = "";
+		try {
+			InputStream ins = MyApplication.context.getResources().getAssets().open("ChannelOpenClassName.txt");
+			className = new BufferedReader(new InputStreamReader(ins)).readLine().trim();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		return className;
+	}
+
+	/**
 	 * 得到渠道标识,表明用户来源(从哪个合作方而来)
 	 * 
 	 * @return Publisher

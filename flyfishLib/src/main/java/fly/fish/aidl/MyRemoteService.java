@@ -169,9 +169,9 @@ public class MyRemoteService extends Service {
                     try {
                         if (ilistener != null) {
                             if(bu.getString("status").equals("0")){
-                                Asdk.setLogiinState(true,intent);
+                                SkipActivity.setLogiinState(true,intent);
                             }else {
-                                Asdk.setLogiinState(false,intent);
+                                SkipActivity.setLogiinState(false,intent);
                             }
                             if (publisher != null && publisher.startsWith("asdk_gamecenter")) {
                                 ilistener.loginback(bu.getString("sessionid"), bu.getString("accountid"), bu.getString("status"), bu.getString("phone"));
@@ -190,7 +190,7 @@ public class MyRemoteService extends Service {
 
                             try {
                                 if (publisher.startsWith("asdk")) {
-                                    Asdk.reyunsetLogin(accountid);
+                                    SkipActivity.reyunsetLogin(accountid);
                                 }
                             } catch (Exception e) {
                                 // TODO Auto-generated catch block
