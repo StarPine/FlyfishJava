@@ -124,6 +124,11 @@ public class Asdk implements ISdk{
 		mcallback.callback(0, false);
 	}
 
+	@Override
+	public void onStart(Activity activity) {
+
+	}
+
 	public void onResume(Activity act) {
 		//ry
 		if(clazz1!=null){
@@ -147,7 +152,17 @@ public class Asdk implements ISdk{
 			JXGameBall.closeWd();
 		}
 	}
-	
+
+	@Override
+	public void onStop(Activity activity) {
+
+	}
+
+	@Override
+	public void onNewIntent(Intent newIntent) {
+
+	}
+
 	public void onDestroy(Activity act) {
 		//ry
 		if(clazz1!=null){
@@ -158,6 +173,12 @@ public class Asdk implements ISdk{
 			JXGameBall.dismiss();
 		}
 	}
+
+	@Override
+	public void onRestart(Activity activity) {
+
+	}
+
 	//登录
 	public void loginSDK(Activity act, Intent intent){
 		if (isLoginSuccess){
