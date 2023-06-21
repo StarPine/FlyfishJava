@@ -10,7 +10,6 @@ android {
 //        applicationId "com.example.flyfishjava"
 //        applicationId "com.yymxj.shdy"
         applicationId "com.hfyxqxx.sdp04"
-        manifestPlaceholders = [packagename: applicationId]
         minSdk 19
         targetSdk 26
         versionCode 1
