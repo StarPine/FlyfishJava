@@ -287,6 +287,61 @@ public class MyRemoteService extends Service {
                     }
                 } else if (bu.getString("flag").equals("getOrder")) {
 
+                    final String action = app.getPackageName()+".fly.fish.aidl.MyRemoteService.MYBROADCAST";
+                    final String server = app.getSharedPreferences("user_info", 0).getString(("payserver"), "") + "gameparam=othersdkpay";
+                    String sum = bu.getString("account");
+                    String callbackurl = bu.getString("url");
+                    String customorderid = bu.getString("merchantsOrder");
+                    String custominfo = bu.getString("callBackData");
+                    String feepoint= null;
+                    try {
+                        feepoint = bu.getString("feepoint");
+                    } catch (Exception e2) {
+                        e2.printStackTrace();
+                    }
+                    JSONObject param_js = new JSONObject();
+                    try {
+                        param_js.put("sum", sum);
+                        param_js.put("callbackurl", callbackurl);
+                        param_js.put("customorderid", customorderid);
+                        param_js.put("custominfo", custominfo);
+                        param_js.put("account", getGameArgs().getAccount_id());
+                        param_js.put("myfeepoint", feepoint);
+
+                    } catch (JSONException e1) {
+                        e1.printStackTrace();
+                    }
+                    final String param = param_js.toString();
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String gameOrder = HttpUtils.postMethod(server, param, "utf-8");
+                            MLog.a(tag,gameOrder);
+                            String orderid, paynotifyurl, extdata1, extdata2, extdata3;
+                            try {
+                                if (gameOrder.contains("exception")) {
+                                    sendBroadcast(new Intent(action).putExtra("isFinish", true));
+                                } else {
+                                    JSONObject order = new JSONObject(gameOrder);
+                                    if ("0".equals(order.getString("code"))) {
+                                        orderid = order.getJSONObject("data").getString("orderid");
+                                        paynotifyurl = order.getJSONObject("data").getString("paynotifyurl");
+                                        extdata1 = order.getJSONObject("data").getString("extdata1");
+                                        extdata2 = order.getJSONObject("data").getString("extdata2");
+                                        extdata3 = order.getJSONObject("data").getString("extdata3");
+
+                                        sendBroadcast(new Intent(action).putExtra("orderid", orderid).putExtra("paynotifyurl", paynotifyurl).putExtra("extdata1", extdata1).putExtra("extdata2", extdata2).putExtra("extdata3", extdata3));
+
+                                    } else {
+                                        sendBroadcast(new Intent(action).putExtra("isFinish", true).putExtra("msg", order.getString("msg")));
+                                    }
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }).start();
                 } else if (bu.getString("flag").equals("sec_confirmation")) {// 二次验证
                     final String server = app.getSharedPreferences("user_info", 0).getString(("payserver"), "") + "gameparam=sec_confirmation";
                     final String exorderno = bu.getString("merchantsOrder");

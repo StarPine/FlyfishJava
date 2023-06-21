@@ -298,28 +298,6 @@ public class MainActivity extends Activity {
     public void getoaid(View view) {
 //        Toast.makeText(this,"oaid："+ PhoneTool.getOAID(),Toast.LENGTH_SHORT).show();
         Toast.makeText(this,"devid："+ PhoneTool.getIMEI(this),Toast.LENGTH_SHORT).show();
-        if (true) {
-            Map<String, Object> commonMap = new HashMap<>();
-            commonMap.put(ASDKReport.KEY_GAME_ID,"100973");
-            commonMap.put(ASDKReport.KEY_ACCOUNT_ID,"7416313");
-            commonMap.put(ASDKReport.KEY_ROLE_ID,"45612");
-            commonMap.put(ASDKReport.KEY_ROLE_NAME,"角色1");
-            commonMap.put(ASDKReport.KEY_SERVER_ID,"123");
-            commonMap.put(ASDKReport.KEY_SERVER_NAME,"测试1服");
-            commonMap.put(ASDKReport.KEY_ROLE_LEVEL,"5");
-            commonMap.put(ASDKReport.KEY_VIP_LEVEL,"3");
-
-            Map<String, Object> customMap = new HashMap<>();
-            customMap.put(ASDKReport.KEY_STR1,"主线");
-            customMap.put(ASDKReport.KEY_STR2,"5001");
-            customMap.put(ASDKReport.KEY_STR3,"宝石");
-            customMap.put(ASDKReport.KEY_INT1,"1001");
-            customMap.put(ASDKReport.KEY_INT2,"5");
-            customMap.put(ASDKReport.KEY_INT3,"500");
-            ASDKReport.getInstance().startReportCommon(this, 66,commonMap);
-//            ASDKReport.getInstance().startReportCustom(this, Event.NOVICE_GUIDE, commonMap, customMap);
-            return;
-        }
     }
 
     /**
@@ -327,20 +305,6 @@ public class MainActivity extends Activity {
      * @param view
      */
     public void pay(View view) throws RemoteException {
-        if (true) {
-            Map<String, Object> commonMap = new TreeMap<>();
-//            commonMap.put(ASDKReport.KEY_GID, "867139044011151");
-//            commonMap.put(ASDKReport.KEY_ACCOUNT_ID, "7416313");
-//            commonMap.put(ASDKReport.KEY_GAME_ID, "100973");
-            commonMap.put(ASDKReport.KEY_ROLE_ID, "45612");
-            commonMap.put(ASDKReport.KEY_ROLE_NAME, "角色1");
-            commonMap.put(ASDKReport.KEY_SERVER_ID, "123");
-            commonMap.put(ASDKReport.KEY_SERVER_NAME, "测试1服");
-            commonMap.put(ASDKReport.KEY_ROLE_LEVEL, "5");
-            commonMap.put(ASDKReport.KEY_VIP_LEVEL, "3");
-            ASDKReport.getInstance().startReportCommon(this, EventManager.EVENT_START_APPLICATION,commonMap);
-            return ;
-        }
         if (isValidHits()) {
             if (isinit) {
                 //订单号，回调URL，充值金额，商品描述，游戏自定义参数

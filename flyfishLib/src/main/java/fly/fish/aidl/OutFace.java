@@ -210,6 +210,13 @@ public class OutFace {
 		//SkipActivity.othInitLaunch(activity, isLandscape, callback);
 		MyCrashHandler mCrashHandler=MyCrashHandler.getInstance();
 		mCrashHandler.init(activity.getApplicationContext());
+		inItLaunch(activity, isLandscape, callback);
+//		showPrivacy(activity, isLandscape, callback);
+
+
+	}
+
+	private void showPrivacy(Activity activity, boolean isLandscape, CallBackListener callback) {
 		Thread urlthred = new Thread(new Runnable() {
 
 			@Override
@@ -317,9 +324,7 @@ public class OutFace {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		
-
- 	}
+	}
 
 	private void inItLaunch(final Activity activity, final boolean isLandscape,
 			final CallBackListener callback) {
