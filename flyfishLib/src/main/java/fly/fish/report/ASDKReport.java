@@ -28,7 +28,8 @@ import fly.fish.tools.PhoneTool;
 public class ASDKReport {
 
     //上报地址
-    private static final String URL = "http://allapi.xinxinjoy.com:8084/outerinterface/track.php?";
+    private static final String MIDDLEGROUND_URL = "http://allapi.xinxinjoy.com:8084/outerinterface/track.php?";
+    private static final String SDK_URL = "http://iospingtai.xinxinjoy.com:8084/outerinterface/azmd.php?";
 
     private static final String TRACK_ID = "TrackId";                   //事件ID
     private static final String PUBLIC_PROPERTIES = "PublicProperties"; //公共属性
@@ -51,6 +52,11 @@ public class ASDKReport {
     private static final String KEY_NET = "net";
     private static final String KEY_GAME_BV = "gamebv";
     private static final String KEY_GID = "gid";
+
+    //sdk专用
+    private static final String KEY_SYSTEM = "system";
+    private static final String KEY_DH = "dh";
+    private static final String KEY_PB = "pb";
 
     public static final String KEY_GAME_ID = "gameid";
     public static final String KEY_ACCOUNT_ID = "accountid";
@@ -139,8 +145,13 @@ public class ASDKReport {
         startReport(context, eventId, commonMap, customMap);
     }
 
-    public void startReportExtension(Context context, @EventID int eventId, Map<String, Object> ...extensionMap) {
+    public void startReportExtension(Context context, @EventID int eventId, Map<String, Object>... extensionMap) {
         startReport(context, eventId, extensionMap[0], extensionMap[1]);
+    }
+
+    public void startSDKReport(Context context, String sdkEvent) {
+        String sdkReportParams = createSDKReportParams(context, sdkEvent);
+        request(SDK_URL, sdkReportParams);
     }
 
     private void startReport(Context context, @EventID int eventId, Map<String, Object> commonMap, Map<String, Object> customMap) {
@@ -160,15 +171,15 @@ public class ASDKReport {
         if (!TextUtils.isEmpty(trackParams))
             bodyMap.put(TRACK_PROPERTIES, trackParams);
         String body = RequestUtils.createBody(bodyMap);
-        request(body);
+        request(MIDDLEGROUND_URL, body);
     }
 
-    private void request(String body) {
+    private void request(String url, String body) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    RequestConfig config = new RequestConfig(URL, body);
+                    RequestConfig config = new RequestConfig(url, body);
                     String result = RequestUtils.POST(config);
                     MLog.a(TAG, "上报结果---------" + result);
                     MLog.a(TAG, "RequestConfig---------" + config.toString());
@@ -186,7 +197,7 @@ public class ASDKReport {
     }
 
     /**
-     * 配置默认参数
+     * 配置中台默认参数
      *
      * @param context
      * @param map
@@ -204,8 +215,7 @@ public class ASDKReport {
             publisher = FilesTool.getPublisherStringContent();
         }
 
-        SharedPreferences sharedPreferences = context.getSharedPreferences("asdk", MODE_PRIVATE);
-        boolean isFirstRun = sharedPreferences.getBoolean("isFirstRun", true);
+        boolean isFirstRun = isRefuse(context);
 
         //包体默认参数
         map.put(KEY_TIME, dateFormat.format(date));
@@ -244,13 +254,43 @@ public class ASDKReport {
     }
 
     /**
-     * 获取本地随机码
+     * 配置SDK上报默认参数
+     *
      * @return
      */
-    public String getGID(Context context){
+    private String createSDKReportParams(Context context, String sdkEvent) {
+
+        String publisher = OutFace.getInstance(context).getPublisher();
+        if (TextUtils.isEmpty(publisher)) {
+            publisher = FilesTool.getPublisherStringContent();
+        }
+
+        boolean isRefuse = isRefuse(context);
+
+        Map<String, Object> sdkParamsMap = new HashMap<>();
+        sdkParamsMap.put(KEY_PUB, publisher);
+        sdkParamsMap.put(KEY_IMEI, isRefuse ? "" : PhoneTool.getIMEI(context));
+        sdkParamsMap.put(KEY_SYSTEM, PhoneTool.getPT(context) + "|android" + PhoneTool.getOSVersion());
+        sdkParamsMap.put(KEY_GID, getGID(context));
+        sdkParamsMap.put(KEY_DH, sdkEvent);
+        return map2JsonString(sdkParamsMap);
+    }
+
+    private boolean isRefuse(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("asdk", MODE_PRIVATE);
+        boolean isFirstRun = sharedPreferences.getBoolean("isFirstRun", true);
+        return isFirstRun;
+    }
+
+    /**
+     * 获取本地随机码
+     *
+     * @return
+     */
+    public String getGID(Context context) {
         SharedPreferences sharedPreferences = context.getSharedPreferences("user_info", 0);
         String asdkGid = sharedPreferences.getString("asdk_gid", "");
-        if (!asdkGid.equals("")){
+        if (!asdkGid.equals("")) {
             return asdkGid;
         }
 

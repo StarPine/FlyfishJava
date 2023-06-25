@@ -33,4 +33,34 @@ public class EventManager {
     public static final int EVENT_PLAYER_EXIT_GAME = 1028000;             //玩家退出游戏
     public static final int EVENT_ROLE_RENAME = 1029000;                  //角色命名/改名
     public static final int EVENT_SERVER_LAUNCH = 1030000;                //开服（合服）
+
+
+    public static final String SDK_EVENT_SHOW_ONEKEY_LOGIN = "A000";                //进入到sdk登录界面，一键登录界面
+    public static final String SDK_EVENT_SHOW_VERIFICATION_CODE = "A001";           //进入到sdk登录界面，手机验证码登录界面
+    public static final String SDK_EVENT_onclick_ONEKEY_LOGIN  = "A002";            //点击一键登录按钮
+    public static final String SDK_EVENT_ONCLICK_OTHER_LOGIN_TYPE = "A003";         //点击其他登录方式进入手机验证码登录界面
+    public static final String SDK_EVENT_SEND_PHONE_CODE = "A004";                  //输入了手机号码点击了发送验证码
+    public static final String SDK_EVENT_INPUT_PHONE_CODE = "A005";                 //发送验证码进入了输入验证码页面
+    public static final String SDK_EVENT_LOGIN_SUCCESS = "A006";                    //登录成功
+    public static final String SDK_EVENT_LOGIN_FAIL = "A007";                       //登录失败
+    public static final String SDK_EVENT_SHOW_REAL_NAME_AUTH = "A008";              //进入实名认证界面
+    public static final String SDK_EVENT_ONCLICK_REAL_NAME_AUTH_AGREE = "A009";     //点击实名认证界面确定按钮
+    public static final String SDK_EVENT_ONCLICK_REAL_NAME_AUTH_REFUSE = "A010";    //点击实名认证界面拒绝按钮
+    public static final String SDK_EVENT_AUTO_LOGIN = "A011";                       //触发自动登录
+    public static final String SDK_EVENT_CANCEL_AUTO_LOGIN = "A012";                //取消自动登录，显示选号界面
+
+    public static final String SDK_EVENT_show_privacy = "C001";                     //显示隐私窗口
+    public static final String SDK_EVENT_agree_privacy = "C002";                    //同意隐私按钮
+    public static final String SDK_EVENT_refuse_privacy = "C003";                   //拒绝隐私按钮
+    public static final String SDK_EVENT_init_success = "C004";                     //SDK初始化成功
+    public static final String SDK_EVENT_init_fail = "C005";                        //SDK初始化失败
+
+    public static final String SDK_EVENT_CHANNEL_INIT_SUCCESS = "Q001";             //渠道初始化成功
+    public static final String SDK_EVENT_CHANNEL_INIT_FAIL = "Q002";                //渠道初始化失败
+    public static final String SDK_EVENT_CHANNEL_LOGIN_SUCCESS = "Q003";            //执行渠道登录成功
+    public static final String SDK_EVENT_CHANNEL_LOGIN_FAIL = "Q004";               //执行渠道登录失败
+    public static final String SDK_EVENT_SDK_LOGIN_SUCCESS = "Q005";                //执行SDK登录成功
+    public static final String SDK_EVENT_SDK_LOGIN_FAIL = "Q006";                   //执行SDK登录失败
+
+
 }
