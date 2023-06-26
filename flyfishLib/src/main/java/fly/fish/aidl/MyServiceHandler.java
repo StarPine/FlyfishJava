@@ -15,6 +15,8 @@ import android.os.RemoteException;
 import android.widget.Toast;
 import fly.fish.asdk.AsdkActivity;
 import fly.fish.asdk.MyApplication;
+import fly.fish.report.ASDKReport;
+import fly.fish.report.EventManager;
 import fly.fish.tools.HttpUtils;
 import fly.fish.tools.LuaTools;
 import fly.fish.tools.MLog;
@@ -189,6 +191,7 @@ public class MyServiceHandler extends Handler {
             if (service.re1 == null || service.re1.equals("")) {
                 service.getGameArgs().setInit(false);
                 try {
+                    ASDKReport.getInstance().startSDKReport(MyApplication.context, EventManager.SDK_EVENT_INIT_FAIL);
                     service.getIlistener().initback("2");
                 } catch (RemoteException e) {
                     e.printStackTrace();
@@ -261,6 +264,7 @@ public class MyServiceHandler extends Handler {
                     if (service.getIlistener() != null) {
                         try {
                             MLog.s("servicehandler---success----re == 4");
+                            ASDKReport.getInstance().startSDKReport(MyApplication.context, EventManager.SDK_EVENT_INIT_SUCCESS);
                             service.getIlistener().initback("0");
                         } catch (RemoteException e) {
                             e.printStackTrace();
@@ -275,6 +279,7 @@ public class MyServiceHandler extends Handler {
                     if (service.getIlistener() != null) {
                         try {
                             MLog.s("servicehandler---success----re == 5");
+                            ASDKReport.getInstance().startSDKReport(MyApplication.context, EventManager.SDK_EVENT_INIT_FAIL);
                             service.getIlistener().initback("1");
                         } catch (RemoteException e) {
                             e.printStackTrace();
@@ -289,6 +294,7 @@ public class MyServiceHandler extends Handler {
                     if (service.getIlistener() != null) {
                         try {
                             MLog.s("servicehandler---success----else");
+                            ASDKReport.getInstance().startSDKReport(MyApplication.context, EventManager.SDK_EVENT_INIT_FAIL);
                             service.getIlistener().initback("2");
                         } catch (RemoteException e) {
                             e.printStackTrace();

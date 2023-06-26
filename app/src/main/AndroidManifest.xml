@@ -22,6 +22,7 @@
         <!-- 极光参数Required -->
 <!--        <meta-data android:name="JPUSH_APPKEY" android:value="27bf8cf6a5d48b37b5a8d97f"/>-->
 <!--        <meta-data android:name="JPUSH_CHANNEL" android:value="381fc138f517d63280d2c3d7"/>-->
+<!--        <meta-data android:name="ASDK_LOG" android:value="true"/>-->
 
     </application>
 

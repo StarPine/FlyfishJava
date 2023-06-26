@@ -149,6 +149,11 @@ public class ASDKReport {
         startReport(context, eventId, extensionMap[0], extensionMap[1]);
     }
 
+    /**
+     * sdk埋点上报
+     * @param context
+     * @param sdkEvent  事件ID
+     */
     public void startSDKReport(Context context, String sdkEvent) {
         String sdkReportParams = createSDKReportParams(context, sdkEvent);
         request(SDK_URL, sdkReportParams);
