@@ -6,6 +6,8 @@ import org.keplerproject.luajava.LuaState;
 
 import fly.fish.aidl.OutFace;
 import fly.fish.beans.GameArgs;
+import fly.fish.report.ASDKReport;
+import fly.fish.report.EventManager;
 import fly.fish.tools.FilesTool;
 import fly.fish.tools.LuaTools;
 import fly.fish.tools.MLog;
@@ -257,6 +259,7 @@ public class LoginActivity extends MyActivity {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			ASDKReport.getInstance().startSDKReport(this, EventManager.SDK_EVENT_CLOSE_LOGIN_VIEW);
 
 			// 通知远程服务更新头文件
 			/*

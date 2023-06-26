@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import fly.fish.report.ASDKReport;
+import fly.fish.report.EventManager;
 import fly.fish.tools.MLog;
 import fly.fish.tools.ManifestInfo;
 
@@ -113,13 +115,14 @@ public class PrivacyActivity extends Activity {
                 privacyDialog.dismiss();
                 editor.putBoolean("isFirstRun", false);
                 editor.commit();
-
+                ASDKReport.getInstance().startSDKReport(PrivacyActivity.this, EventManager.SDK_EVENT_AGREE_PRIVACY);
                 MLog.a("同意协议-----------");
                 startGameActivity();
             }
 
             @Override
             public void doCancel() {
+                ASDKReport.getInstance().startSDKReport(PrivacyActivity.this, EventManager.SDK_EVENT_REFUSE_PRIVACY);
                 privacyDialog.dismiss();
                 finish();
                 System.exit(0);
@@ -127,6 +130,7 @@ public class PrivacyActivity extends Activity {
         });
         MLog.a("第一次安装-----------");
         privacyDialog.show();
+        ASDKReport.getInstance().startSDKReport(this, EventManager.SDK_EVENT_SHOW_PRIVACY);
     }
 
     private void startGameActivity() {

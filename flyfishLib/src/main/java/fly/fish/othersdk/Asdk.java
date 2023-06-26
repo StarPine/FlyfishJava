@@ -88,6 +88,10 @@ public class Asdk implements ISdk{
 				clazz_onekeylogin = Class.forName("fly.fish.othersdk.OnekeyLogin");
 				Method onekeylogin_method = getMethod(clazz_onekeylogin, "initJVerification", Context.class);
 				invoke(onekeylogin_method, act);
+
+				//preLogin
+				Method method1 = getMethod(clazz_onekeylogin, "preLogin", Activity.class);
+				invoke(method1,act);
 			} catch (ClassNotFoundException e) {
 				MLog.a("no-clazz_onekeylogin");
 			}
@@ -114,11 +118,7 @@ public class Asdk implements ISdk{
 			Method method1 = getMethod(clazz1, "reyuninit", Activity.class);
 			invoke(method1,activity);
 		}
-		//onekeylogin
-		if(clazz_onekeylogin!=null){
-			Method method1 = getMethod(clazz_onekeylogin, "preLogin", Activity.class);
-			invoke(method1,activity);
-		}
+
 		
 		share = MyApplication.getAppContext().getSharedPreferences("user_info", 0);
 		mcallback.callback(0, false);

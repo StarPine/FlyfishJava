@@ -33,11 +33,14 @@ import fly.fish.aidl.MyRemoteService;
 import fly.fish.asdk.LoginActivity;
 import fly.fish.asdk.MyApplication;
 import fly.fish.beans.GameArgs;
+import fly.fish.report.ASDKReport;
+import fly.fish.report.EventManager;
 import fly.fish.tools.HttpUtils;
 import fly.fish.tools.PhoneTool;
 
 public class OnekeyLogin {
 	private static boolean isclickOtherlogin = false;
+	private static boolean isAbleOnekeyLogin = false; 		//是否可以进行一键登录操作
 
 	public static void initJVerification(Context context){
 		JVerificationInterface.init(context, 5000, new RequestCallback<String>() {
@@ -61,15 +64,19 @@ public class OnekeyLogin {
 				System.out.println("preLogincode:"+code);
 				System.out.println("preLoginmsg:"+msg);
 				if(code==7000){
+					isAbleOnekeyLogin = true;
 					System.out.println("预取号获取成功");
 				}else{
+					isAbleOnekeyLogin = false;
 					System.out.println("预取号获取失败");
 				}
 			}
 		});
 	}
 	private static SharedPreferences sharedPreferences = MyApplication.context.getSharedPreferences("user_info", 0);
+
 	public static void loginAuth(final Activity activity,final Intent intent,boolean ischeck){
+//		preLogin(activity);
 		//是否检查一键登录缓存
 		if(ischeck){
 			//检查一键登录是否有缓存账号，有则自动登录，否则往下执行一键登录
@@ -82,13 +89,13 @@ public class OnekeyLogin {
 	    settings.setTimeout(15 * 1000);//设置超时时间，单位毫秒。 合法范围（0，30000],范围以外默认设置为10000
 	    settings.setAuthPageEventListener(new AuthPageEventListener() {
 	        @Override
-	        public void onEvent(int cmd, String msg) {
+	        public void onEvent(int code, String msg) {
 	            //do something...
-	        	System.out.println("onEventcmd:"+cmd);
-	        	if("2".equals(cmd)){//一键登录界面
-	        		PhoneTool.submitEvent("0");
-	        	}else if("8".equals(cmd)){//一键登录按钮（可用状态下）点击事件
-	        		PhoneTool.submitEvent("1");
+	        	System.out.println("onEventcmd:"+code);
+	        	if(code == 2){//打开一键登录界面
+					ASDKReport.getInstance().startSDKReport(activity, EventManager.SDK_EVENT_SHOW_ONEKEY_LOGIN);
+				}else if(code == 8){//一键登录按钮（可用状态下）点击事件
+	        		ASDKReport.getInstance().startSDKReport(activity,EventManager.SDK_EVENT_ONCLICK_ONEKEY_LOGIN);
 	        	}
 	        }
 	    });//设置授权页事件监听
@@ -135,7 +142,7 @@ public class OnekeyLogin {
         .addCustomView(mBtn, true, new JVerifyUIClickCallback() {
                     @Override
                     public void onClicked(Context context, View view) {
-                    	PhoneTool.submitEvent("2");//一键登录界面其他登录方式
+                    	ASDKReport.getInstance().startSDKReport(context,EventManager.SDK_EVENT_ONCLICK_OTHER_LOGIN_TYPE);
                     	isclickOtherlogin = true;
                     	intent.setClass(activity, LoginActivity.class);
                     	intent.putExtra("fromonekeylogin", "2");//1-转到历史账号页；2转到手机验证码登录
@@ -147,14 +154,18 @@ public class OnekeyLogin {
 	    .build();
 	    JVerificationInterface.setCustomUIWithConfig(uiConfig);
 		JVerificationInterface.loginAuth(activity, settings, new VerifyListener() {
-			
+
 			@Override
 			public void onResult(int code, String content, String operator) {
 				System.out.println("loginAuthcode:"+code);
 				System.out.println("loginAuthcontent:"+content);
 				System.out.println("loginAuthoperator:"+operator);
+				if (code == 6001){
+					ASDKReport.getInstance().startSDKReport(activity,EventManager.SDK_EVENT_ONEKEY_LOGIN_GET_TOKEN_FAIL);
+				}
 				if(code==6000){
 					System.out.println("loginToken获取成功");
+					ASDKReport.getInstance().startSDKReport(activity,EventManager.SDK_EVENT_ONEKEY_LOGIN_GET_TOKEN_SUCC);
 					sengTokenToLogin(activity,intent,content);
 				}else if(code==6002){//用户取消获取loginToken
 					if(isclickOtherlogin){//点击的其他登录方式则不回调登录失败
@@ -172,7 +183,7 @@ public class OnekeyLogin {
 					}
 				}else{
 					new Timer().schedule(new TimerTask() {
-						
+
 						@Override
 						public void run() {
 							intent.setClass(activity, LoginActivity.class);
@@ -180,7 +191,7 @@ public class OnekeyLogin {
 		                	activity.startActivity(intent);
 						}
 					}, 500);
-					
+
 				}
 			}
 

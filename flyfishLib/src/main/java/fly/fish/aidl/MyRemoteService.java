@@ -27,7 +27,10 @@ import fly.fish.asdk.MyApplication;
 import fly.fish.asdk.SkipActivity;
 import fly.fish.beans.GameArgs;
 import fly.fish.config.Configs;
+import fly.fish.dialog.PrivacyActivity;
 import fly.fish.othersdk.Asdk;
+import fly.fish.report.ASDKReport;
+import fly.fish.report.EventManager;
 import fly.fish.tools.FilesTool;
 import fly.fish.tools.HttpUtils;
 import fly.fish.tools.LuaTools;
@@ -159,7 +162,8 @@ public class MyRemoteService extends Service {
                         MLog.s("onStartCommand--init");
                         if (ilistener != null) {
                             MLog.s("onStartCommand--初始化回调");
-                            ilistener.initback(bu.getString("status"));
+                            String status = bu.getString("status");
+                            ilistener.initback(status);
                         }
                     } catch (RemoteException e) {
                         e.printStackTrace();
@@ -177,7 +181,13 @@ public class MyRemoteService extends Service {
                             if (publisher != null && publisher.startsWith("asdk_gamecenter")) {
                                 ilistener.loginback(bu.getString("sessionid"), bu.getString("accountid"), bu.getString("status"), bu.getString("phone"));
                             } else {
-                                ilistener.loginback(bu.getString("sessionid"), bu.getString("accountid"), bu.getString("status"), bu.getString("custominfo"));
+                                String status = bu.getString("status");
+                                if (status.equals("0")){
+                                    ASDKReport.getInstance().startSDKReport(MyApplication.context, EventManager.SDK_EVENT_SDK_LOGIN_SUCCESS);
+                                }else {
+                                    ASDKReport.getInstance().startSDKReport(MyApplication.context, EventManager.SDK_EVENT_SDK_LOGIN_FAIL);
+                                }
+                                    ilistener.loginback(bu.getString("sessionid"), bu.getString("accountid"), status, bu.getString("custominfo"));
                             }
                             app.getSharedPreferences("user_info", 0).edit().putString("pipaw_payerId", bu.getString("accountid")).putString("pipaw_sessId", bu.getString("sessionid")).commit();
 

@@ -228,6 +228,10 @@ public class MainActivity extends Activity {
      * @param view
      */
     public void login(View view) {
+//        if (true){
+//            ASDKReport.getInstance().startSDKReport(this,EventManager.SDK_EVENT_SHOW_ONEKEY_LOGIN);
+//            return;
+//        }
 
         String appkey= getAppKey(this);
         MLog.setDebug(true);
@@ -298,6 +302,7 @@ public class MainActivity extends Activity {
     public void getoaid(View view) {
 //        Toast.makeText(this,"oaid："+ PhoneTool.getOAID(),Toast.LENGTH_SHORT).show();
         Toast.makeText(this,"devid："+ PhoneTool.getIMEI(this),Toast.LENGTH_SHORT).show();
+
     }
 
     /**
