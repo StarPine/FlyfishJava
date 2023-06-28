@@ -61,7 +61,7 @@ afterEvaluate {
         def aarPath = "./build/outputs/aar/flyfishLib-release.aar"
         copy {
             from file(aarPath)
-            rename("flyfishLib-release.aar", "${rootProject.ext.sdkName}_V${rootProject.ext.hostVersionCode}_lib.aar")
+            rename("flyfishLib-release.aar", "${rootProject.ext.sdkName}_lib_${rootProject.ext.hostVersionName}.aar")
             into lib_out
         }
         copy {

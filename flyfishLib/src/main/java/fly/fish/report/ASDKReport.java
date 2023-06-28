@@ -155,8 +155,12 @@ public class ASDKReport {
      * @param sdkEvent  事件ID
      */
     public void startSDKReport(Context context, String sdkEvent) {
-        String sdkReportParams = createSDKReportParams(context, sdkEvent);
-        request(SDK_URL, sdkReportParams);
+        try {
+            String sdkReportParams = createSDKReportParams(context, sdkEvent);
+            request(SDK_URL, sdkReportParams);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void startReport(Context context, @EventID int eventId, Map<String, Object> commonMap, Map<String, Object> customMap) {
