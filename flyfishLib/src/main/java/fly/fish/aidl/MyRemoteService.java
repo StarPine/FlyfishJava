@@ -256,6 +256,7 @@ public class MyRemoteService extends Service {
                                         app.getSharedPreferences("user_info", 0).edit().putString("pipaw_payerId", jo2.getString("accountid")).putString("pipaw_sessId", jo2.getString("sessionid")).putBoolean("islogin", true).commit();
                                         try {
                                             SkipActivity.reyunsetLogin(jo2.getString("accountid"));
+                                            ASDKReport.getInstance().startSDKReport(MyApplication.context, EventManager.SDK_EVENT_SDK_LOGIN_SUCCESS);
                                             ilistener.loginback(jo2.getString("sessionid"), jo2.getString("accountid"), jo1.getString("code"), customstring);
                                             // 保存登陆回调数据
                                             getGameArgs().setAccount_id(jo2.getString("accountid"));

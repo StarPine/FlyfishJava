@@ -36,3 +36,31 @@ dependencies {
     api fileTree(include: ['*.jar','*.aar'], dir: 'libs')
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android:6.8.0'
 }
+
+afterEvaluate {
+    assembleRelease.doLast {
+        def lib_out = file(rootProject.ext.outputDir + "/lib_out")
+        def lib_out_libs = file(rootProject.ext.outputDir + "/lib_out/libs")
+        def lib_out_assets = file(rootProject.ext.outputDir + "/lib_out/assets")
+        def aarPath = "./build/outputs/aar/jg_push-release.aar"
+        copy {
+            from file(aarPath)
+            rename("jg_push-release.aar", "jpush_merge_lib_${rootProject.ext.hostVersionName}.aar")
+            into lib_out
+        }
+        copy {
+            from zipTree(aarPath)
+            include "classes.jar"
+            rename("classes.jar", "jpush_merge_lib_${rootProject.ext.hostVersionName}.jar")
+            into lib_out_libs
+        }
+        copy {
+            from file("./libs")
+            into(lib_out_libs)
+        }
+        copy {
+            from file("./src/main/assets")
+            into(lib_out_assets)
+        }
+    }
+}
