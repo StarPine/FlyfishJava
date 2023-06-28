@@ -892,6 +892,10 @@ public class OutFace {
 		JGSHaretools.othJgshare(activity,code,file );
 	}
 
+	public void othopenForumPage() {
+		SkipActivity.sdkopenForumPage();
+	}
+
 
 	//控制是否请求敏感权限
 	public static boolean isrequ = false;

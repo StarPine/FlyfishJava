@@ -598,6 +598,11 @@ public class SkipActivity extends Activity {
 		Method method = getMethod("CloseAccountWithUserInfo",Activity.class, String.class,CloseAccountCallBack.class);
 		invoke(method,act, userdata,exitcallback);
 	}
+
+    public static void sdkopenForumPage() {
+        Method method = getMethod("openForumPage");
+        invoke(method);
+    }
     /* public static void Closead(boolean isclose){
         try {
             Method method = getMethod("closead",boolean.class);
