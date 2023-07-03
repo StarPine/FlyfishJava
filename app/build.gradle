@@ -9,7 +9,7 @@ android {
     defaultConfig {
 //        applicationId "com.example.flyfishjava"
 //        applicationId "com.yymxj.shdy"
-        applicationId "com.hfyxqxx.sdp04"
+        applicationId "com.yytoid.ts"
         minSdk 19
         targetSdk 26
         versionCode rootProject.ext.hostVersionCode

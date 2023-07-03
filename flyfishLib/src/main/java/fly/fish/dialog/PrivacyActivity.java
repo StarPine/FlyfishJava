@@ -14,9 +14,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import fly.fish.othersdk.OaidHelper;
 import fly.fish.report.ASDKReport;
 import fly.fish.report.EventManager;
 import fly.fish.tools.MLog;
+import fly.fish.tools.PhoneTool;
 
 
 public class PrivacyActivity extends Activity {
@@ -25,13 +27,39 @@ public class PrivacyActivity extends Activity {
     String qx_url = "";
     String ys_url = "";
     String yh_url = "";
+    String oaidKey = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
 
-        Thread urlthred = new Thread(new Runnable() {
+        getConfig(() -> {
+
+            SharedPreferences sharedPreferences = getSharedPreferences("asdk", MODE_PRIVATE);
+            boolean isFirstRun = sharedPreferences.getBoolean("isFirstRun", true);
+            final SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            if (isFirstRun && state.equals("1")) { // 第一次则跳转到引导页面
+                showDialog(editor);
+
+            } else if (!isFirstRun) { // 如果是第二次启动则直接跳转到主页面
+                MLog.a("非第一次安装-----------");
+                startGameActivity();
+
+            } else if (state.equals("0")) { // 如果是第二次启动则直接跳转到主页面
+                MLog.a("协议关闭-----------");
+                startGameActivity();
+
+            }
+        });
+
+
+
+    }
+
+    private void getConfig(HttpCallback httpCallback) {
+        new Thread(new Runnable() {
 
             @Override
             public void run() {
@@ -48,50 +76,25 @@ public class PrivacyActivity extends Activity {
                     qx_url = jsonObject.getString("qxurl");
                     ys_url = jsonObject.getString("ysurl");
                     yh_url = jsonObject.getString("yhurl");
+                    oaidKey = jsonObject.getString("oakey");
                     MLog.a("--------请求完成------qx=" + qx_url + ";ys_url=" + ys_url + ";yh_url=" + yh_url);
+
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-
-            }
-        });
-        urlthred.start();
-
-        try {
-            urlthred.join();
-
-            runOnUiThread(new Runnable() {
-
-                @Override
-                public void run() {
-
-                    SharedPreferences sharedPreferences = getSharedPreferences("asdk", MODE_PRIVATE);
-                    boolean isFirstRun = sharedPreferences.getBoolean("isFirstRun", true);
-                    final SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                    if (isFirstRun && state.equals("1")) { // 第一次则跳转到引导页面
-                        showDialog(editor);
-
-                    } else if (!isFirstRun) { // 如果是第二次启动则直接跳转到主页面
-                        MLog.a("非第一次安装-----------");
-                        startGameActivity();
-
-                    } else if (state.equals("0")) { // 如果是第二次启动则直接跳转到主页面
-                        MLog.a("协议关闭-----------");
-                        startGameActivity();
-
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (httpCallback != null) httpCallback.success();
                     }
+                });
+            }
+        }).start();
+    }
 
-                }
-            });
-
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-
-
+    public interface HttpCallback {
+        void success();
     }
 
     private void showDialog(SharedPreferences.Editor editor) {
@@ -125,6 +128,13 @@ public class PrivacyActivity extends Activity {
 
     private void startGameActivity() {
         try {
+            new OaidHelper(new OaidHelper.AppIdsUpdater() {
+                @Override
+                public void onIdsValid(String ids) {
+                    MLog.a("OAID-----------"+ids);
+                    PhoneTool.setOAID(ids);
+                }
+            }).getDeviceIds(PrivacyActivity.this,oaidKey);
             InputStream ins = getResources().getAssets().open("gameEntrance.txt");
             String gameEntrance = new BufferedReader(new InputStreamReader(ins)).readLine().trim();
             MLog.a("XwanSDK--gameEntrance------------>" + gameEntrance);
