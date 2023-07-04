@@ -59,7 +59,7 @@ public class OaidHelper implements IIdentifierListener {
         if (!isCertInit) { // 证书只需初始化一次
             // 证书为PEM文件中的所有文本内容（包括首尾行、换行符）
             try {
-                startTimeMillis = System.nanoTime();
+                startTimeMillis = System.currentTimeMillis();
                 isCertInit = MdidSdkHelper.InitCert(cxt, certContent);
             } catch (Error e) {
                 e.printStackTrace();
@@ -84,8 +84,8 @@ public class OaidHelper implements IIdentifierListener {
         } catch (Error error) {
             error.printStackTrace();
         } finally {
-            long time = endTimeMillis - startTimeMillis;
-            Log.d(TAG, "Time Consume:" + time);
+//            long time = endTimeMillis - startTimeMillis;
+//            Log.d(TAG, "Time Consume:" + time);
         }
         // TODO （6）根据SDK返回的code进行不同处理
         IdSupplierImpl unsupportedIdSupplier = new IdSupplierImpl();
@@ -157,7 +157,9 @@ public class OaidHelper implements IIdentifierListener {
         Log.d(TAG, "onSupport: ids: \n" + idsText);
         appIdsUpdater.onIdsValid(idsText);
 
-        endTimeMillis = System.nanoTime();
+        endTimeMillis = System.currentTimeMillis();
+        long time = endTimeMillis - startTimeMillis;
+        Log.d(TAG, "Time Consume:" + time);
     }
 
     public interface AppIdsUpdater {

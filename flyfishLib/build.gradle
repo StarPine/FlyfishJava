@@ -48,8 +48,10 @@ tasks.configureEach { task ->
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar','*.aar'], dir: 'libs')
-//    compileOnly fileTree(include: ['*.jar','*.aar'], dir: 'libs')
+//    implementation fileTree(include: ['*.jar','*.aar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation fileTree(include: ['*.aar'], dir: 'libs')
+//    compileOnly fileTree(include: ['*.aar'], dir: 'libs')
     implementation project(':jg_push')
 }
 

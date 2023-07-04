@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import fly.fish.asdk.MyApplication;
 import fly.fish.othersdk.OaidHelper;
 import fly.fish.report.ASDKReport;
 import fly.fish.report.EventManager;
@@ -28,6 +30,7 @@ public class PrivacyActivity extends Activity {
     String ys_url = "";
     String yh_url = "";
     String oaidKey = "";
+    private boolean isAgree;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,9 +111,9 @@ public class PrivacyActivity extends Activity {
                 privacyDialog.dismiss();
                 editor.putBoolean("isFirstRun", false);
                 editor.commit();
-                ASDKReport.getInstance().startSDKReport(PrivacyActivity.this, EventManager.SDK_EVENT_AGREE_PRIVACY);
-                MLog.a("同意协议-----------");
+                isAgree = true;
                 startGameActivity();
+                MLog.a("同意协议-----------");
             }
 
             @Override
@@ -131,8 +134,16 @@ public class PrivacyActivity extends Activity {
             new OaidHelper(new OaidHelper.AppIdsUpdater() {
                 @Override
                 public void onIdsValid(String ids) {
-                    MLog.a("OAID-----------"+ids);
-                    PhoneTool.setOAID(ids);
+                    Log.i("ASDK","OAID-----------"+ids);
+                    int count_0 = getCount(ids, "0");
+                    String spDeviceID = MyApplication.context.getSharedPreferences("user_info", 0).getString("device_id", "");
+                    if(spDeviceID.equals("") && count_0 < 10){
+                        Log.i("ASDK","配置OAID");
+                        PhoneTool.setOAID(ids);
+                    }
+                    if (isAgree){
+                        ASDKReport.getInstance().startSDKReport(PrivacyActivity.this, EventManager.SDK_EVENT_AGREE_PRIVACY);
+                    }
                 }
             }).getDeviceIds(PrivacyActivity.this,oaidKey);
             InputStream ins = getResources().getAssets().open("gameEntrance.txt");
@@ -147,6 +158,20 @@ public class PrivacyActivity extends Activity {
             e.printStackTrace();
         }
 
+    }
+
+    private static int getCount(String str, String key) {
+        if (str != null && key != null && !"".equals(str.trim()) && !"".equals(key.trim())) {
+            int count = 0;
+
+            for(int index = 0; (index = str.indexOf(key, index)) != -1; ++count) {
+                index += key.length();
+            }
+
+            return count;
+        } else {
+            return 0;
+        }
     }
 
 

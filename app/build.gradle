@@ -26,6 +26,12 @@ android {
             storeFile file(rootDir.getAbsolutePath() + '/moby_android.keystore')
             storePassword '335833'
         }
+        release {
+            keyAlias 'moby_android.keystore'
+            keyPassword '335833'
+            storeFile file(rootDir.getAbsolutePath() + '/moby_android.keystore')
+            storePassword '335833'
+        }
 //        release {
 //            keyAlias 'changwan'
 //            keyPassword 'cw20131008159357m'
@@ -36,8 +42,10 @@ android {
 
     buildTypes {
         release {
+            multiDexEnabled false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
         debug {
             multiDexEnabled false

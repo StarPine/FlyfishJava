@@ -143,7 +143,7 @@ public class MainActivity extends Activity {
                 //code:0成功,1失败;isHasExitBox:true有退出框,false:无退出框
                 handler.sendEmptyMessage(1);
                 hasExitBox = isHasExitBox;
-
+//                out.init(cpid, gameid, gamekey, gamename);
             }
         });
         //out.onSaveInstanceState(MainActivity.this,savedInstanceState);

@@ -69,6 +69,7 @@ import android.text.InputFilter;
 import android.text.TextUtils.TruncateAt;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
@@ -156,6 +157,13 @@ public class PhoneTool {
 		from.startActivityForResult(intent, 1);
 	}
 
+	static void printTrackTest() {
+		// 1.打印调用堆栈
+		RuntimeException here =  new  RuntimeException( "here" );
+		here.fillInStackTrace();
+		Log.i(TAG,  "call stack: " , here);
+	}
+
 	/**
 	 * IMSI：international mobiles subscriber
 	 * identity国际移动用户号码标识，这个一般大家是不知道，GSM必须写在卡内相关文件中 MSISDN:mobile subscriber
@@ -171,6 +179,7 @@ public class PhoneTool {
 	 */
 
 	public static String getIMEI(Context con) {
+//		printTrackTest();
 		if(!isgetDeId(con)){
 			if(!"".equals(OAID)){
 				setPnType("1");
@@ -221,6 +230,7 @@ public class PhoneTool {
 	private static String getDeviceId(Context context) {
         //读取保存的在sd卡中的唯一标识符
         String deviceId = readDeviceID(context);
+        String startFlag = "";
         //判断是否已经生成过,有则直接返回
         System.out.println("dd1:"+deviceId);
         if (deviceId != null && !"".equals(deviceId)) {
@@ -259,12 +269,14 @@ public class PhoneTool {
 
 		//生成随机数
 		if (s == null || s.length() <= 0) {
+			startFlag = "Z";
 			deviceId=System.currentTimeMillis()+getRandomCode();
 			s.append(deviceId);
 		}
         //为了统一格式对设备的唯一标识进行md5加密 最终生成32位字符串
-        String md5 = MD5Util.getMD5String(s.toString());
-        System.out.println("deviceId:"+ s);System.out.println("md5:"+md5);
+        String md5 = startFlag + MD5Util.getMD5String(s.toString());
+        System.out.println("deviceId:"+ s);
+		System.out.println("md5:"+md5);
         if (s.length() > 0) {
             //持久化操作, 进行保存到SD卡中
             saveDeviceID(md5, context);
