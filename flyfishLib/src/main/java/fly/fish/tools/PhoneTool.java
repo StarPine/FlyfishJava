@@ -928,11 +928,13 @@ public class PhoneTool {
 				animator.start();
 				
 				view.addView(iv2);
-				
-				activity.alertDialog =builder.create();
-				activity.alertDialog.show();
-				activity.alertDialog.setCancelable(false);
-				activity.alertDialog.getWindow().setContentView(view);
+				if (!activity.isFinishing()){
+					activity.alertDialog =builder.create();
+					activity.alertDialog.show();
+					activity.alertDialog.setCancelable(false);
+					activity.alertDialog.getWindow().setContentView(view);
+				}
+
 			}
 		});
 	}
