@@ -15,6 +15,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import fly.fish.tools.MLog;
+import fly.fish.tools.ManifestInfo;
 
 
 public class PrivacyActivity extends Activity {
@@ -23,12 +24,23 @@ public class PrivacyActivity extends Activity {
     String qx_url = "";
     String ys_url = "";
     String yh_url = "";
+    private boolean isShowDialog = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
+        isShowDialog  = ManifestInfo.getMetaBoolean(this,"PRIVACY_SHOW_STATUS",true);
+        if (isShowDialog){
+            requestShowDialog();
+        }else {
+            startGameActivity();
+        }
 
+
+    }
+
+    private void requestShowDialog() {
         Thread urlthred = new Thread(new Runnable() {
 
             @Override
@@ -88,8 +100,6 @@ public class PrivacyActivity extends Activity {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
-
     }
 
     private void showDialog(SharedPreferences.Editor editor) {
@@ -123,7 +133,6 @@ public class PrivacyActivity extends Activity {
         try {
             InputStream ins = getResources().getAssets().open("gameEntrance.txt");
             String gameEntrance = new BufferedReader(new InputStreamReader(ins)).readLine().trim();
-            MLog.a("XwanSDK--gameEntrance------------>" + gameEntrance);
             Intent intent = new Intent();
             intent.setClassName(getPackageName(), gameEntrance);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
