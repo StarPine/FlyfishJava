@@ -36,6 +36,11 @@ android {
     }
 }
 
+// 获取当前系统时间
+def releaseTime() {
+    return new Date().format("yyyyMMddHHmm", TimeZone.getTimeZone("GMT+08:00"))
+}
+
 tasks.configureEach { task ->
     if (task.name.equals("lint")) {
         //this is for speed up build
@@ -48,8 +53,8 @@ tasks.configureEach { task ->
 }
 
 dependencies {
-//    implementation fileTree(include: ['*.jar','*.aar'], dir: 'libs')
-    provided fileTree(include: ['*.jar','*.aar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar','*.aar'], dir: 'libs')
+//    provided fileTree(include: ['*.jar','*.aar'], dir: 'libs')
     implementation project(':jg_push')
 }
 
@@ -61,13 +66,14 @@ afterEvaluate {
         def aarPath = "./build/outputs/aar/flyfishLib-release.aar"
         copy {
             from file(aarPath)
-            rename("flyfishLib-release.aar", "${rootProject.ext.sdkName}_V${rootProject.ext.hostVersionCode}_lib.aar")
+//            rename("flyfishLib-release.aar", "${rootProject.ext.sdkName}_V${rootProject.ext.hostVersionCode}_lib.aar")
+            rename("flyfishLib-release.aar", "lib_${rootProject.ext.sdkName}_v${rootProject.ext.hostVersionName}_${releaseTime()}.aar")
             into lib_out
         }
         copy {
             from zipTree(aarPath)
             include "classes.jar"
-            rename("classes.jar", "${rootProject.ext.sdkName}_V${rootProject.ext.hostVersionCode}_lib.jar")
+            rename("classes.jar", "lib_${rootProject.ext.sdkName}_v${rootProject.ext.hostVersionName}_${releaseTime()}.jar")
             into lib_out_libs
         }
         copy {

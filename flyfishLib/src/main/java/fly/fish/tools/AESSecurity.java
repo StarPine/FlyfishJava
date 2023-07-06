@@ -67,22 +67,6 @@ public class AESSecurity {
 		data = AESSecurity.decrypt(data, key);
 		MLog.a("AESSecurity-set",data + "<------ keykey ------> " + key);
 
-		try {
-			JSONObject jsonObject = new JSONObject(data);
-			String data1=jsonObject.getString("data");
-			JSONObject jsonObject1 = new JSONObject(data1);
-			String oth4=jsonObject1.getString("othersdkextdata4");
-
-			JSONObject jsonObject2 = new JSONObject(oth4);
-			String tzlist=jsonObject2.getString("tzlist");
-			String fxlist=jsonObject2.getString("fxlist");
-			MLog.a("AESSecurity-set",  "<------ tzlist ------> " + tzlist);
-			MLog.a("AESSecurity-set",  "<------ fxlist ------> " + fxlist);
-			JGSHaretools.setdata(tzlist,fxlist);
-		}catch (JSONException e) {
-			e.printStackTrace();
-		}
-
 		return data;
 	}
 
