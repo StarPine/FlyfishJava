@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.widget.LinearLayout;
 
+import fly.fish.tools.MLog;
+
 public class BindPhoneAndEmailActivity extends MyActivity {
 
 	private LinearLayout myLay;
@@ -46,6 +48,10 @@ public class BindPhoneAndEmailActivity extends MyActivity {
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			MLog.s("KEYCODE_BACK");
+			return true;
+		}
 		return super.onKeyDown(keyCode, event);
 	}
 }
