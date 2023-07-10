@@ -10,23 +10,9 @@ public interface ISdk {
 
     void applicationOnCreate(Application application);
 
-    void initSDK(Activity activity);
-
     void InitLaunch(Activity activity, boolean isLandsape, CallBackListener callback);
 
-    void onStart(Activity activity);
-
-    void onResume(Activity activity);
-
-    void onPause(Activity activity);
-
-    void onStop(Activity activity);
-
-    void onNewIntent(Intent newIntent);
-
-    void onDestroy(Activity activity);
-
-    void onRestart(Activity activity);
+    void initSDK(Activity activity);
 
     void loginSDK(Activity activity, Intent intent);
 
@@ -34,7 +20,13 @@ public interface ISdk {
 
     void submitData(String data);
 
+    void logout(Activity activity);
+
     void exit(Activity activity);
+
+    default String getOrderExtdata() {
+        return "";
+    }
 
     default void reyunsetLogin(String acc) {
     }
@@ -42,7 +34,28 @@ public interface ISdk {
     default void reyunandttsetPay(String desc, String orderid, String type, String sum, boolean issuccess) {
     }
 
-    void logout(Activity activity);
+    default void getCertificateInfo(Activity activity, GetCertificationInfoCallback callback) {
+    }
 
-    void getCertificateInfo(Activity activity, GetCertificationInfoCallback callback);
+    default void onStart(Activity activity) {
+    }
+
+    default void onRestart(Activity activity) {
+    }
+
+    default void onResume(Activity activity) {
+    }
+
+    default void onPause(Activity activity) {
+    }
+
+    default void onStop(Activity activity) {
+    }
+
+    default void onNewIntent(Intent newIntent) {
+    }
+
+    default void onDestroy(Activity activity) {
+    }
+
 }

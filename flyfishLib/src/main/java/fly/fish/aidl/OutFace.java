@@ -702,27 +702,14 @@ public class OutFace {
 		localBundle.putString("pid", Binder.getCallingPid() + "");
 		localBundle.putString("mode", "pay");
 		localBundle.putString("flag", "getOrder");
-
+		localBundle.putString("flag", "getOrder");
 		mIntent.putExtras(localBundle);
 
-		// if(Publisher.startsWith("asdk_mssg_294")||Publisher.startsWith("asdk_longyin2_091")){
-		// SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMddHHmmss");
-		// String reqTime = fmt.format(new Date());
-		// FTSppSDK.formatTime(reqTime);
-		// }
-
-		// if(Publisher.startsWith("asdk_mssg_1000")){
-		// mIntent.setClass(act, CardRechargeActivity.class);
-		// act.startActivity(mIntent);
-		// return;
-		// }
-
 		if (Publisher.startsWith("asdk") || Publisher.startsWith("qgsdk")||Publisher.startsWith("baichuansdk")||Publisher.startsWith("qdasdk")||Publisher.startsWith("dxcpsasdk")) {
-//			mIntent.setClass(act, ChargeActivity.class);
-//			act.startActivity(mIntent);
 			SkipActivity.asdkPay(act, this.mIntent);
-			
 		} else {
+			String orderExtdata = SkipActivity.getOrderExtdata();
+			mIntent.putExtra("extdata",orderExtdata);
 			mIntent.setClass(act, MyRemoteService.class);
 			act.startService(mIntent);
 		}

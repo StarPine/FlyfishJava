@@ -34,15 +34,15 @@ public class SkipActivity extends Activity {
         return null;
     }
 
-    private static void invoke(Method method, Object... prams) {
+    private static Object invoke(Method method, Object... prams) {
         if (method == null) {
-            return;
+            return null;
         }
         try {
             if (object == null){
                 object = clazz.newInstance();
             }
-            method.invoke(object, prams);
+            return method.invoke(object, prams);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -52,13 +52,19 @@ public class SkipActivity extends Activity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        return null;
     }
 
     // 登录
     public static void othLogin(Activity act, Intent mIntent) {
         Method method = getMethod("loginSDK", Activity.class, Intent.class);
         invoke(method, act, mIntent);
+    }
+
+    public static String getOrderExtdata(){
+        Method method = getMethod("getOrderExtdata");
+        Object invoke = invoke(method);
+        return (String) invoke;
     }
 
     // 支付
