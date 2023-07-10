@@ -11,6 +11,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -59,7 +60,20 @@ public class MyActivity extends Activity {
 		// 设置竖屏
 		// setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_NOSENSOR);
 		// setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-		
+		configFontScale(getResources(), 1.0f);
+	}
+
+	public static void configFontScale(Resources resource, float fontScale) {
+		if (resource == null) {
+			return;
+		}
+		try {
+			Configuration c = resource.getConfiguration();
+			c.fontScale = fontScale; //字体缩放设置为1.0
+			resource.updateConfiguration(c, resource.getDisplayMetrics());
+		} catch (Exception e) {
+			//do what you want
+		}
 	}
 
 	/**
