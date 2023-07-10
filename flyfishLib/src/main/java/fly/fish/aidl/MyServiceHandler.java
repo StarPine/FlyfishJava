@@ -161,15 +161,15 @@ public class MyServiceHandler extends Handler {
             app.getmLuaState().getGlobal("update");
             index = app.getmLuaState().getTop();
             app.getmLuaState().getField(index, "geturls");
-            LuaTools.dbcall(app.getmLuaState(), 0, 9);
+            LuaTools.dbcall(app.getmLuaState(), 0, 10);
 
-            String othersdkextdata1, othersdkextdata2, othersdkextdata3, othersdkextdata4, othersdkextdata5;
+            String othersdkextdata1, othersdkextdata2, othersdkextdata3, othersdkextdata4, othersdkextdata5, othersdkextdata6;
 
             // 取检查结果（请求的url）
             service.re4 = app.getmLuaState().toString(-6);// BBS
             service.re1 = app.getmLuaState().toString(-7);// 回调
-            service.re2 = app.getmLuaState().toString(-8);// 充值
-            service.re3 = app.getmLuaState().toString(-9);// 帐号
+            service.re2 = app.getmLuaState().toString(-8);// 充值service = {MyRemoteService@4872}
+            service.re3 = app.getmLuaState().toString(-9);// 帐号service = {MyRemoteService@4872}
 
             // 扩展参数
             othersdkextdata1 = app.getmLuaState().toString(-5);
@@ -177,6 +177,7 @@ public class MyServiceHandler extends Handler {
             othersdkextdata3 = app.getmLuaState().toString(-3);
             othersdkextdata4 = app.getmLuaState().toString(-2);
             othersdkextdata5 = app.getmLuaState().toString(-1);
+            othersdkextdata6 = app.getmLuaState().toString(-10);
 
             MLog.a(tag,
                     "==========================getaddr by java==========================");
@@ -199,50 +200,29 @@ public class MyServiceHandler extends Handler {
                 // sendEmptyMessage(3);
             } else {
 
-                SharedPreferences sharedPreferences = MyApplication.context
-                        .getSharedPreferences("user_info", 0);
-                sharedPreferences.edit()
-                        .putString("gamekey", service.app.curKey).commit();
-                MLog.a(tag, "gamekey" + "======init========"
-                        + service.app.curKey);
-                sharedPreferences.edit()
-                        .putString("accountserver", service.re3).commit();
-                MLog.a(tag, "accountserver" + "=====init========="
-                        + service.re3);
-                sharedPreferences.edit().putString("payserver", service.re2)
-                        .commit();
-                MLog.a(tag, "payserver" + "=======init=======" + service.re2);
-                sharedPreferences.edit().putString("notify_url", service.re1)
-                        .commit();
-                MLog.a(tag, "notify_url" + "=======init=======" + service.re1);
-                sharedPreferences.edit().putString(service.app.curKey, str)
-                        .commit();
+                SharedPreferences sharedPreferences = MyApplication.context.getSharedPreferences("user_info", 0);
+                sharedPreferences.edit().putString("gamekey", service.app.curKey).commit();
+                sharedPreferences.edit().putString("accountserver", service.re3).commit();
+                sharedPreferences.edit().putString("payserver", service.re2).commit();
+                sharedPreferences.edit().putString("notify_url", service.re1).commit();
+                sharedPreferences.edit().putString(service.app.curKey, str).commit();
+                sharedPreferences.edit().putString("othersdkextdata1", othersdkextdata1).commit();
+                sharedPreferences.edit().putString("othersdkextdata2", othersdkextdata2).commit();
+                sharedPreferences.edit().putString("othersdkextdata3", othersdkextdata3).commit();
+                sharedPreferences.edit().putString("othersdkextdata4", othersdkextdata4).commit();
+                sharedPreferences.edit().putString("othersdkextdata5", othersdkextdata5).commit();
+                sharedPreferences.edit().putString("othersdkextdata6", othersdkextdata6).commit();
                 MLog.a(tag, service.app.curKey + "====init==========" + str);
-                sharedPreferences.edit()
-                        .putString("othersdkextdata1", othersdkextdata1)
-                        .commit();
-                MLog.a(tag, "othersdkextdata1" + "=======init======="
-                        + othersdkextdata1);
-                sharedPreferences.edit()
-                        .putString("othersdkextdata2", othersdkextdata2)
-                        .commit();
-                MLog.a(tag, "othersdkextdata2" + "=======init======="
-                        + othersdkextdata2);
-                sharedPreferences.edit()
-                        .putString("othersdkextdata3", othersdkextdata3)
-                        .commit();
-                MLog.a(tag, "othersdkextdata3" + "======init========"
-                        + othersdkextdata3);
-                sharedPreferences.edit()
-                        .putString("othersdkextdata4", othersdkextdata4)
-                        .commit();
-                MLog.a(tag, "othersdkextdata4" + "=======init======="
-                        + othersdkextdata4);
-                sharedPreferences.edit()
-                        .putString("othersdkextdata5", othersdkextdata5)
-                        .commit();
-                MLog.a(tag, "othersdkextdata5" + "======init========"
-                        + othersdkextdata5);
+                MLog.a(tag, "gamekey" + "======init========" + service.app.curKey);
+                MLog.a(tag, "accountserver" + "=====init=========" + service.re3);
+                MLog.a(tag, "payserver" + "=======init=======" + service.re2);
+                MLog.a(tag, "notify_url" + "=======init=======" + service.re1);
+                MLog.a(tag, "othersdkextdata1" + "=======init=======" + othersdkextdata1);
+                MLog.a(tag, "othersdkextdata2" + "=======init=======" + othersdkextdata2);
+                MLog.a(tag, "othersdkextdata3" + "======init========" + othersdkextdata3);
+                MLog.a(tag, "othersdkextdata4" + "=======init=======" + othersdkextdata4);
+                MLog.a(tag, "othersdkextdata5" + "======init========" + othersdkextdata5);
+                MLog.a(tag, "othersdkextdata6" + "======init========" + othersdkextdata6);
 
                 if (re == 2 || re == 3) {// BV3或SV2升级
                     // 用作更新检测类
