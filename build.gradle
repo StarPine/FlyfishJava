@@ -1,9 +1,9 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 ext {
 
-    sdkName = "ASDK"
-    hostVersionCode = 701
-    hostVersionName = "7.0.1"
+    sdkName = "asdk"
+    hostVersionCode = 703
+    hostVersionName = "7.0.3"
     outputDir = rootDir.getAbsolutePath() + "/_outputs_${sdkName}_V${hostVersionCode}/"
 }
 
