@@ -161,7 +161,7 @@ public class MyServiceHandler extends Handler {
             app.getmLuaState().getGlobal("update");
             index = app.getmLuaState().getTop();
             app.getmLuaState().getField(index, "geturls");
-            LuaTools.dbcall(app.getmLuaState(), 0, 10);
+            LuaTools.dbcall(app.getmLuaState(), 0, 9);
 
             String othersdkextdata1, othersdkextdata2, othersdkextdata3, othersdkextdata4, othersdkextdata5, othersdkextdata6;
 
