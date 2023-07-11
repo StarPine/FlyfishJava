@@ -383,6 +383,11 @@ public class SkipActivity extends Activity {
                 Intent.class);
         invoke(method, isLoginSuccess, intent);
     }
+
+    public static void setExtdata(String extdata1) {
+        Method method = getMethod("setExtdata", String.class);
+        invoke(method, extdata1);
+    }
     /* public static void Closead(boolean isclose){
         try {
             Method method = getMethod("closead",boolean.class);
