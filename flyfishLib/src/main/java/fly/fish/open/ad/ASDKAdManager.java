@@ -3,6 +3,8 @@ package fly.fish.open.ad;
 
 import android.app.Activity;
 
+import java.lang.reflect.Constructor;
+
 public class ASDKAdManager {
 
     private Activity activity;
@@ -19,12 +21,20 @@ public class ASDKAdManager {
     private IVideo getADPlatform() {
         if (this.adMergePlatform == null) {
             try {
-                adMergePlatform = (IVideo) Class.forName("fly.fish.othersdk.ADMergePlatform").newInstance();
+
+                Class<?> aClass = Class.forName("fly.fish.othersdk.ADMergePlatform");
+                Constructor con = aClass.getDeclaredConstructor();
+                con.setAccessible(true);
+                adMergePlatform = (IVideo) con.newInstance();
             } catch (Exception var2) {
                 var2.printStackTrace();
             }
         }
         return adMergePlatform;
+    }
+
+    public void loadAD(){
+        loadAD(false);
     }
 
     public void loadAD(boolean isLoadedShow) {
