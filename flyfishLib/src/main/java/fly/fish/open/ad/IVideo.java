@@ -4,7 +4,7 @@ import android.app.Activity;
 
 public interface IVideo {
 
-    void loadAD(Activity activity, boolean isLoadedShow, ADVideoListener adVideoListener);
+    void loadAD(Activity activity, String posID,boolean isLoadedShow, ADVideoListener adVideoListener);
 
     void show();
 }

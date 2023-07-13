@@ -74,7 +74,7 @@ public class ADMergePlatform implements IVideo {
     }
 
     @Override
-    public void loadAD(Activity activity, boolean isLoadedShow, ADVideoListener adVideoListener) {
+    public void loadAD(Activity activity, String posID,boolean isLoadedShow, ADVideoListener adVideoListener) {
         this.adVideoListener = adVideoListener;
         this.activity = activity;
         initData();
