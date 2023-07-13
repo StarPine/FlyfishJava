@@ -53,8 +53,8 @@ tasks.configureEach { task ->
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar','*.aar'], dir: 'libs')
-//    provided fileTree(include: ['*.jar','*.aar'], dir: 'libs')
+//    implementation fileTree(include: ['*.jar','*.aar'], dir: 'libs')
+    compileOnly fileTree(include: ['*.jar','*.aar'], dir: 'libs')
     implementation project(':jg_push')
 }
 
@@ -66,7 +66,6 @@ afterEvaluate {
         def aarPath = "./build/outputs/aar/flyfishLib-release.aar"
         copy {
             from file(aarPath)
-//            rename("flyfishLib-release.aar", "${rootProject.ext.sdkName}_V${rootProject.ext.hostVersionCode}_lib.aar")
             rename("flyfishLib-release.aar", "lib_${rootProject.ext.sdkName}_v${rootProject.ext.hostVersionName}_${releaseTime()}.aar")
             into lib_out
         }
