@@ -33,12 +33,12 @@ public class ASDKAdManager {
         return adMergePlatform;
     }
 
-    public void loadAD(){
-        loadAD(false);
+    public void loadAD(String posID) {
+        loadAD(posID, false);
     }
 
-    public void loadAD(boolean isLoadedShow) {
-        getADPlatform().loadAD(activity, isLoadedShow, new ADVideoListener() {
+    public void loadAD(String posID, boolean isLoadedShow) {
+        getADPlatform().loadAD(activity, posID ,isLoadedShow, new ADVideoListener() {
             @Override
             public void onShowedAd() {
                 if (adVideoListener != null)
