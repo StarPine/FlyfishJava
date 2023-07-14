@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.Message;
 import android.os.RemoteException;
 
@@ -245,6 +246,7 @@ public class MyRemoteService extends Service {
 //										sendBroadcast(new Intent("fly.fish.aidl.MyRemoteService.MYBROADCAST.LOGIN").putExtra("extdata1", jo2.getString("extdata1")).putExtra("extdata2", jo2.getString("extdata2")));
                                         app.getSharedPreferences("user_info", 0).edit().putString("pipaw_payerId", jo2.getString("accountid")).putString("pipaw_sessId", jo2.getString("sessionid")).putBoolean("islogin", true).commit();
                                         try {
+                                            Looper.prepare();
                                             SkipActivity.reyunsetLogin(jo2.getString("accountid"));
                                             SkipActivity.setExtdata(jo2.getString("extdata1"));
                                             ilistener.loginback(jo2.getString("sessionid"), jo2.getString("accountid"), jo1.getString("code"), customstring);
@@ -253,6 +255,7 @@ public class MyRemoteService extends Service {
                                             getGameArgs().setSession_id(jo2.getString("sessionid"));
                                             app.getSharedPreferences("user_info", 0).edit().putString("asdk_accountid", jo2.getString("accountid")).commit();
                                             app.getSharedPreferences("user_info", 0).edit().putString("asdk_sessionid", jo2.getString("sessionid")).commit();
+                                            Looper.loop();
                                         } catch (RemoteException e) {
                                             e.printStackTrace();
                                         }
