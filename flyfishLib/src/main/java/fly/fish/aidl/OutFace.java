@@ -529,139 +529,10 @@ public class OutFace {
 	 *            自定义参数
 	 * @throws RemoteException
 	 */
-	public void pay(final Activity act, final String merchantsOrder,
-			String url, final String account, final String desc,
-			final String callBackData, String key) {
-
-		mActivity = act;
-		mIntent = new Intent();
-		Bundle localBundle = new Bundle();
-
-		localBundle.putString("cpid", cpid);
-		localBundle.putString("gameid", gameid);
-		localBundle.putString("gamename", gamename);
-
-		localBundle.putString("merchantsOrder", merchantsOrder);
-		localBundle.putString("url", url);
-		localBundle.putString("account", account);
-		localBundle.putString("desc", desc);
-		localBundle.putString("callBackData", callBackData);
-		localBundle.putString("key", key);
-		localBundle.putString("pid", Binder.getCallingPid() + "");
-		localBundle.putString("mode", "pay");
-		localBundle.putString("flag", "getOrder");
-
-		mIntent.putExtras(localBundle);
-
-		// if(Publisher.startsWith("asdk_mssg_294")||Publisher.startsWith("asdk_longyin2_091")){
-		// SimpleDateFormat fmt = new SimpleDateFormat("yyyyMMddHHmmss");
-		// String reqTime = fmt.format(new Date());
-		// FTSppSDK.formatTime(reqTime);
-		// }
-
-		// if(Publisher.startsWith("asdk_mssg_1000")){
-		// mIntent.setClass(act, CardRechargeActivity.class);
-		// act.startActivity(mIntent);
-		// return;
-		// }
-
-		if (Publisher.startsWith("asdk")||Publisher.startsWith("baichuansdk")||Publisher.startsWith("qdasdk")) {
-//			mIntent.setClass(act, ChargeActivity.class);
-//			act.startActivity(mIntent);
-			
-			SkipActivity.asdkPay(act, this.mIntent);
-			
-		} else if (Publisher.startsWith("qgsdk")) {
-
-			// ============================ qgsdk
-			// start======================================
-			final AlertDialog dlg = new AlertDialog.Builder(act).create();
-			dlg.show();
-			int qq_pay = act.getResources().getIdentifier(
-					act.getPackageName() + ":drawable/" + "qq_pay", null, null);
-			int other_pay = act.getResources().getIdentifier(
-					act.getPackageName() + ":drawable/" + "other_pay", null,
-					null);
-			LinearLayout layout = new LinearLayout(act);
-			DisplayMetrics displayMetrics = new DisplayMetrics();
-			act.getWindowManager().getDefaultDisplay()
-					.getMetrics(displayMetrics);
-			layout.setOrientation(LinearLayout.VERTICAL);
-			layout.setPadding(5, 5, 5, 5);
-
-			LinearLayout layout2 = new LinearLayout(act);
-			layout2.setGravity(Gravity.CENTER);
-
-			layout2.setOrientation(LinearLayout.VERTICAL);// 1垂直
-
-			layout2.setPadding(10, 10, 10, 10);
-			Button button2 = new Button(act);
-			button2.setBackgroundResource(qq_pay);
-			// button2.setText("QQ钱包支付");
-
-			Button button3 = new Button(act);
-			button3.setBackgroundResource(other_pay);
-			// button3.setText("其他方式支付");
-
-			LinearLayout.LayoutParams rlp = new LinearLayout.LayoutParams(-2,
-					-2);
-			rlp.topMargin = 15;
-			layout2.addView(button2, rlp);
-			layout2.addView(button3, rlp);
-			// layout.setBackgroundColor(Color.TRANSPARENT);
-			layout.addView(layout2);
-			Window window = dlg.getWindow();
-
-			window.setContentView(layout);
-			dlg.setOnDismissListener(new OnDismissListener() {
-
-				@Override
-				public void onDismiss(DialogInterface dialog) {
-					// 取消支付
-					Intent locIntent = new Intent();
-					locIntent.setClass(act, MyRemoteService.class);
-					Bundle locBundle = new Bundle();
-					locBundle.putString("flag", "pay");
-					locBundle.putString("msg", desc);
-					locBundle.putString("sum", account);
-					locBundle.putString("chargetype", "pay");
-					locBundle.putString("custominfo", callBackData);
-					locBundle.putString("customorderid", merchantsOrder);
-					locBundle.putString("status", "1");
-					locIntent.putExtras(locBundle);
-					act.startService(locIntent);
-
-				}
-			});
-			button2.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-
-					// qq钱包支付
-					mIntent.setClass(act, MyRemoteService.class);
-					act.startService(mIntent);
-
-				}
-			});
-			button3.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					// 阿游戏支付
-					mIntent.setClass(act, ChargeActivity.class);
-					act.startActivity(mIntent);
-				}
-			});
-
-		}
-
-		// ===================== qgsdk end =======================
-		else {
-			mIntent.setClass(act, MyRemoteService.class);
-			act.startService(mIntent);
-		}
-
+	public void pay(final Activity act, final String merchantsOrder, String url, final String account, final String desc, final String callBackData, String key) {
+		pay(act,merchantsOrder,url,account,"",desc,callBackData,key);
 	}
-	
+
 
 	/**
 	 * 充值接口
@@ -701,7 +572,6 @@ public class OutFace {
 		localBundle.putString("key", key);
 		localBundle.putString("pid", Binder.getCallingPid() + "");
 		localBundle.putString("mode", "pay");
-		localBundle.putString("flag", "getOrder");
 		localBundle.putString("flag", "getOrder");
 		mIntent.putExtras(localBundle);
 
