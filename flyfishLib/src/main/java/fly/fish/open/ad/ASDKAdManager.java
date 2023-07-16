@@ -68,7 +68,7 @@ public class ASDKAdManager {
 
             @Override
             public void onErrorAd(int errorCode, String message) {
-                Log.i(TAG, "errorCode: " + errorCode + "onErrorAdmessage: " + message);
+                Log.i(TAG, "errorCode: " + errorCode + "  ,onErrorAdmessage: " + message);
                 if (adVideoListener != null) {
                     adVideoListener.onErrorAd(errorCode, message);
                 }
