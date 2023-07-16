@@ -2,11 +2,12 @@ package fly.fish.open.ad;
 
 
 import android.app.Activity;
+import android.util.Log;
 
 import java.lang.reflect.Constructor;
 
 public class ASDKAdManager {
-
+    private String TAG = "ASDKAdManager";
     private Activity activity;
     private ADVideoListener adVideoListener;
     private IVideo adMergePlatform;
@@ -38,34 +39,44 @@ public class ASDKAdManager {
     }
 
     public void loadAD(String posID, boolean isLoadedShow) {
-        getADPlatform().loadAD(activity, posID ,isLoadedShow, new ADVideoListener() {
+        Log.i(TAG, "loadAD: "+posID);
+        getADPlatform().loadAD(activity, posID, isLoadedShow, new ADVideoListener() {
             @Override
             public void onShowedAd() {
-                if (adVideoListener != null)
+                Log.i(TAG, "onShowedAd: ");
+                if (adVideoListener != null) {
                     adVideoListener.onShowedAd();
+                }
             }
 
             @Override
             public void onClickAd() {
-                if (adVideoListener != null)
+                Log.i(TAG, "onClickAd: ");
+                if (adVideoListener != null) {
                     adVideoListener.onClickAd();
+                }
             }
 
             @Override
             public void onCloseAd() {
+                Log.i(TAG, "onCloseAd: ");
                 setReady(false);
-                if (adVideoListener != null)
+                if (adVideoListener != null) {
                     adVideoListener.onCloseAd();
+                }
             }
 
             @Override
             public void onErrorAd(int errorCode, String message) {
-                if (adVideoListener != null)
+                Log.i(TAG, "errorCode: " + errorCode + "onErrorAdmessage: " + message);
+                if (adVideoListener != null) {
                     adVideoListener.onErrorAd(errorCode, message);
+                }
             }
 
             @Override
             public void onReadyAd() {
+                Log.i(TAG, "onReadyAd: ");
                 setReady(true);
                 if (adVideoListener != null) {
                     adVideoListener.onReadyAd();
@@ -74,14 +85,17 @@ public class ASDKAdManager {
 
             @Override
             public void onCompletedAd() {
+                Log.i(TAG, "onCompletedAd: ");
                 setReady(false);
-                if (adVideoListener != null)
+                if (adVideoListener != null) {
                     adVideoListener.onCompletedAd();
+                }
             }
         });
     }
 
     public void show() {
+        Log.i(TAG, "show: ");
         if (isReady) {
             getADPlatform().show();
         } else {
