@@ -66,6 +66,7 @@ import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.TextUtils;
 import android.text.TextUtils.TruncateAt;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -98,6 +99,7 @@ public class PhoneTool {
 	private static String OAID = "";
 	//0代表IMEI号或IDFA，1代表OAID，2代表自生成设备号
 	private static String pnType = "0";
+	private static String devicesFlag = "O";
 
 
 	private static void setPnType(String pnType) {
@@ -164,6 +166,12 @@ public class PhoneTool {
 		Log.i(TAG,  "call stack: " , here);
 	}
 
+	public static String getUA() {
+		String pt = getPT(MyApplication.context);
+		String osVersion = getOSVersion();
+		return pt + "|android" + osVersion + "|" + devicesFlag;
+	}
+
 	/**
 	 * IMSI：international mobiles subscriber
 	 * identity国际移动用户号码标识，这个一般大家是不知道，GSM必须写在卡内相关文件中 MSISDN:mobile subscriber
@@ -180,9 +188,20 @@ public class PhoneTool {
 
 	public static String getIMEI(Context con) {
 //		printTrackTest();
+		String spDeviceID = MyApplication.context.getSharedPreferences("user_info", 0).getString("device_id", "");
+		devicesFlag = MyApplication.context.getSharedPreferences("user_info", 0).getString("device_flag", "");
+		if (!TextUtils.isEmpty(spDeviceID)){
+			Log.i("asdk", "devicesFlag: "+devicesFlag);
+			return spDeviceID;
+		}
 		if(!isgetDeId(con)){
 			if(!"".equals(OAID)){
 				setPnType("1");
+				devicesFlag = "O";
+				MyApplication.context.getSharedPreferences("user_info", 0).edit().putString("device_id", OAID).commit();
+				MyApplication.context.getSharedPreferences("user_info", 0).edit().putString("device_flag", devicesFlag).commit();
+				//持久化操作, 进行保存到SD卡中
+				saveDeviceID(OAID, con);
 				return OAID;
 			}else{
 				setPnType("2");
@@ -190,12 +209,13 @@ public class PhoneTool {
 		}else{
 			setPnType("0");
 		}
-		String spDeviceID = MyApplication.context.getSharedPreferences("user_info", 0).getString("device_id", "");
 		if("".equals(spDeviceID)){
 			spDeviceID = getDeviceId(con);
 			MyApplication.context.getSharedPreferences("user_info", 0).edit().putString("device_id", spDeviceID).commit();
+			MyApplication.context.getSharedPreferences("user_info", 0).edit().putString("device_flag", devicesFlag).commit();
 		}
 
+		Log.i("asdk", "devicesFlag: "+devicesFlag);
 		return spDeviceID;
 	}
 	private static boolean isgetDeId(Context con){
@@ -209,9 +229,11 @@ public class PhoneTool {
 				String deviceId = mTelephonyMgr.getDeviceId();
 				if (deviceId!=null&&deviceId.length() > 9) {
 					isgetDeId = true;
+					devicesFlag = "I";
 					MyApplication.context.getSharedPreferences("user_info", 0).edit().putInt("isgetDeId", 1).commit();
 					//持久化操作, 进行保存到SD卡中
 					MyApplication.context.getSharedPreferences("user_info", 0).edit().putString("device_id", deviceId).commit();
+					MyApplication.context.getSharedPreferences("user_info", 0).edit().putString("device_flag", devicesFlag).commit();
 					saveDeviceID(deviceId, con);
 
 				}
@@ -243,6 +265,7 @@ public class PhoneTool {
 			TelephonyManager mTelephonyMgr = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 			deviceId = mTelephonyMgr.getDeviceId();
 			s.append(deviceId);
+			devicesFlag = "I";
 		} catch (Exception e) {
 			MLog.a(TAG,"好吧没得到IMEI");
 		}
@@ -257,6 +280,7 @@ public class PhoneTool {
         	deviceId = Settings.System.getString(context.getContentResolver(), Settings.System.ANDROID_ID);
         	String serial= Build.SERIAL;
             s.append(deviceId).append(serial);
+			devicesFlag = "A";
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -265,16 +289,17 @@ public class PhoneTool {
             UUID uuid = UUID.randomUUID();
             deviceId = uuid.toString().replace("-", "");
             s.append(deviceId);
+			devicesFlag = "U";
         }
 
 		//生成随机数
 		if (s == null || s.length() <= 0) {
-			startFlag = "Z";
 			deviceId=System.currentTimeMillis()+getRandomCode();
 			s.append(deviceId);
+			devicesFlag = "Z";
 		}
         //为了统一格式对设备的唯一标识进行md5加密 最终生成32位字符串
-        String md5 = startFlag + MD5Util.getMD5String(s.toString());
+        String md5 = MD5Util.getMD5String(s.toString());
         System.out.println("deviceId:"+ s);
 		System.out.println("md5:"+md5);
         if (s.length() > 0) {
@@ -611,7 +636,7 @@ public class PhoneTool {
 	 * @return 设备系统版本名
 	 */
 	public static String getOSVersion() {
-		return Build.VERSION.RELEASE;
+		return Build.VERSION.RELEASE + "|" + devicesFlag;
 	}
 
 
