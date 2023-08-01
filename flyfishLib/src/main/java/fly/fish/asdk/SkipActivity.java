@@ -25,6 +25,7 @@ import fly.fish.tools.MLog;
 
 public class SkipActivity extends Activity {
     private static Class<?> clazz = null;
+    private static Object object;
     private static String Publisher = FilesTool.getPublisherStringContent()
             .split("_")[0];
     private static HashMap<String, String> map = new HashMap<String, String>();
@@ -258,12 +259,15 @@ public class SkipActivity extends Activity {
         return null;
     }
 
-    private static void invoke(Method method, Object... prams) {
+    private static Object invoke(Method method, Object... prams) {
         if (method == null) {
-            return;
+            return null;
         }
         try {
-            method.invoke(null, prams);
+            if (object == null){
+                object = clazz.newInstance();
+            }
+            return method.invoke(object, prams);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -273,7 +277,13 @@ public class SkipActivity extends Activity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
+    }
 
+    public static String getOrderExtdata(){
+        Method method = getMethod("getOrderExtdata");
+        Object invoke = invoke(method);
+        return (String) invoke;
     }
 
     // 登录

@@ -19,3 +19,7 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+-keep class fly.fish.** { *; }
+-keep class com.android.zs.volley.** { *; }
+-keep class org.keplerproject.luajava.** { *; }
+-keep class com.android.zs.push.** { *; }
