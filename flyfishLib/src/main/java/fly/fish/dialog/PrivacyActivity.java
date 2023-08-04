@@ -36,6 +36,10 @@ public class PrivacyActivity extends Activity {
         if (isShowDialog){
             requestShowDialog();
         }else {
+            SharedPreferences sharedPreferences = getSharedPreferences("asdk", MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putBoolean("isFirstRun", false);
+            editor.apply();
             startGameActivity();
         }
 
