@@ -23,6 +23,7 @@ import fly.fish.tools.AppUtils;
 import fly.fish.tools.FilesTool;
 import fly.fish.tools.MD5Util;
 import fly.fish.tools.MLog;
+import fly.fish.tools.ManifestInfo;
 import fly.fish.tools.PhoneTool;
 
 public class ASDKReport {
@@ -155,6 +156,9 @@ public class ASDKReport {
      * @param sdkEvent  事件ID
      */
     public void startSDKReport(Context context, String sdkEvent) {
+        //是否打开SDK埋点,默认打开
+        boolean enableSdkReport = ManifestInfo.getMetaBoolean(context, "ENABLE_SDK_REPORT", true);
+        if (!enableSdkReport)return;
         try {
             String sdkReportParams = createSDKReportParams(context, sdkEvent);
             request(SDK_URL, sdkReportParams);
