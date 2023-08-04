@@ -40,6 +40,7 @@ public class ASDKAdManager {
 
     public void loadAD(String posID, boolean isLoadedShow) {
         Log.i(TAG, "loadAD: "+posID);
+        if (!isHasADPlatform()) return;
         getADPlatform().loadAD(activity, posID, isLoadedShow, new ADVideoListener() {
             @Override
             public void onShowedAd() {
@@ -97,11 +98,24 @@ public class ASDKAdManager {
     public void show() {
         Log.i(TAG, "show: ");
         if (isReady) {
+            if (!isHasADPlatform()) return;
             getADPlatform().show();
         } else {
             if (adVideoListener != null)
                 adVideoListener.onErrorAd(8001, "广告未准备好");
         }
+    }
+
+    /**
+     * 有广告sdk
+     * @return
+     */
+    private boolean isHasADPlatform() {
+        if (getADPlatform() == null){
+            Log.i(TAG, "此渠道无广告sdk");
+            return false;
+        }
+        return true;
     }
 
     public boolean isReady() {

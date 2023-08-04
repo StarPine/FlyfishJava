@@ -69,6 +69,7 @@ import android.text.InputFilter;
 import android.text.TextUtils.TruncateAt;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.KeyEvent;
 import android.view.View;
@@ -95,10 +96,13 @@ public class PhoneTool {
 	public static String TAG = "PhoneTool";
 
 	private static String OAID = "";
+	private static String devicesFlag = "";
+
 	//0代表IMEI号或IDFA，1代表OAID，2代表自生成设备号
 	private static String pnType = "0";
-	
-	
+	private static boolean isUseNewType = true;
+
+
 	private static void setPnType(String pnType) {
 		PhoneTool.pnType = pnType;
 	}
@@ -171,6 +175,11 @@ public class PhoneTool {
 	 */
 
 	public static String getIMEI(Context con) {
+		if (isUseNewType){
+			String channelDeviceId = getChannelDeviceId(con);
+			Log.i(TAG, "getIMEI: " + channelDeviceId + "  ,devicesFlag: " + getOSVersion());
+			return channelDeviceId;
+		}
 		if(!isgetDeId(con)){
 			if(!"".equals(OAID)){
 				setPnType("1");
@@ -188,6 +197,66 @@ public class PhoneTool {
 		}
 			
 		return spDeviceID;
+	}
+
+	private static String getChannelDeviceId(Context context){
+		SharedPreferences sharedPreferences = MyApplication.context.getSharedPreferences("user_info", 0);
+		String devicesId = sharedPreferences.getString("device_id", "");
+		devicesFlag = sharedPreferences.getString("device_flag", "not");
+
+		if (!devicesId.equals("")){
+			return devicesId;
+		}
+
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+
+		if (!OAID.equals("")){
+			devicesId = OAID;
+			devicesFlag = "O";
+		}
+
+		//获取设备的imei号，如获取到则直接返回并保存
+		try {
+			if (devicesId.length() <= 0) {
+				TelephonyManager mTelephonyMgr = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+				devicesId = mTelephonyMgr.getDeviceId();
+				devicesFlag = "I";
+			}
+		} catch (Exception e) {
+			MLog.a(TAG,"好吧没得到IMEI");
+		}
+
+		try {
+			//获取设备的ANDROID_ID+SERIAL硬件序列号
+			if (devicesId.length() <= 0) {
+				String androidId = Settings.System.getString(context.getContentResolver(), Settings.System.ANDROID_ID);
+				String serial= Build.SERIAL;
+				devicesId = androidId + serial;
+				devicesFlag = "A";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		if (devicesId.length() <= 0) {
+			devicesId = UUID.randomUUID().toString().replace("-", "");
+			devicesFlag = "U";
+		}
+
+		//生成随机数
+		if (devicesId.length() <= 0) {
+			devicesId=System.currentTimeMillis()+getRandomCode();
+			devicesFlag = "Z";
+		}
+
+		if (!devicesFlag.equals("I") && !devicesFlag.equals("O")){
+			//为了统一格式对设备的唯一标识进行md5加密 最终生成32位字符串
+			devicesId = MD5Util.getMD5String(devicesId);
+		}
+
+		editor.putString("device_id", devicesId).commit();
+		editor.putString("device_flag", devicesFlag).commit();
+		return devicesId;
 	}
 	private static boolean isgetDeId(Context con){
 		boolean isgetDeId = false;
@@ -599,7 +668,7 @@ public class PhoneTool {
 	 * @return 设备系统版本名
 	 */
 	public static String getOSVersion() {
-		return Build.VERSION.RELEASE;
+		return Build.VERSION.RELEASE + "|" + devicesFlag;
 	}
 
 

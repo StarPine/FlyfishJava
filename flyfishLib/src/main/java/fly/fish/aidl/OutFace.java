@@ -443,7 +443,7 @@ public class OutFace {
 		// FTSppSDK.init(MyApplication.getAppContext());
 		// }
 
-		PhoneTool.managerIMEI(mActivity);
+//		PhoneTool.managerIMEI(mActivity);
 
 		// 先保存参数
 		this.cpid = cpid;
