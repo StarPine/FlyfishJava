@@ -66,6 +66,7 @@ import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.TextUtils;
 import android.text.TextUtils.TruncateAt;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -176,7 +177,7 @@ public class PhoneTool {
 
 	public static String getIMEI(Context con) {
 		if (isUseNewType){
-			String channelDeviceId = getChannelDeviceId(con);
+			String channelDeviceId = getChannelDeviceId(con,"device_id");
 			Log.i(TAG, "getIMEI: " + channelDeviceId + "  ,devicesFlag: " + getOSVersion());
 			return channelDeviceId;
 		}
@@ -199,25 +200,27 @@ public class PhoneTool {
 		return spDeviceID;
 	}
 
-	private static String getChannelDeviceId(Context context){
+	public static String getPurchaseDeviceId(Context context){
+		return getChannelDeviceId(context,"purchase_device_id");
+	}
+
+	private static String getChannelDeviceId(Context context, String devicesName){
 		SharedPreferences sharedPreferences = MyApplication.context.getSharedPreferences("user_info", 0);
-		String devicesId = sharedPreferences.getString("device_id", "");
+		String devicesId = sharedPreferences.getString(devicesName, "");
 		devicesFlag = sharedPreferences.getString("device_flag", "not");
 
-		if (!devicesId.equals("")){
+		if (!TextUtils.isEmpty(devicesId)){
 			return devicesId;
 		}
 
-		SharedPreferences.Editor editor = sharedPreferences.edit();
-
-		if (!OAID.equals("")){
+		if (!TextUtils.isEmpty(OAID)){
 			devicesId = OAID;
 			devicesFlag = "O";
 		}
 
 		//获取设备的imei号，如获取到则直接返回并保存
 		try {
-			if (devicesId.length() <= 0) {
+			if (TextUtils.isEmpty(devicesId)) {
 				TelephonyManager mTelephonyMgr = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 				devicesId = mTelephonyMgr.getDeviceId();
 				devicesFlag = "I";
@@ -228,7 +231,7 @@ public class PhoneTool {
 
 		try {
 			//获取设备的ANDROID_ID+SERIAL硬件序列号
-			if (devicesId.length() <= 0) {
+			if (TextUtils.isEmpty(devicesId)) {
 				String androidId = Settings.System.getString(context.getContentResolver(), Settings.System.ANDROID_ID);
 				String serial= Build.SERIAL;
 				devicesId = androidId + serial;
@@ -238,13 +241,13 @@ public class PhoneTool {
 			e.printStackTrace();
 		}
 
-		if (devicesId.length() <= 0) {
+		if (TextUtils.isEmpty(devicesId)) {
 			devicesId = UUID.randomUUID().toString().replace("-", "");
 			devicesFlag = "U";
 		}
 
 		//生成随机数
-		if (devicesId.length() <= 0) {
+		if (TextUtils.isEmpty(devicesId)) {
 			devicesId=System.currentTimeMillis()+getRandomCode();
 			devicesFlag = "Z";
 		}
@@ -254,10 +257,12 @@ public class PhoneTool {
 			devicesId = MD5Util.getMD5String(devicesId);
 		}
 
-		editor.putString("device_id", devicesId).commit();
+		SharedPreferences.Editor editor = sharedPreferences.edit();
+		editor.putString(devicesName, devicesId).commit();
 		editor.putString("device_flag", devicesFlag).commit();
 		return devicesId;
 	}
+
 	private static boolean isgetDeId(Context con){
 		boolean isgetDeId = false;
 		int flag = -1;
