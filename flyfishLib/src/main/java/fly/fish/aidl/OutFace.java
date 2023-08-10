@@ -811,4 +811,8 @@ public class OutFace {
 		}
 	}
 
+	public void othopenForumPage() {
+		SkipActivity.sdkopenForumPage();
+	}
+
 }

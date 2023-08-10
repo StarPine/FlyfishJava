@@ -312,6 +312,11 @@ public class SkipActivity extends Activity {
         invoke(method, capturer);
     }
 
+    public static void sdkopenForumPage() {
+        Method method = getMethod("openForumPage");
+        invoke(method);
+    }
+
     // 调用论坛接口
     public static void callPerformFeatureBBS(Activity act) {
         Method method = getMethod("callPerformFeatureBBS", Activity.class);
