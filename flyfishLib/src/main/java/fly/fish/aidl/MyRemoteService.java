@@ -308,6 +308,7 @@ public class MyRemoteService extends Service {
                     String customorderid = bu.getString("merchantsOrder");
                     String custominfo = bu.getString("callBackData");
                     String extdata = bu.getString("extdata");
+                    String desc = bu.getString("desc");
                     String feepoint= null;
                     try {
                         feepoint = bu.getString("feepoint");
@@ -323,6 +324,7 @@ public class MyRemoteService extends Service {
                         param_js.put("account", getGameArgs().getAccount_id());
                         param_js.put("myfeepoint", feepoint);
                         param_js.put("extdata", extdata);
+                        param_js.put("desc", desc);
 
                     } catch (JSONException e1) {
                         e1.printStackTrace();
