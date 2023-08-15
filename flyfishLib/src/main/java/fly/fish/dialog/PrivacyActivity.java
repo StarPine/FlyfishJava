@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import fly.fish.config.Configs;
 import fly.fish.report.ASDKReport;
 import fly.fish.report.EventManager;
 import fly.fish.tools.MLog;
@@ -64,6 +65,7 @@ public class PrivacyActivity extends Activity {
                     qx_url = jsonObject.getString("qxurl");
                     ys_url = jsonObject.getString("ysurl");
                     yh_url = jsonObject.getString("yhurl");
+                    Configs.qqContactWay = jsonObject.getString("smkf");
                     MLog.a("--------请求完成------qx=" + qx_url + ";ys_url=" + ys_url + ";yh_url=" + yh_url);
                 } catch (JSONException e) {
                     // TODO Auto-generated catch block

@@ -39,5 +39,7 @@ public class Configs {
 
 	/** 对象类型 */
 	public static Class<String> tstring = String.class;
+	/** 客服qq*/
+	public static String qqContactWay = "";
 
 }

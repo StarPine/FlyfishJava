@@ -71,10 +71,16 @@ import android.text.TextUtils.TruncateAt;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Display;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -1373,6 +1379,44 @@ public class PhoneTool {
 		AlertDialog dia =builder.create();
 		dia.show();dia.setCancelable(false);
 		dia.getWindow().setContentView(view);
+	}
+
+	public static void showTipsDialog(Activity activity, String content) {
+		if (content.equals("qq_kefu")) {
+			content = Configs.qqContactWay;
+		}
+		String finalContent = content;
+		activity.runOnUiThread(() -> {
+			int style_id = activity.getResources().getIdentifier("MyDialog", "style", activity.getPackageName());
+			Dialog dialog = new Dialog(activity, style_id);
+
+			int privacydialog_layout_id = activity.getResources().getIdentifier("dialog_tips", "layout", activity.getPackageName());
+			View contentView = LayoutInflater.from(activity).inflate(privacydialog_layout_id, null);
+			dialog.setContentView(contentView);
+			dialog.setCancelable(false);
+
+			ViewGroup.LayoutParams layoutParams = contentView.getLayoutParams();
+			layoutParams.height = dp2px(activity,210);
+			layoutParams.width = dp2px(activity,340);
+			contentView.setLayoutParams(layoutParams);
+			dialog.getWindow().setGravity(Gravity.CENTER);
+
+			int tipsContentId = activity.getResources().getIdentifier("tv_tips_content", "id", activity.getPackageName());
+			int tipsComfirmId = activity.getResources().getIdentifier("btn_tips_comfirm", "id", activity.getPackageName());
+			contentView.findViewById(tipsComfirmId).setOnClickListener(v -> {
+				dialog.dismiss();
+			});
+			TextView tipsContent = contentView.findViewById(tipsContentId);
+			if (!TextUtils.isEmpty(finalContent)) {
+				tipsContent.setText(finalContent);
+			}
+			dialog.show();
+
+		});
+	}
+
+	public static int dp2px(Context context, float dpValue) {
+		return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpValue, context.getResources().getDisplayMetrics());
 	}
 	
 	/**
