@@ -30,7 +30,7 @@ public class JsonUtils {
         return data;
     }
     
-    public int getInt(String key) {
+    public int getInt(String key, int defValue) {
         int data = -1;
         try {
             data = jsonObject.getInt(key);
@@ -40,7 +40,7 @@ public class JsonUtils {
         return data;
     }
     
-    public boolean getBoolean(String key) {
+    public boolean getBoolean(String key, boolean defValue) {
         boolean data = false;
         try {
             data = jsonObject.getBoolean(key);

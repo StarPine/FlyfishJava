@@ -206,13 +206,6 @@ public class Asdk implements ISdk{
 			}
 		}
 		
-		//是否一键登录开关，最高优先级
-//		String isopen = share.getString("othersdkextdata4", "");
-//		if(!isopen.equals("1")){//非1则关闭一键登录
-//			intent.setClass(act, LoginActivity.class);
-//			act.startActivity(intent);
-//			return;
-//		}
 		//检查是否有登录过
 		GameArgs ga = MyApplication.getAppContext().getGameArgs();
 		String idno = ga.getCpid()+ga.getGameno();

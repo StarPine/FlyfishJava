@@ -57,7 +57,6 @@ import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
@@ -79,8 +78,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -92,7 +89,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import fly.fish.adapter.MyAccAdapter;
-import fly.fish.aidl.MyRemoteService;
 import fly.fish.aidl.OutFace;
 import fly.fish.asdk.AsdkActivity;
 import fly.fish.asdk.MyActivity;
@@ -107,7 +103,7 @@ public class PhoneTool {
 
 	//0代表IMEI号或IDFA，1代表OAID，2代表自生成设备号
 	private static String pnType = "0";
-	private static boolean isUseNewType = true;
+	private static boolean isUseNewMode = true;
 
 
 	private static void setPnType(String pnType) {
@@ -180,13 +176,22 @@ public class PhoneTool {
 	 * 
 	 * @return
 	 */
-
-	public static String getIMEI(Context con) {
-		if (isUseNewType){
-			String channelDeviceId = getChannelDeviceId(con,"device_id");
+	public static String getIMEI(Context context) {
+		isUseNewMode = ManifestInfo.getMetaBoolean(context,"DEVICEID_USE_NEW_MODE",true);
+		if (isUseNewMode){
+			String channelDeviceId = getChannelDeviceId(context,"device_id");
 			Log.i(TAG, "getIMEI: " + channelDeviceId + "  ,devicesFlag: " + getOSVersion());
 			return channelDeviceId;
 		}
+		return oldModeIMEI(context);
+	}
+
+	/**
+	 * 旧形式获取设备id
+	 * @param con
+	 * @return
+	 */
+	private static String oldModeIMEI(Context con) {
 		if(!isgetDeId(con)){
 			if(!"".equals(OAID)){
 				setPnType("1");
@@ -202,7 +207,7 @@ public class PhoneTool {
 			spDeviceID = getDeviceId(con);
 			MyApplication.context.getSharedPreferences("user_info", 0).edit().putString("device_id", spDeviceID).commit();
 		}
-			
+
 		return spDeviceID;
 	}
 
@@ -1127,6 +1132,7 @@ public class PhoneTool {
 		act.builder = builder;
 		builder.show();
 	}
+
 	private static String acc_file_name = AsdkActivity.getURL3().contains("xxhd")?"asdk-xx.acc":"asdk.acc";
 	//应美（欣欣h5）
 //	private static String acc_file_name = "asdk-xxh5.acc";
