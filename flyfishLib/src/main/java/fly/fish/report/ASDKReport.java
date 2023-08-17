@@ -58,6 +58,7 @@ public class ASDKReport {
     private static final String KEY_SYSTEM = "system";
     private static final String KEY_DH = "dh";
     private static final String KEY_PB = "pb";
+    private static final String KEY_VERSION = "version";
 
     public static final String KEY_GAME_ID = "gameid";
     public static final String KEY_ACCOUNT_ID = "accountid";
@@ -286,6 +287,7 @@ public class ASDKReport {
         sdkParamsMap.put(KEY_SYSTEM, PhoneTool.getPT(context) + "|android" + PhoneTool.getOSVersion());
         sdkParamsMap.put(KEY_GID, getGID(context));
         sdkParamsMap.put(KEY_DH, sdkEvent);
+        sdkParamsMap.put(KEY_VERSION, OutFace.SDK_VERSION_NAME);
         return map2JsonString(sdkParamsMap);
     }
 
