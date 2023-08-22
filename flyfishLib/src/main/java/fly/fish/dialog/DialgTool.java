@@ -11,6 +11,7 @@ import java.net.URL;
 
 import fly.fish.aidl.OutFace;
 import fly.fish.asdk.MyApplication;
+import fly.fish.tools.JsonUtils;
 import fly.fish.tools.MLog;
 import fly.fish.tools.OthPhone;
 
@@ -18,18 +19,14 @@ public class DialgTool {
 	
 	
 	public static String getpub(String fileName){
-		
 		String pub="";
 		try {
-			InputStream ins = MyApplication.context.getResources().getAssets()
-					.open(fileName);
-			pub = new BufferedReader(new InputStreamReader(ins)).readLine()
-					.trim();
-		} catch (IOException e1) {
+            InputStream ins = MyApplication.context.getResources().getAssets().open(fileName);
+            pub = new BufferedReader(new InputStreamReader(ins)).readLine().trim();
+        } catch (IOException e1) {
 			e1.printStackTrace();
 		}
 		return pub;
-		
 	}
 	
 	
@@ -61,10 +58,10 @@ public class DialgTool {
             data=response.toString();
             MLog.a("返回结果------"+response.toString());
 
-            JSONObject jsonObject =new JSONObject(data);
-            boolean isrequ = jsonObject.getBoolean("isrequ");
-            boolean ischeck = jsonObject.getBoolean("ischeck");
-            boolean oneLoginCheck = jsonObject.getBoolean("jgcheck");
+            JsonUtils jsonUtils = new JsonUtils(data);
+            boolean isrequ = jsonUtils.getBoolean("isrequ",false);
+            boolean ischeck = jsonUtils.getBoolean("ischeck",false);
+            boolean oneLoginCheck = jsonUtils.getBoolean("jgcheck",false);
 
             OutFace.setCheckState(ischeck);
             OutFace.setOneLoginCheck(oneLoginCheck);

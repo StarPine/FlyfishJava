@@ -16,9 +16,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import fly.fish.asdk.MyApplication;
+import fly.fish.config.Configs;
 import fly.fish.othersdk.OaidHelper;
 import fly.fish.report.ASDKReport;
 import fly.fish.report.EventManager;
+import fly.fish.tools.JsonUtils;
 import fly.fish.tools.MLog;
 import fly.fish.tools.PhoneTool;
 
@@ -74,23 +76,20 @@ public class PrivacyActivity extends Activity {
                 MLog.a("--------json------" + json);
 
                 try {
-                    JSONObject jsonObject = new JSONObject(json);
+                    JsonUtils jsonObject = new JsonUtils(json);
                     state = jsonObject.getString("state");
                     qx_url = jsonObject.getString("qxurl");
                     ys_url = jsonObject.getString("ysurl");
                     yh_url = jsonObject.getString("yhurl");
                     oaidKey = jsonObject.getString("oakey");
+                    Configs.qqContactWay = jsonObject.getString("smkf");
                     MLog.a("--------请求完成------qx=" + qx_url + ";ys_url=" + ys_url + ";yh_url=" + yh_url);
 
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (httpCallback != null) httpCallback.success();
-                    }
+                runOnUiThread(() -> {
+                    if (httpCallback != null) httpCallback.success();
                 });
             }
         }).start();
