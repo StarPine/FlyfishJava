@@ -272,12 +272,13 @@ public class LoginActivity extends MyActivity {
 			 */
 
 			// 通知远程服务更新头文件
-			synchronized (mLuaState) {
-				mLuaState.getField(LuaState.LUA_GLOBALSINDEX, "loginCallBack");
-				LuaTools.dbcall(mLuaState, 0, 0);// 代表0个参数，0个返回值
-			}
-
-			return super.onKeyDown(keyCode, event);
+//			synchronized (mLuaState) {
+//				mLuaState.getField(LuaState.LUA_GLOBALSINDEX, "loginCallBack");
+//				LuaTools.dbcall(mLuaState, 0, 0);// 代表0个参数，0个返回值
+//			}
+//
+//			return super.onKeyDown(keyCode, event);
+			return true;
 		}
 		return super.onKeyDown(keyCode, event);
 	}
