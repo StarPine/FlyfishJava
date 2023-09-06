@@ -18,6 +18,11 @@ android {
         buildConfigField "int", "SDK_VERSION_CODE", "${rootProject.ext.hostVersionCode}"
 
     }
+    packagingOptions {
+        exclude 'com/unionpay/client3/tsm/**.java'
+        exclude 'com/unionpay/client3/tsm/**.aidl'
+        exclude 'fly/fish/othersdk/**'
+    }
 
     buildTypes {
         release {
@@ -32,6 +37,9 @@ android {
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs','src/main/jniLibs']
+            java{
+                excludes = ['fly/fish/othersdk/ADMergePlatform.java']
+            }
         }
     }
 }
