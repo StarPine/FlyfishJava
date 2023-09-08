@@ -203,7 +203,13 @@ public class OutFace {
 	private String ys_url = "";
 	private String yh_url = "";
 	private static boolean isrequst=false;
-	
+
+	/**
+	 *
+	 * @param activity
+	 * @param isLandscape
+	 * @param callback
+	 */
 	public void outInitLaunch(final Activity activity,
  		final boolean isLandscape, final CallBackListener callback) {
 		mActivity = activity;
