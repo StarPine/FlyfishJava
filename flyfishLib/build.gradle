@@ -21,7 +21,7 @@ android {
     packagingOptions {
         exclude 'com/unionpay/client3/tsm/**.java'
         exclude 'com/unionpay/client3/tsm/**.aidl'
-        exclude 'fly/fish/othersdk/**'
+        exclude 'libs/msa_mdid_1.0.13.jar'
     }
 
     buildTypes {
@@ -29,19 +29,33 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+        debug {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+
     }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs', 'src/main/jniLibs']
+            java {
+                srcDirs = ['src/main/java']
+                excludes = ['libs/msa_mdid_1.0.13.jar']
+                if (IS_OPEN.toBoolean()){
+                    excludes = ['fly/fish/othersdk/*.java']
+                }
+            }
+
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    sourceSets {
-        main {
-            jniLibs.srcDirs = ['libs','src/main/jniLibs']
-            java{
-                excludes = ['fly/fish/othersdk/ADMergePlatform.java']
-            }
-        }
-    }
+
+
 }
 
 // 获取当前系统时间
@@ -74,13 +88,13 @@ afterEvaluate {
         def aarPath = "./build/outputs/aar/flyfishLib-release.aar"
         copy {
             from file(aarPath)
-            rename("flyfishLib-release.aar", "lib_${rootProject.ext.sdkName}_v${rootProject.ext.hostVersionName}_${releaseTime()}.aar")
+            rename("flyfishLib-release.aar", "${rootProject.ext.sdkName}_${rootProject.ext.hostVersionName}_${releaseTime()}_cp.aar")
             into lib_out
         }
         copy {
             from zipTree(aarPath)
             include "classes.jar"
-            rename("classes.jar", "lib_${rootProject.ext.sdkName}_v${rootProject.ext.hostVersionName}_${releaseTime()}.jar")
+            rename("classes.jar", "${rootProject.ext.sdkName}_${rootProject.ext.hostVersionName}_${releaseTime()}.jar")
             into lib_out_libs
         }
         copy {

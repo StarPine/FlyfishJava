@@ -65,7 +65,7 @@ public class MainActivity extends Activity {
     public OutFace.FlyFishSDK callback = new OutFace.FlyFishSDK() {
 
         @Override
-        public void initback(String status) throws RemoteException {
+        public void initback(String status) {
             System.out.println("initback ----> " + status);
             OthPhone.Initgetnum(MainActivity.this);
             String s = OthPhone.ForAsdkGetnum();
@@ -83,7 +83,7 @@ public class MainActivity extends Activity {
         }
 
         @Override
-        public void loginback(String sessionid, String accountid, String status, String customstring) throws RemoteException {
+        public void loginback(String sessionid, String accountid, String status, String customstring) {
             System.out.println("loginback ----> " + sessionid + " = " + accountid + " = " + status + " = " + customstring);
             if (dialog != null && dialog.isShowing()) {
                 dialog.dismiss();
@@ -99,12 +99,12 @@ public class MainActivity extends Activity {
         }
 
         @Override
-        public void payback(String msg, String status, String sum, String chargetype, String customorgerid, String customstring) throws RemoteException {
+        public void payback(String msg, String status, String sum, String chargetype, String customorgerid, String customstring) {
             System.out.println("payback ----> " + msg + " = " + status + " = " + sum + "=" + chargetype + " = " + customorgerid + " = " + customstring);
         }
 
         @Override
-        public void queryback(String status, String sum, String chargetype, String customstring) throws RemoteException {
+        public void queryback(String status, String sum, String chargetype, String customstring) {
             System.out.println("queryback ----> " + status + " = " + sum + "=" + chargetype + " = " + customstring);
         }
 
@@ -134,7 +134,7 @@ public class MainActivity extends Activity {
         // 隐去标题栏（应用程序的名字）
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         MLog.setDebug(true);
-        out = OutFace.getInstance(this);
+        out = OutFace.getInstance();
         out.setDebug(true);
         out.outInitLaunch(this, true, new CallBackListener() {
 
@@ -149,7 +149,7 @@ public class MainActivity extends Activity {
         //out.onSaveInstanceState(MainActivity.this,savedInstanceState);
         out.outOnCreate(MainActivity.this);
         out.outOnCreate(MainActivity.this,savedInstanceState);
-        out.callBack(callback, gamekey);
+        out.callBack(gamekey,callback);
     }
 
 

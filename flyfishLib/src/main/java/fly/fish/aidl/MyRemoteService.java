@@ -723,7 +723,7 @@ public class MyRemoteService extends Service {
             gameargs.setGameno(gameid);
             gameargs.setKey(key);
             gameargs.setName(name);
-            gameargs.setPublisher(OutFace.getInstance(null).getPublisher());
+            gameargs.setPublisher(OutFace.getInstance().getPublisher());
 
             MLog.s("service Publisher -------> " + gameargs.getPublisher());
             MLog.s("service cpidid -------> " + cpid);

@@ -35,4 +35,25 @@ android {
 dependencies {
     api fileTree(include: ['*.jar','*.aar'], dir: 'libs')
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android:6.8.0'
+    //noinspection GradleCompatible
+    api 'com.android.support:support-v4:28.0.0'
+}
+
+// 获取当前系统时间
+def releaseTime() {
+    return new Date().format("yyyyMMddHHmm", TimeZone.getTimeZone("GMT+08:00"))
+}
+
+afterEvaluate {
+    assembleRelease.doLast {
+        def lib_out = file(rootProject.ext.outputDir + "/lib_out")
+        def lib_out_libs = file(rootProject.ext.outputDir + "/lib_out/libs")
+        def lib_out_assets = file(rootProject.ext.outputDir + "/lib_out/assets")
+        def aarPath = "./build/outputs/aar/jg_push-release.aar"
+        copy {
+            from file(aarPath)
+            rename("jg_push-release.aar", "jpush_${rootProject.ext.hostVersionName}_${releaseTime()}.aar")
+            into lib_out
+        }
+    }
 }

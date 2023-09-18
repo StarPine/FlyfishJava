@@ -37,7 +37,7 @@
             <intent-filter>
                 <action android:name="cn.jpush.android.ui.PushActivity" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="${packagename}" />
+                <category android:name="${applicationId}" />
             </intent-filter>
         </activity>
 
@@ -56,7 +56,7 @@
 
         <!-- since 3.0.9 Required SDK 核心功能-->
         <provider
-            android:authorities="${packagename}.DataProvider"
+            android:authorities="${applicationId}.DataProvider"
             android:name="cn.jpush.android.service.DataProvider"
             android:process=":pushcore"
             android:exported="false"
@@ -69,13 +69,13 @@
             android:taskAffinity="jpush.custom">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.DActivity"/>
-                <category android:name="${packagename}" />
+                <category android:name="${applicationId}" />
             </intent-filter>
         </activity>
 
         <!-- since 3.1.0 Required SDK 核心功能-->
         <provider
-            android:authorities="${packagename}.DownloadProvider"
+            android:authorities="${applicationId}.DownloadProvider"
             android:name="cn.jpush.android.service.DownloadProvider"
             android:exported="true"
             />
@@ -86,7 +86,7 @@
             android:enabled="true">
             <intent-filter android:priority="1000">
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />   <!--Required  显示通知栏 -->
-                <category android:name="${packagename}" />
+                <category android:name="${applicationId}" />
             </intent-filter>
         </receiver>
 
@@ -98,7 +98,7 @@
         <receiver android:name="com.android.zs.push.PushMessageReceiver">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
-                <category android:name="${packagename}"></category>
+                <category android:name="${applicationId}"></category>
             </intent-filter>
         </receiver>
 
@@ -110,7 +110,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.JNotifyActivity" />
-                <category android:name="${packagename}" />
+                <category android:name="${applicationId}" />
             </intent-filter>
         </activity>
 

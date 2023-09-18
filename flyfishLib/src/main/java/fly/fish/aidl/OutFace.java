@@ -5,12 +5,9 @@ import java.io.File;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
@@ -24,19 +21,11 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.util.DisplayMetrics;
-import android.view.Gravity;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.LinearLayout;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import fly.fish.asdk.BuildConfig;
-import fly.fish.asdk.ChargeActivity;
 import fly.fish.asdk.LoginActivity;
 import fly.fish.asdk.MyApplication;
 import fly.fish.asdk.MyCrashHandler;
@@ -50,7 +39,6 @@ import fly.fish.othersdk.JGSHaretools;
 import fly.fish.tools.FilesTool;
 import fly.fish.tools.MLog;
 import fly.fish.tools.OthPhone;
-import fly.fish.tools.PhoneTool;
 
 public class OutFace {
 	private static String d = "fly.fish.aidl.IMyTaskBinder";
@@ -63,12 +51,21 @@ public class OutFace {
 	 * SDK版本名称(插件/宿主)
 	 */
 	public static final String SDK_VERSION_NAME = BuildConfig.SDK_VERSION_NAME;
-	private static OutFace our = null;
 	public static Activity mActivity;
 
+	private static volatile OutFace mInstance;
+	public static OutFace getInstance() {
+		if (mInstance == null) {
+			synchronized (OutFace.class) {
+				if (mInstance == null) {
+					mInstance = new OutFace();
+				}
+			}
+		}
+		return mInstance;
+	}
 
-
-    public Activity getmActivity() {
+	public Activity getmActivity() {
 		return mActivity;
 	}
 
@@ -87,10 +84,8 @@ public class OutFace {
 
 	private Intent service;
 
-	public void outActivityResult(Activity act, int requestCode,
-			int resultCode, Intent data) {
-		SkipActivity.othActivityResult(act, requestCode, resultCode, data,
-				mIntent);
+	public void outActivityResult(Activity act, int requestCode, int resultCode, Intent data) {
+		SkipActivity.othActivityResult(act, requestCode, resultCode, data, mIntent);
 	}
 
 	public void outOnCreate(Activity activity) {
@@ -126,10 +121,6 @@ public class OutFace {
 
 	public void outDestroy(Activity activity) {
 		SkipActivity.othDestroy(activity);
-		// if (UCSDK610.mRepeatCreate) {
-		// Log.i("UCSDK", "onDestroy is repeat activity!");
-		// return;
-		// }
 		quit(activity);
 	}
 
@@ -400,25 +391,12 @@ public class OutFace {
 	}
 
 	/**
-	 * 单例方法
-	 * 
-	 * @param
-	 * @return
-	 */
-	public static OutFace getInstance(Context con) {
-		if (our == null) {
-			our = new OutFace();
-		}
-		return our;
-	}
-
-	/**
 	 * 注册回调接口
 	 * 
 	 * @param callback
 	 * @throws RemoteException
 	 */
-	public void callBack(FlyFishSDK callback, String key) {
+	public void callBack(String key, FlyFishSDK callback) {
 		this.callback = callback;
 		if (ibinder != null) {
 			try {
@@ -487,17 +465,6 @@ public class OutFace {
 	 * @throws RemoteException
 	 */
 	public void login(Activity act, String callBackData, String key) {
-
-		// if(Publisher.startsWith("asdk_mssg_294")||Publisher.startsWith("asdk_longyin2_091")){
-		// if(FTSppSDK.isLogin()){
-		// String str1 =
-		// MyApplication.getAppContext().getGameArgs().getCpid()+MyApplication.getAppContext().getGameArgs().getGameno()+"name";
-		// String account =
-		// MyApplication.getAppContext().getSharedPreferences("user_info",
-		// 0).getString(str1, "");
-		// FTSppSDK.accountLogout(account);
-		// }
-		// }
 
 		mActivity = act;
 		mIntent = new Intent();
@@ -627,7 +594,7 @@ public class OutFace {
 		gameid = null;
 		key = null;
 		gamename = null;
-		our = null;
+		mInstance = null;
 		System.out.println("---------asdk--exit--end-----------");
 
 	}
@@ -701,8 +668,7 @@ public class OutFace {
 		Intent intent = new Intent();
 		intent.setAction("fly.fish.ghostWindowService");
 		intent.setPackage("com.zshd.GameCenter");
-		MyApplication.getAppContext().bindService(intent, ghostServiceConn,
-				Context.BIND_AUTO_CREATE);
+		MyApplication.getAppContext().bindService(intent, ghostServiceConn, Context.BIND_AUTO_CREATE);
 	}
 
 	/**

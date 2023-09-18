@@ -138,7 +138,7 @@ public class LogicMain {
 			GameArgs gameargs = MyApplication.getAppContext().getGameArgs();
 
 			gameargs.setCpid(gameargs.getCpid() == null ? "" : gameargs.getCpid());
-			String publisher = OutFace.getInstance(null).getPublisher();
+			String publisher = OutFace.getInstance().getPublisher();
 			gameargs.setPublisher(publisher);
 			gameargs.setPublisher(gameargs.getPublisher() == null ? "" : gameargs.getPublisher());
 			gameargs.setGameno(gameargs.getGameno() == null ? "" : gameargs.getGameno());

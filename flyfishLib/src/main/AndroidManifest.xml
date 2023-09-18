@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="fly.fish.asdk">
+
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"
-        android:maxSdkVersion="28"/>
+    <uses-permission
+        android:name="android.permission.READ_PHONE_STATE"
+        android:maxSdkVersion="28" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -17,13 +20,24 @@
     <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.NFC" />
-    <uses-feature android:name="android.hardware.nfc.hce"/>
+
+    <uses-feature android:name="android.hardware.nfc.hce" />
     <uses-permission android:name="org.simalliance.openmobileapi.SMARTCARD" />
     <!-- msa权限 -->
     <uses-permission android:name="com.asus.msa.SupplementaryDID.ACCESS" />
-    <application>
+
+    <!--    Android R(11)版本适配-->
+    <queries>
+        <!-- 指定微信包名-->
+        <package android:name="com.tencent.mm" />
+    </queries>
+
+    <application
+        android:name="fly.fish.asdk.MyApplication"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="m">
 
         <!-- 下面要用的的一些配置哦 -->
         <activity
@@ -32,11 +46,6 @@
             android:launchMode="standard"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-
-            </intent-filter>
             <intent-filter>
                 <!--协议部分，随便设置-->
                 <data android:scheme="GAME_NAME_BROWER" />
@@ -47,6 +56,7 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
+
         <activity
             android:name="fly.fish.dialog.DetailsActivity"
             android:configChanges="keyboardHidden|orientation|navigation|screenSize"
@@ -102,54 +112,66 @@
         <activity
             android:name="fly.fish.asdk.TestAcountActivity"
             android:configChanges="keyboardHidden|orientation|navigation|screenSize"
+            android:exported="false"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
         <activity
             android:name="fly.fish.asdk.CardListActivity"
             android:configChanges="keyboardHidden|orientation|navigation|screenSize"
+            android:exported="false"
             android:theme="@android:style/Theme.Dialog" />
         <activity
             android:name="fly.fish.asdk.ChargeInfo"
             android:configChanges="keyboardHidden|orientation|navigation|screenSize"
+            android:exported="false"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
         <activity
             android:name="fly.fish.asdk.ChargeInfoForAilpay"
             android:configChanges="keyboardHidden|orientation|navigation|screenSize"
+            android:exported="false"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
         <activity
             android:name="fly.fish.asdk.UserinfoActivity"
             android:configChanges="keyboardHidden|orientation|navigation|screenSize"
+            android:exported="false"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
         <activity
             android:name="fly.fish.asdk.ChargeMessage"
             android:configChanges="keyboardHidden|orientation|navigation|screenSize"
+            android:exported="false"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
         <activity
             android:name="fly.fish.asdk.ChargeForZS"
             android:configChanges="keyboardHidden|orientation|navigation|screenSize"
+            android:exported="false"
             android:theme="@android:style/Theme.Dialog" />
         <activity
             android:name="fly.fish.asdk.BindAccountActivity"
             android:configChanges="keyboardHidden|orientation|navigation|screenSize"
+            android:exported="false"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
         <activity
             android:name="fly.fish.asdk.BindPhoneAndEmailActivity"
             android:configChanges="keyboardHidden|orientation|navigation|screenSize"
+            android:exported="false"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
         <activity
             android:name="fly.fish.asdk.CardRechargeActivity"
             android:configChanges="keyboardHidden|orientation|navigation|screenSize"
+            android:exported="false"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
             android:windowSoftInputMode="stateHidden" />
 
         <activity
             android:name="fly.fish.asdk.BindPhoneTipActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:exported="false"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
         <!-- 以上可设置横竖屏 -->
 
         <activity
             android:name="fly.fish.othersdk.YXWebActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:exported="false"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
 
         <service android:name="fly.fish.checkorder.IntentServiceDemo" />
@@ -163,11 +185,13 @@
             android:name="com.unionpay.uppay.PayActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:excludeFromRecents="true"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <activity
             android:name="com.unionpay.UPPayWapActivity"
             android:configChanges="orientation|keyboardHidden|fontScale"
+            android:exported="false"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
         <!-- alipay sdk begin -->
@@ -187,7 +211,7 @@
         <!-- 注意authorities修改包名+.fileprovider -->
         <provider
             android:name="fly.fish.tools.ASProvider"
-            android:authorities="${packagename}.fileprovider"
+            android:authorities="${applicationId}.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <!--元数据-->

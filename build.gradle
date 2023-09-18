@@ -3,7 +3,7 @@ ext {
 
     sdkName = "asdk"
     hostVersionCode = 704
-    hostVersionName = "7.0.4"
+    hostVersionName = "7.0.5"
     outputDir = rootDir.getAbsolutePath() + "/_outputs_${sdkName}_V${hostVersionCode}/"
 }
 

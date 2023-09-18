@@ -125,7 +125,7 @@ public class ChargeActivity extends MyActivity{
 				gameargs.setCallbackurl(e);
 				gameargs.setSum(f);
 				gameargs.setDesc(g);
-				String publisher = OutFace.getInstance(null).getPublisher();
+				String publisher = OutFace.getInstance().getPublisher();
 				gameargs.setPublisher(publisher);
 
 				if (getApp().curKey != null) {

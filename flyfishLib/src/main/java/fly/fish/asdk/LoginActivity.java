@@ -131,7 +131,7 @@ public class LoginActivity extends MyActivity {
 				gameargs.setCpid(a);
 				gameargs.setGameno(b);
 				gameargs.setKey(c);
-				gameargs.setPublisher(OutFace.getInstance(null).getPublisher());
+				gameargs.setPublisher(OutFace.getInstance().getPublisher());
 				gameargs.setName(d);
 				gameargs.setSelf(e);
 

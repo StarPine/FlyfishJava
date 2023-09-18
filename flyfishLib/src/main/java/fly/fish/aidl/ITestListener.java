@@ -202,5 +202,5 @@ public interface ITestListener extends android.os.IInterface {
 
 	public void payback(String msg, String status, String sum, String chargetype, String customorderid, String customstring) throws RemoteException;
 
-	public void queryback(String status, String sum, String chargetype, String customstring) throws RemoteException;
+	default void queryback(String status, String sum, String chargetype, String customstring) throws RemoteException{};
 }

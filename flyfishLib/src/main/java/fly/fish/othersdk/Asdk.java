@@ -313,7 +313,7 @@ public class Asdk implements ISdk{
 		//判断登录后弹公告
 		if("1".equals(gonggao_time)){
 			gonggao_time = "";
-			showGonggao(OutFace.getInstance(null).getmActivity(), gonggao_content);
+			showGonggao(OutFace.getInstance().getmActivity(), gonggao_content);
 		}
 	}
 	//ry支付完成
@@ -465,7 +465,7 @@ public class Asdk implements ISdk{
 					gonggao_content = content;
 					if("0".equals(onclick)){//登录前弹公告
 						gonggao_time = "0";
-						showGonggao(OutFace.getInstance(null).getmActivity(),content);
+						showGonggao(OutFace.getInstance().getmActivity(),content);
 					}else if("1".equals(onclick)){//登录后弹公告
 						gonggao_time = "1";
 					}

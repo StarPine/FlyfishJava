@@ -2362,7 +2362,7 @@ public class PhoneTool {
 		@Override
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
-			final Activity act= OutFace.getInstance(null).getmActivity();
+			final Activity act= OutFace.getInstance().getmActivity();
 			String str = "";
 			String str_fading = "根据国家新闻出版署《关于防止未成年人沉迷网络游戏的通知》，法定节假日当日未成年人玩家累计在线时间不能超过3小时,您累计已满3小时，请您下线休息";
 			String str0 = "根据国家新闻出版署《关于防止未成年人沉迷网络游戏的通知》，非法定节假日当日未成年人玩家累计在线时间不能超过1.5小时,您累计已满1.5小时，请您下线休息";
@@ -2414,7 +2414,7 @@ public class PhoneTool {
 				break;
 			case 5://弹实名
 				String switch_ = (String)((Object[])msg.obj)[0];
-				Activity act_= OutFace.getInstance(null).getmActivity();
+				Activity act_= OutFace.getInstance().getmActivity();
 				Intent intent = new Intent();
 				intent.setClass(act_,fly.fish.asdk.BindPhoneAndEmailActivity.class);
 				intent.putExtra("type","5");

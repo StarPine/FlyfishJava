@@ -224,7 +224,7 @@ public class ASDKReport {
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        String publisher = OutFace.getInstance(context).getPublisher();
+        String publisher = OutFace.getInstance().getPublisher();
         if (TextUtils.isEmpty(publisher)) {
             publisher = FilesTool.getPublisherStringContent();
         }
@@ -274,7 +274,7 @@ public class ASDKReport {
      */
     private String createSDKReportParams(Context context, String sdkEvent) {
 
-        String publisher = OutFace.getInstance(context).getPublisher();
+        String publisher = OutFace.getInstance().getPublisher();
         if (TextUtils.isEmpty(publisher)) {
             publisher = FilesTool.getPublisherStringContent();
         }
