@@ -130,7 +130,7 @@ public class MyRemoteService extends Service {
             // 步骤2：启动这个线程;
             ht.start();
             // 步骤3：创建我的Handler;
-            myhand = new MyServiceHandler(ht.getLooper(), this);
+            myhand = new MyServiceHandler(Looper.getMainLooper(), this);
         }
     }
 

@@ -47,6 +47,11 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
             <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+
+            </intent-filter>
+            <intent-filter>
                 <!--协议部分，随便设置-->
                 <data android:scheme="GAME_NAME_BROWER" />
                 <!--下面这几行也必须得设置-->
