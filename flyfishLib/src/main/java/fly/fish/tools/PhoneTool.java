@@ -78,6 +78,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -2493,10 +2494,14 @@ public class PhoneTool {
 			@Override
 			public void afterTextChanged(Editable editable) {
 				int length = editable.toString().length();
-				Message msg=new Message();
-				msg.what=2;
-				msg.obj=new Object[]{act,length};
-				mhandle.sendMessage(msg);
+				if (length >= 11){
+					InputMethodManager imm = (InputMethodManager) act.getSystemService(Context.INPUT_METHOD_SERVICE);
+					imm.hideSoftInputFromWindow(sj_edit.getWindowToken(), 0);
+				}
+//				Message msg=new Message();
+//				msg.what=2;
+//				msg.obj=new Object[]{act,length};
+//				mhandle.sendMessage(msg);
 			}
 		});
 	}
