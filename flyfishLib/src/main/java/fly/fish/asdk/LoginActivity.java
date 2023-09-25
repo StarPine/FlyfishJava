@@ -28,7 +28,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 
 public class LoginActivity extends MyActivity {
-	private Activity outContext;
+	private static Activity outContext;
 	private LinearLayout mLayout;
 	private EditText account;
 	private EditText password;
@@ -42,10 +42,16 @@ public class LoginActivity extends MyActivity {
 		outContext = (Activity) context;
 	}
 
+	public static Activity getNei(){
+		return outContext;
+	}
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		mLayout = new LinearLayout(this);
+		outContext = this;
+
 		setContentView(mLayout);
 		init();
 

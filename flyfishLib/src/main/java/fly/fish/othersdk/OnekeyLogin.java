@@ -99,59 +99,59 @@ public class OnekeyLogin {
 	        	}
 	        }
 	    });//设置授权页事件监听
-	    TextView mBtn = new TextView(activity);
-	    mBtn.setText(Html.fromHtml("<u>"+"其他登录方式"+"</u>"));
-	    mBtn.setTextColor(activity.getResources().getColor(android.R.color.holo_red_light));
-	    RelativeLayout.LayoutParams mLayoutParams1 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
-	    mLayoutParams1.setMargins(0, JXResUtils.dip2px(activity,290.0f),0,0);
-	    mLayoutParams1.addRule(RelativeLayout.CENTER_HORIZONTAL);
-        mBtn.setLayoutParams(mLayoutParams1);
-	    JVerifyUIConfig uiConfig = new JVerifyUIConfig.Builder()
-	    .setAuthBGImgPath("asdk_bg")
-	    .setNavText("本机号一键登录")
-        .setNavTextColor(activity.getResources().getColor(android.R.color.black))
-        .setNavColor(activity.getResources().getColor(android.R.color.holo_blue_bright))
-        .setNavReturnImgPath("cancle")
-        .setLogoWidth(20)
-        .setLogoHeight(20)
-        .setLogoHidden(true)
-        .setNumFieldOffsetY(165)//设置号码栏相对于标题栏下边缘 y 偏移
-        .setSloganOffsetY(215)//设置 slogan 相对于标题栏下边缘 y 偏移
-        .setLogBtnOffsetY(240)//设置登录按钮相对于标题栏下边缘 y 偏移
-        .setLogBtnWidth(180)
-        .setLogBtnImgPath("login_btn")
-        .setLogBtnTextColor(activity.getResources().getColor(android.R.color.white))
-        .setLogBtnTextSize(17)
-        .setNumberSize(18)
-        .setNumberColor(activity.getResources().getColor(android.R.color.black))
-        .setPrivacyState(true)
-        .setCheckedImgPath("protocol_gou_on")
-        .setUncheckedImgPath("protocol_gou_off")
-        .setPrivacyCheckboxInCenter(true)
-        .setPrivacyCheckboxSize(10)
-        .setPrivacyOffsetX(25)
-        .setPrivacyOffsetY(15)
+		TextView mBtn = new TextView(activity);
+		mBtn.setText(Html.fromHtml("<u>" + "其他登录方式" + "</u>"));
+		mBtn.setTextColor(activity.getResources().getColor(android.R.color.holo_red_light));
+		RelativeLayout.LayoutParams mLayoutParams1 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+		mLayoutParams1.setMargins(0, JXResUtils.dip2px(activity, 240.0f), 0, 0);
+		mLayoutParams1.addRule(RelativeLayout.CENTER_HORIZONTAL);
+		mBtn.setLayoutParams(mLayoutParams1);
+		JVerifyUIConfig uiConfig = new JVerifyUIConfig.Builder()
+				.setAuthBGImgPath("asdk_bg")
+				.setNavText("本机号一键登录")
+				.setNavTextColor(activity.getResources().getColor(android.R.color.black))
+				.setNavColor(activity.getResources().getColor(android.R.color.holo_blue_bright))
+				.setNavReturnImgPath("cancle")
+				.setLogoWidth(20)
+				.setLogoHeight(20)
+				.setLogoHidden(true)
+				.setNumFieldOffsetY(120)//设置号码栏相对于标题栏下边缘 y 偏移
+				.setSloganOffsetY(160)//设置 slogan 相对于标题栏下边缘 y 偏移
+				.setLogBtnOffsetY(190)//设置登录按钮相对于标题栏下边缘 y 偏移
+				.setLogBtnWidth(180)
+				.setLogBtnImgPath("login_btn")
+				.setLogBtnTextColor(activity.getResources().getColor(android.R.color.white))
+				.setLogBtnTextSize(17)
+				.setNumberSize(18)
+				.setNumberColor(activity.getResources().getColor(android.R.color.black))
+				.setPrivacyState(true)
+				.setCheckedImgPath("protocol_gou_on")
+				.setUncheckedImgPath("protocol_gou_off")
+				.setPrivacyCheckboxInCenter(true)
+				.setPrivacyCheckboxSize(10)
+				.setPrivacyOffsetX(25)
+				.setPrivacyOffsetY(15)
 //        .setPrivacyTextWidth(260)
-        .setAppPrivacyOne("用户协议",sharedPreferences.getString("othersdkextdata1", ""))
-        .setPrivacyText("登录即同意", "和", "", "")
-        .setAppPrivacyColor(0xff858585, 0xff000000)
-        .enableHintToast(true, null)
-        .setNavTransparent(false)
-        .setNavHidden(false)
-        .setStatusBarColorWithNav(true)
-        .addCustomView(mBtn, true, new JVerifyUIClickCallback() {
-                    @Override
-                    public void onClicked(Context context, View view) {
-                    	ASDKReport.getInstance().startSDKReport(context,EventManager.SDK_EVENT_ONCLICK_OTHER_LOGIN_TYPE);
-                    	isclickOtherlogin = true;
-                    	intent.setClass(activity, LoginActivity.class);
-                    	intent.putExtra("fromonekeylogin", "2");//1-转到历史账号页；2转到手机验证码登录
-                    	intent.putExtra("otheronekey", "2");//1-转到历史账号页；2转到手机验证码登录
-                    	activity.startActivity(intent);
-                    }
-                })
-	    .setDialogTheme(300, 360, 0, 0, false)
-	    .build();
+				.setAppPrivacyOne("用户协议", sharedPreferences.getString("othersdkextdata1", ""))
+				.setPrivacyText("登录即同意", "和", "", "")
+				.setAppPrivacyColor(0xff858585, 0xff000000)
+				.enableHintToast(true, null)
+				.setNavTransparent(false)
+				.setNavHidden(false)
+				.setStatusBarColorWithNav(true)
+				.addCustomView(mBtn, true, new JVerifyUIClickCallback() {
+					@Override
+					public void onClicked(Context context, View view) {
+						ASDKReport.getInstance().startSDKReport(context, EventManager.SDK_EVENT_ONCLICK_OTHER_LOGIN_TYPE);
+						isclickOtherlogin = true;
+						intent.setClass(activity, LoginActivity.class);
+						intent.putExtra("fromonekeylogin", "2");//1-转到历史账号页；2转到手机验证码登录
+						intent.putExtra("otheronekey", "2");//1-转到历史账号页；2转到手机验证码登录
+						activity.startActivity(intent);
+					}
+				})
+				.setDialogTheme(300, 300, 0, 0, false)
+				.build();
 	    JVerificationInterface.setCustomUIWithConfig(uiConfig);
 		JVerificationInterface.loginAuth(activity, settings, new VerifyListener() {
 

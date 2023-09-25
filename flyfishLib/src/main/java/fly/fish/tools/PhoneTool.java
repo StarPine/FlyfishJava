@@ -81,6 +81,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -95,6 +96,7 @@ import fly.fish.adapter.MyAccAdapter;
 import fly.fish.aidl.MyRemoteService;
 import fly.fish.aidl.OutFace;
 import fly.fish.asdk.AsdkActivity;
+import fly.fish.asdk.LoginActivity;
 import fly.fish.asdk.MyActivity;
 import fly.fish.asdk.MyApplication;
 import fly.fish.config.Configs;
@@ -2446,10 +2448,10 @@ public class PhoneTool {
 			@Override
 			public void afterTextChanged(Editable editable) {
 				int length = editable.toString().length();
-				Message msg=new Message();
-				msg.what=2;
-				msg.obj=new Object[]{act,length};
-				mhandle.sendMessage(msg);
+				if (length >= 11){
+					InputMethodManager imm = (InputMethodManager) act.getSystemService(Context.INPUT_METHOD_SERVICE);
+					imm.hideSoftInputFromWindow(sj_edit.getWindowToken(), 0);
+				}
 			}
 		});
 	}
@@ -2571,7 +2573,11 @@ public class PhoneTool {
 	private static String maidian_list = "";
 	private final static String get_maiidan_url = "http://iospingtai.xinxinjoy.com:8084/outerinterface/maidiantype.php?";
 	private final static String submit_maiidan_url = "http://iospingtai.xinxinjoy.com:8084/outerinterface/maidian.php?";
-	
+
+	public static void finisA(){
+		LoginActivity.getNei().finish();
+	}
+
 	private static void getMaidiantype(){
 		new Thread(new Runnable() {
 			
