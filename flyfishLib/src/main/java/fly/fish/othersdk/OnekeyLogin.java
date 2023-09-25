@@ -103,7 +103,7 @@ public class OnekeyLogin {
 	    mBtn.setText(Html.fromHtml("<u>"+"其他登录方式"+"</u>"));
 	    mBtn.setTextColor(activity.getResources().getColor(android.R.color.holo_red_light));
 	    RelativeLayout.LayoutParams mLayoutParams1 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT,RelativeLayout.LayoutParams.WRAP_CONTENT);
-	    mLayoutParams1.setMargins(0, JXResUtils.dip2px(activity,290.0f),0,0);
+	    mLayoutParams1.setMargins(0, JXResUtils.dip2px(activity,240.0f),0,0);
 	    mLayoutParams1.addRule(RelativeLayout.CENTER_HORIZONTAL);
         mBtn.setLayoutParams(mLayoutParams1);
 	    JVerifyUIConfig uiConfig = new JVerifyUIConfig.Builder()
@@ -115,9 +115,9 @@ public class OnekeyLogin {
         .setLogoWidth(20)
         .setLogoHeight(20)
         .setLogoHidden(true)
-        .setNumFieldOffsetY(165)//设置号码栏相对于标题栏下边缘 y 偏移
-        .setSloganOffsetY(215)//设置 slogan 相对于标题栏下边缘 y 偏移
-        .setLogBtnOffsetY(240)//设置登录按钮相对于标题栏下边缘 y 偏移
+        .setNumFieldOffsetY(120)//设置号码栏相对于标题栏下边缘 y 偏移
+        .setSloganOffsetY(160)//设置 slogan 相对于标题栏下边缘 y 偏移
+        .setLogBtnOffsetY(190)//设置登录按钮相对于标题栏下边缘 y 偏移
         .setLogBtnWidth(180)
         .setLogBtnImgPath("login_btn")
         .setLogBtnTextColor(activity.getResources().getColor(android.R.color.white))
@@ -150,7 +150,7 @@ public class OnekeyLogin {
                     	activity.startActivity(intent);
                     }
                 })
-	    .setDialogTheme(300, 360, 0, 0, false)
+	    .setDialogTheme(300, 300, 0, 0, false)
 	    .build();
 	    JVerificationInterface.setCustomUIWithConfig(uiConfig);
 		JVerificationInterface.loginAuth(activity, settings, new VerifyListener() {
