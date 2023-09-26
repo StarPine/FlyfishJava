@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,6 +20,7 @@ import fly.fish.report.ASDKReport;
 import fly.fish.report.EventManager;
 import fly.fish.tools.MLog;
 import fly.fish.tools.ManifestInfo;
+import fly.fish.tools.PhoneTool;
 
 
 public class PrivacyActivity extends Activity {
@@ -56,8 +58,9 @@ public class PrivacyActivity extends Activity {
                 String address = DialgTool.getpub("address.txt");
                 MLog.a("--------pub------" + asdkPublisher);
                 MLog.a("--------url------" + address);
-                String json = DialgTool.getWebMethod(address + asdkPublisher);
+                String json = DialgTool.getWebMethod(address + asdkPublisher +"&versionName="+ PhoneTool.getVersionName(PrivacyActivity.this));
                 MLog.a("--------json------" + json);
+                Log.i("asdk","versionName:" + PhoneTool.getVersionName(PrivacyActivity.this));
 
                 try {
                     JSONObject jsonObject = new JSONObject(json);
