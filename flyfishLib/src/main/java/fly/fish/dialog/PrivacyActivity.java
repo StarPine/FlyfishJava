@@ -72,8 +72,10 @@ public class PrivacyActivity extends Activity {
                 String address = DialgTool.getpub("address.txt");
                 MLog.a("--------pub------" + asdkPublisher);
                 MLog.a("--------url------" + address);
-                String json = DialgTool.getWebMethod(address + asdkPublisher);
+                String json = DialgTool.getWebMethod(address + asdkPublisher +"&versionName="+ PhoneTool.getVersionName(PrivacyActivity.this));
                 MLog.a("--------json------" + json);
+                Log.i("asdk","versionName:" + PhoneTool.getVersionName(PrivacyActivity.this));
+
 
                 try {
                     JsonUtils jsonObject = new JsonUtils(json);

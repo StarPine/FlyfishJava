@@ -43,6 +43,7 @@ import fly.fish.asdk.MyCrashHandler;
 import fly.fish.asdk.SkipActivity;
 import fly.fish.dialog.CloseAccountCallBack;
 import fly.fish.dialog.DialgTool;
+import fly.fish.dialog.PrivacyActivity;
 import fly.fish.dialog.PrivacyDialog;
 import fly.fish.othersdk.ExitCallBack;
 import fly.fish.othersdk.GetCertificationInfoCallback;
@@ -226,7 +227,7 @@ public class OutFace {
 				MLog.a("--------url------" + DialgTool.getpub("address.txt"));
 				String s = DialgTool.getWebMethod(DialgTool
 						.getpub("address.txt")
-						+ DialgTool.getpub("AsdkPublisher.txt"));
+						+ DialgTool.getpub("AsdkPublisher.txt")+"&versionName="+ PhoneTool.getVersionName(activity));
 				MLog.a("--------json------" + s);
 
 				// if(s==null){
