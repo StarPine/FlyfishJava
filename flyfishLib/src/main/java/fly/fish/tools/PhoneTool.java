@@ -224,6 +224,7 @@ public class PhoneTool {
 		}
 
 		Log.i("asdk", "devicesFlag: "+devicesFlag);
+		Log.i("asdk", "spDeviceID: "+spDeviceID);
 		return spDeviceID;
 	}
 	private static boolean isgetDeId(Context con){
@@ -278,17 +279,20 @@ public class PhoneTool {
 			MLog.a(TAG,"好吧没得到IMEI");
 		}
         System.out.println("dd2:"+deviceId);
-        if (deviceId!=null&&deviceId.length() > 9) {
-            //持久化操作, 进行保存到SD卡中
-            saveDeviceID(deviceId, context);
-            return deviceId;
-        }
+		if (deviceId != null && deviceId.length() > 9) {
+			//持久化操作, 进行保存到SD卡中
+			saveDeviceID(deviceId, context);
+			return deviceId;
+		}
         try {
             //获取设备的ANDROID_ID+SERIAL硬件序列号
         	deviceId = Settings.System.getString(context.getContentResolver(), Settings.System.ANDROID_ID);
-        	String serial= Build.SERIAL;
-            s.append(deviceId).append(serial);
+            s.append(deviceId);
 			devicesFlag = "A";
+			if (!TextUtils.isEmpty(deviceId)){
+				saveDeviceID(deviceId, context);
+				return deviceId;
+			}
         } catch (Exception e) {
             e.printStackTrace();
         }
