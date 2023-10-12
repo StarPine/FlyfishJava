@@ -19,7 +19,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.org.suspension.model.JXActivityUtils;
 import com.org.suspension.model.JXGameBall;
@@ -41,7 +40,7 @@ import fly.fish.tools.PhoneTool;
  *
  */
 public class Asdk implements ISdk{
-	private Class<?> clazz1 = null;//ry
+	private Class<?> clazzReyun = null;//ry
 	private Class<?> clazz_mp = null;//MH
 	private Class<?> clazz_onekeylogin = null;//onekeylogin
 	private boolean hasball = false;
@@ -69,12 +68,12 @@ public class Asdk implements ISdk{
 		}
 		//ry
 		try {
-			clazz1 = Class.forName("fly.fish.othersdk.Reyunsdk");
+			clazzReyun = Class.forName("fly.fish.othersdk.Reyunsdk");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		if(clazz1!=null){
-			Method method1 = getMethod(clazz1, "reyunApplicationInit", Application.class);
+		if(clazzReyun !=null){
+			Method method1 = getMethod(clazzReyun, "reyunApplicationInit", Application.class);
 			invoke(method1, application);
 		}
 
@@ -114,14 +113,20 @@ public class Asdk implements ISdk{
 	public void InitLaunch(final Activity activity, final boolean isLandsape,
 			final CallBackListener mcallback) {
 		//ry
-		if(clazz1!=null){
-			Method method1 = getMethod(clazz1, "reyuninit", Activity.class);
+		if(clazzReyun !=null){
+			Method method1 = getMethod(clazzReyun, "reyuninit", Activity.class);
 			invoke(method1,activity);
 		}
 
-		
 		share = MyApplication.getAppContext().getSharedPreferences("user_info", 0);
 		mcallback.callback(0, false);
+	}
+
+	public void update(Activity activity) {
+		if(clazzReyun !=null){
+			Method method1 = getMethod(clazzReyun, "update", Activity.class);
+			invoke(method1,activity);
+		}
 	}
 
 	@Override
@@ -131,8 +136,8 @@ public class Asdk implements ISdk{
 
 	public void onResume(Activity act) {
 		//ry
-		if(clazz1!=null){
-			Method method1 = getMethod(clazz1, "reyunResume", Activity.class);
+		if(clazzReyun !=null){
+			Method method1 = getMethod(clazzReyun, "reyunResume", Activity.class);
 			invoke(method1,act);
 		}
 		MLog.a("onResume-hasball--"+hasball);
@@ -143,8 +148,8 @@ public class Asdk implements ISdk{
 
 	public void onPause(Activity act) {
 		//ry
-		if(clazz1!=null){
-			Method method = getMethod(clazz1, "reyunPause", Activity.class);
+		if(clazzReyun !=null){
+			Method method = getMethod(clazzReyun, "reyunPause", Activity.class);
 			invoke(method, act);
 		}
 		MLog.a("onPause-hasball--"+hasball);
@@ -165,8 +170,8 @@ public class Asdk implements ISdk{
 
 	public void onDestroy(Activity act) {
 		//ry
-		if(clazz1!=null){
-			Method method1 = getMethod(clazz1, "reyunDestroy", new Class<?>[0]);
+		if(clazzReyun !=null){
+			Method method1 = getMethod(clazzReyun, "reyunDestroy", new Class<?>[0]);
 			invoke(method1,new Object[0]);
 		}
 		if(hasball){
@@ -188,8 +193,8 @@ public class Asdk implements ISdk{
 		}
 		
 		//ry
-		if(clazz1!=null){
-			Method method = getMethod(clazz1, "reyunLogin", Activity.class,Intent.class);
+		if(clazzReyun !=null){
+			Method method = getMethod(clazzReyun, "reyunLogin", Activity.class,Intent.class);
 			try {
 				boolean ob = (Boolean)method.invoke(null, act,intent);
 				if(ob){//对应SWHT的云端环境
@@ -238,13 +243,13 @@ public class Asdk implements ISdk{
 	public void paySDK(Activity act, Intent intent){
 		Bundle bundle = intent.getExtras();
 		//ry下单设置
-		if(clazz1!=null){
-			Method method2 = getMethod(clazz1, "reyunSetOrder", String.class,String.class);
+		if(clazzReyun !=null){
+			Method method2 = getMethod(clazzReyun, "reyunSetOrder", String.class,String.class);
 			invoke(method2,bundle.getString("desc"), bundle.getString("account"));
 		}
 		//ry
-		if(clazz1!=null){
-			Method method = getMethod(clazz1, "reyunPay", Activity.class,Intent.class);
+		if(clazzReyun !=null){
+			Method method = getMethod(clazzReyun, "reyunPay", Activity.class,Intent.class);
 			try {
 				boolean ob = (Boolean)method.invoke(null, act,intent);
 				if(ob){//对应SWHT的云端环境
@@ -266,8 +271,8 @@ public class Asdk implements ISdk{
 	}
 	public void submitData(String data){
 		//ry
-		if(clazz1!=null){
-			Method method2 = getMethod(clazz1, "reyunSetUserData", String.class);
+		if(clazzReyun !=null){
+			Method method2 = getMethod(clazzReyun, "reyunSetUserData", String.class);
 			invoke(method2,data);
 		}
 		
@@ -281,8 +286,8 @@ public class Asdk implements ISdk{
 	}
 	public void exit(Activity context) {
 		//ry
-		if(clazz1!=null){
-			Method method1 = getMethod(clazz1, "reyunexit", new Class<?>[0]);
+		if(clazzReyun !=null){
+			Method method1 = getMethod(clazzReyun, "reyunexit", new Class<?>[0]);
 			invoke(method1,new Object[0]);
 		}
 		
@@ -294,8 +299,8 @@ public class Asdk implements ISdk{
 	//ry登录完成
 	public void reyunsetLogin(String acc) {
 		MLog.a("ASDK", "reyunlogin");
-		if(clazz1!=null){
-			Method method1 = getMethod(clazz1, "reyunsetLogin", String.class);
+		if(clazzReyun !=null){
+			Method method1 = getMethod(clazzReyun, "reyunsetLogin", String.class);
 			invoke(method1,acc);
 		}
 		String isopenball = share.getString("othersdkextdata5", "");
@@ -319,8 +324,8 @@ public class Asdk implements ISdk{
 	//ry支付完成
 	public void reyunandttsetPay(String desc,String orderid, String type, String sum, boolean issuccess) {
 		MLog.a("ASDK", "reyunandttPay");
-		if(clazz1!=null){
-			Method method1 = getMethod(clazz1, "reyunsetPay", String.class,String.class,String.class,String.class,boolean.class);
+		if(clazzReyun !=null){
+			Method method1 = getMethod(clazzReyun, "reyunsetPay", String.class,String.class,String.class,String.class,boolean.class);
 			invoke(method1,desc,orderid,type,sum,issuccess);
 		}
 		

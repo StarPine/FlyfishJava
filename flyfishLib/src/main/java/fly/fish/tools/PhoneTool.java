@@ -131,6 +131,19 @@ public class PhoneTool {
 		return "1.0";
 	}
 
+	public static int getVersionCode(Context context){
+		try {
+			PackageManager manager = context.getPackageManager();
+			PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
+			int version = info.versionCode;
+			return version;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 1;
+	}
+
+
 	/**
 	 * 安装APK
 	 * 

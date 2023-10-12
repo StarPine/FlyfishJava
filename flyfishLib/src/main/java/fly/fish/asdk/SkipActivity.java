@@ -61,6 +61,11 @@ public class SkipActivity extends Activity {
         invoke(method, act, mIntent);
     }
 
+    public static void update(Activity activity) {
+        Method method = getMethod("update", Activity.class);
+        invoke(method,activity);
+    }
+
     public static String getOrderExtdata(){
         Method method = getMethod("getOrderExtdata");
         Object invoke = invoke(method);

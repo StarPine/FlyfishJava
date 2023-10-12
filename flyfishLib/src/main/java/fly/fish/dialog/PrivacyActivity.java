@@ -15,9 +15,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import fly.fish.asdk.SkipActivity;
 import fly.fish.config.Configs;
 import fly.fish.report.ASDKReport;
 import fly.fish.report.EventManager;
+import fly.fish.tools.JsonUtils;
 import fly.fish.tools.MLog;
 import fly.fish.tools.ManifestInfo;
 import fly.fish.tools.PhoneTool;
@@ -30,6 +32,8 @@ public class PrivacyActivity extends Activity {
     String ys_url = "";
     String yh_url = "";
     private boolean isShowDialog = true;
+    private String updateUrl = "http://update.xxhd-tech.com:8082/getupdatestate.php?";
+    private String asdkPublisher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +58,8 @@ public class PrivacyActivity extends Activity {
 
             @Override
             public void run() {
-                String asdkPublisher = DialgTool.getpub("AsdkPublisher.txt");
+                asdkPublisher = DialgTool.getpub("AsdkPublisher.txt");
                 String address = DialgTool.getpub("address.txt");
-                MLog.a("--------pub------" + asdkPublisher);
-                MLog.a("--------url------" + address);
                 String json = DialgTool.getWebMethod(address + asdkPublisher +"&versionName="+ PhoneTool.getVersionName(PrivacyActivity.this));
                 MLog.a("--------json------" + json);
                 Log.i("asdk","versionName:" + PhoneTool.getVersionName(PrivacyActivity.this));
@@ -94,14 +96,8 @@ public class PrivacyActivity extends Activity {
                     if (isFirstRun && state.equals("1")) { // 第一次则跳转到引导页面
                         showDialog(editor);
 
-                    } else if (!isFirstRun) { // 如果是第二次启动则直接跳转到主页面
-                        MLog.a("非第一次安装-----------");
-                        startGameActivity();
-
-                    } else if (state.equals("0")) { // 如果是第二次启动则直接跳转到主页面
-                        MLog.a("协议关闭-----------");
-                        startGameActivity();
-
+                    } else if (!isFirstRun || state.equals("0")) { // 如果是第二次启动则直接跳转到主页面
+                        loadUpdateData();
                     }
 
                 }
@@ -113,6 +109,54 @@ public class PrivacyActivity extends Activity {
         }
     }
 
+    private void loadUpdateData() {
+        new Thread(() -> {
+            StringBuffer builder = new StringBuffer();
+            builder.append(updateUrl)
+                    .append("pub=").append(asdkPublisher)
+                    .append("&versionName=").append(PhoneTool.getVersionName(PrivacyActivity.this))
+                    .append("&versionCode=").append(PhoneTool.getVersionCode(PrivacyActivity.this))
+                    .append("&packname=").append(PrivacyActivity.this.getPackageName());
+            showUpdateDialog(DialgTool.getWebMethod(builder.toString()));
+        }).start();
+
+    }
+
+    private void showUpdateDialog(String updateData) {
+        runOnUiThread(() -> {
+            JsonUtils jsonUtils = new JsonUtils(updateData);
+            String updateTitle = jsonUtils.getString("updateTitle");
+            String updateContent = jsonUtils.getString("updateContent");
+            int updateStatus = jsonUtils.getInt("updateStatus", 0);
+            if (updateStatus == 0){
+                startGameActivity();
+                return;
+            }
+
+            UpdateDialog updateDialog = new UpdateDialog(this, updateTitle, updateContent, updateStatus);
+            updateDialog.setCancelable(false);// 点击返回键或者空白处不消失
+            updateDialog.setClickListener(new UpdateDialog.ClickInterface() {
+                @Override
+                public void doCofirm() {
+                    SkipActivity.update(PrivacyActivity.this);
+                    if (updateStatus == 2){
+                        updateDialog.dismiss();
+                        finish();
+                        System.exit(0);
+                    }
+
+                }
+
+                @Override
+                public void doCancel() {
+                    updateDialog.dismiss();
+                    startGameActivity();
+                }
+            });
+            updateDialog.show();
+        });
+
+    }
     private void showDialog(SharedPreferences.Editor editor) {
         final PrivacyDialog privacyDialog = new PrivacyDialog(PrivacyActivity.this, yh_url, ys_url, qx_url,
                 getResources().getIdentifier("MyDialog", "style", getPackageName()));
@@ -126,7 +170,8 @@ public class PrivacyActivity extends Activity {
                 editor.commit();
                 ASDKReport.getInstance().startSDKReport(PrivacyActivity.this, EventManager.SDK_EVENT_AGREE_PRIVACY);
                 MLog.a("同意协议-----------");
-                startGameActivity();
+//                startGameActivity();
+                loadUpdateData();
             }
 
             @Override
