@@ -44,7 +44,7 @@ public class YXWebActivity extends Activity {
 		YXWebActivity.ispayfinish = ispayfinish;
 	}
 
-	String url;TextView tv = null;
+	String url;
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -87,9 +87,7 @@ public class YXWebActivity extends Activity {
 		LinearLayout lay = new LinearLayout(this);
 		LinearLayout.LayoutParams params_lay = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 		lay.setLayoutParams(params_lay);
-		lay.setGravity(Gravity.CENTER);
-		lay.setOrientation(LinearLayout.VERTICAL);
-		
+
 		webView = new WebView(this);
 		
         WebSettings setting = webView.getSettings();
@@ -122,27 +120,7 @@ public class YXWebActivity extends Activity {
         }else{
         	webView.loadUrl(url);
         }
-        tv = new TextView(this);
-        if(intent.getStringExtra("user_protocol_url")!=null){
-        	tv.setGravity(Gravity.CENTER);
-        	tv.setText("x");tv.setTextSize(18);
-        	tv.setTextColor(getResources().getColor(android.R.color.black));
-        	tv.getPaint().setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-        	tv.setPadding(0,5, 0, 5);
-        	tv.setOnClickListener(new OnClickListener() {
-        		
-        		@Override
-        		public void onClick(View v) {
-        			YXWebActivity.this.finish();
-        		}
-        	});
-        	lay.addView(tv,new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-        	tv.setBackgroundColor(YXWebActivity.this.getResources().getColor(android.R.color.white));
-        }
-        ScrollView sv = new ScrollView(this);
-        sv.setHorizontalScrollBarEnabled(false);
-        sv.addView(webView, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-        lay.addView(sv,new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+		lay.addView(webView, new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
         setContentView(lay);
         
 	}
