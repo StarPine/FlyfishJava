@@ -27,7 +27,6 @@
         android:layout_weight="1"
         android:letterSpacing="0.03"
         android:lineSpacingMultiplier="1.1"
-        android:maxLines="3"
         android:scrollbars="vertical"
         android:text="有新的游戏玩法，更新后即可体验"
         android:textColor="#0C0B0B"
