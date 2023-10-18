@@ -34,16 +34,19 @@ public class PrivacyActivity extends Activity {
     private boolean isShowDialog = true;
     private String updateUrl = "http://update.xxhd-tech.com:8082/getupdatestate.php?";
     private String asdkPublisher;
+    private SharedPreferences sharedPreferences;
+    private String IS_SHOWED = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
-        isShowDialog  = ManifestInfo.getMetaBoolean(this,"PRIVACY_SHOW_STATUS",true);
-        if (isShowDialog){
+        IS_SHOWED = "isShowed" + PhoneTool.getVersionName(PrivacyActivity.this) + "-" + PhoneTool.getVersionCode(PrivacyActivity.this);
+        sharedPreferences = getSharedPreferences("asdk", MODE_PRIVATE);
+        isShowDialog = ManifestInfo.getMetaBoolean(this, "PRIVACY_SHOW_STATUS", true);
+        if (isShowDialog) {
             requestShowDialog();
-        }else {
-            SharedPreferences sharedPreferences = getSharedPreferences("asdk", MODE_PRIVATE);
+        } else {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean("isFirstRun", false);
             editor.apply();
@@ -60,9 +63,9 @@ public class PrivacyActivity extends Activity {
             public void run() {
                 asdkPublisher = DialgTool.getpub("AsdkPublisher.txt");
                 String address = DialgTool.getpub("address.txt");
-                String json = DialgTool.getWebMethod(address + asdkPublisher +"&versionName="+ PhoneTool.getVersionName(PrivacyActivity.this));
+                String json = DialgTool.getWebMethod(address + asdkPublisher + "&versionName=" + PhoneTool.getVersionName(PrivacyActivity.this));
                 MLog.a("--------json------" + json);
-                Log.i("asdk","versionName:" + PhoneTool.getVersionName(PrivacyActivity.this));
+                Log.i("asdk", "versionName:" + PhoneTool.getVersionName(PrivacyActivity.this));
 
                 try {
                     JSONObject jsonObject = new JSONObject(json);
@@ -88,13 +91,10 @@ public class PrivacyActivity extends Activity {
 
                 @Override
                 public void run() {
-
-                    SharedPreferences sharedPreferences = getSharedPreferences("asdk", MODE_PRIVATE);
                     boolean isFirstRun = sharedPreferences.getBoolean("isFirstRun", true);
-                    final SharedPreferences.Editor editor = sharedPreferences.edit();
 
                     if (isFirstRun && state.equals("1")) { // 第一次则跳转到引导页面
-                        showDialog(editor);
+                        showPrivacyDialog();
 
                     } else if (!isFirstRun || state.equals("0")) { // 如果是第二次启动则直接跳转到主页面
                         loadUpdateData();
@@ -128,7 +128,8 @@ public class PrivacyActivity extends Activity {
             String updateTitle = jsonUtils.getString("updateTitle");
             String updateContent = jsonUtils.getString("updateContent");
             int updateStatus = jsonUtils.getInt("updateStatus", 0);
-            if (updateStatus == 0){
+            boolean isShowed = sharedPreferences.getBoolean(IS_SHOWED, false);
+            if (updateStatus == 0 || isShowed) {
                 startGameActivity();
                 return;
             }
@@ -138,12 +139,14 @@ public class PrivacyActivity extends Activity {
             updateDialog.setClickListener(new UpdateDialog.ClickInterface() {
                 @Override
                 public void doCofirm() {
+
+                    //运营需求：强更的状态下也不进行二次弹出
+                    noLongerShowUpdate();
+
                     SkipActivity.update(PrivacyActivity.this);
-                    if (updateStatus == 2){
-                        updateDialog.dismiss();
-                        finish();
-                        System.exit(0);
-                    }
+                    updateDialog.dismiss();
+                    finish();
+                    System.exit(0);
 
                 }
 
@@ -151,13 +154,23 @@ public class PrivacyActivity extends Activity {
                 public void doCancel() {
                     updateDialog.dismiss();
                     startGameActivity();
+                    noLongerShowUpdate();
                 }
             });
             updateDialog.show();
         });
 
     }
-    private void showDialog(SharedPreferences.Editor editor) {
+
+    private void noLongerShowUpdate() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(IS_SHOWED, true);
+        editor.apply();
+    }
+
+    private void showPrivacyDialog() {
+        final SharedPreferences.Editor editor = sharedPreferences.edit();
+
         final PrivacyDialog privacyDialog = new PrivacyDialog(PrivacyActivity.this, yh_url, ys_url, qx_url,
                 getResources().getIdentifier("MyDialog", "style", getPackageName()));
 
