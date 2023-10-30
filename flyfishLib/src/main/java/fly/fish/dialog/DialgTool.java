@@ -37,6 +37,7 @@ public class DialgTool {
 	public static String getWebMethod(String urls){
 		
 
+        MLog.a("urls------"+urls);
 		String data="";
 		HttpURLConnection connection = null;
         BufferedReader reader = null;
@@ -58,17 +59,6 @@ public class DialgTool {
             data=response.toString();
             MLog.a("返回结果------"+response.toString());
 
-            JsonUtils jsonUtils = new JsonUtils(data);
-            boolean isrequ = jsonUtils.getBoolean("isrequ",false);
-            boolean ischeck = jsonUtils.getBoolean("ischeck",false);
-            boolean oneLoginCheck = jsonUtils.getBoolean("jgcheck",false);
-
-            OutFace.setCheckState(ischeck);
-            OutFace.setOneLoginCheck(oneLoginCheck);
-            if(isrequ){
-				OutFace.setisreq(true);
-                OthPhone.setisreq(true);
-            }
         }catch (Exception e){
             e.printStackTrace();
         }finally {

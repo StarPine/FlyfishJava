@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import fly.fish.aidl.OutFace;
 import fly.fish.asdk.SkipActivity;
 import fly.fish.config.Configs;
 import fly.fish.report.ASDKReport;
@@ -22,6 +23,7 @@ import fly.fish.report.EventManager;
 import fly.fish.tools.JsonUtils;
 import fly.fish.tools.MLog;
 import fly.fish.tools.ManifestInfo;
+import fly.fish.tools.OthPhone;
 import fly.fish.tools.PhoneTool;
 
 
@@ -63,22 +65,25 @@ public class PrivacyActivity extends Activity {
             public void run() {
                 asdkPublisher = DialgTool.getpub("AsdkPublisher.txt");
                 String address = DialgTool.getpub("address.txt");
-                String json = DialgTool.getWebMethod(address + asdkPublisher + "&versionName=" + PhoneTool.getVersionName(PrivacyActivity.this));
-                MLog.a("--------json------" + json);
+                String data = DialgTool.getWebMethod(address + asdkPublisher + "&versionName=" + PhoneTool.getVersionName(PrivacyActivity.this));
+                MLog.a("--------json------" + data);
                 Log.i("asdk", "versionName:" + PhoneTool.getVersionName(PrivacyActivity.this));
 
-                try {
-                    JSONObject jsonObject = new JSONObject(json);
-                    state = jsonObject.getString("state");
-                    qx_url = jsonObject.getString("qxurl");
-                    ys_url = jsonObject.getString("ysurl");
-                    yh_url = jsonObject.getString("yhurl");
-                    Configs.qqContactWay = jsonObject.getString("smkf");
-                    MLog.a("--------请求完成------qx=" + qx_url + ";ys_url=" + ys_url + ";yh_url=" + yh_url);
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                JsonUtils jsonUtils = new JsonUtils(data);
+                boolean isrequ = jsonUtils.getBoolean("isrequ",false);
+                boolean ischeck = jsonUtils.getBoolean("ischeck",false);
+                boolean oneLoginCheck = jsonUtils.getBoolean("jgcheck",false);
+
+                OutFace.setCheckState(ischeck);
+                OutFace.setOneLoginCheck(oneLoginCheck);
+                OutFace.setisreq(isrequ);
+                OthPhone.setisreq(isrequ);
+                state = jsonUtils.getString("state");
+                qx_url = jsonUtils.getString("qxurl");
+                ys_url = jsonUtils.getString("ysurl");
+                yh_url = jsonUtils.getString("yhurl");
+                Configs.qqContactWay = jsonUtils.getString("smkf");
+                MLog.a("--------请求完成------qx=" + qx_url + ";ys_url=" + ys_url + ";yh_url=" + yh_url);
 
             }
         });
