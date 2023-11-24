@@ -1,16 +1,29 @@
 package com.example.flyfishjava;
 
+import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.RemoteException;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
@@ -18,12 +31,16 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import fly.fish.aidl.CallBackListener;
 import fly.fish.aidl.OutFace;
+import fly.fish.asdk.MyActivity;
 import fly.fish.report.EventManager;
 import fly.fish.report.ASDKReport;
 import fly.fish.tools.MLog;
@@ -51,12 +68,25 @@ public class MainActivity extends Activity {
 //    private String gamekey = "bfe6f3bfd4415423";
 //    private String gamename = "pfdmw2";
 
+//    private String cpid = "100079";
+//    private String gameid = "100971";
+//    private String gamekey = "0bd7ed3fe56c1393";
+//    private String gamename = "szwl";
+
+//    private String cpid = "100079";
+//    private String gameid = "100863";
+//    private String gamekey = "c5b5195b1a2a14c6";
+//    private String gamename = "dqdg";
+
+//    private String cpid = "100079";
+//    private String gameid = "100973";
+//    private String gamekey = "67d8d675b78bdb3c";
+//    private String gamename = "dhxj";
 
     private String cpid = "100079";
-    private String gameid = "100973";
-    private String gamekey = "67d8d675b78bdb3c";
-    private String gamename = "dhxj";
-
+    private String gameid = "100584";
+    private String gamekey = "d157306a5d4e9813";
+    private String gamename = "jdzc";
 
 
     //余额，角色id，帮派，VIP等级，服务器名称，角色等级，服务器id，角色名称，阵营（若没有可不传）
