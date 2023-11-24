@@ -51,7 +51,8 @@ public class AsdkActivity extends MyActivity {
 	//围信-网游检测更新地址
 	private static String URL2 = "http://update.qweixinq.com:8082/init.php?gameparam=replace";
 	//值尚-网游检测更新地址
-	private static String URL3 = "http://update.ay99.net/init.php?gameparam=replace";
+//	private static String URL3 = "http://update.ay99.net/init.php?gameparam=replace";//值尚
+	private static String URL3 = "http://update.xxhd-tech.com:8082/init.php?gameparam=replace";//欣欣
 	//应美-网游检测更新地址
 	private static String URL4 = "http://update.baban-inc.cn:8082/init.php?gameparam=replace";
 	private static String publisher = FilesTool.getPublisherStringContent();
@@ -160,7 +161,7 @@ public class AsdkActivity extends MyActivity {
 		
 		
 		new Thread(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				int versionCode = HttpUtils.getAppCode();
@@ -247,7 +248,7 @@ public class AsdkActivity extends MyActivity {
 	/**
 	 * 启动下载
 	 * 
-	 * @param logic
+	 * @param
 	 */
 	public void startUpdateThread() {
 		MyApplication app = getApp();
@@ -314,7 +315,8 @@ public class AsdkActivity extends MyActivity {
 							}
 							file = new File(Configs.ASDKROOT + AsdkActivity.this.getPackageName() + File.separator + gameName);
 						}else{
-							file = new File(Configs.ASDKROOT + gameName);
+//							file = new File(Configs.ASDKROOT + gameName);
+							file = new File(PhoneTool.getDataFileFullPath(context,gameName));
 						}
 						file.delete();
 						fileOutputStream = new FileOutputStream(file);

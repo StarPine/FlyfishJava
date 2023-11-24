@@ -143,6 +143,11 @@ public class PhoneTool {
 		return 1;
 	}
 
+	public static String getDataFileFullPath(Context context, String fileName){
+		File fileDir = context.getExternalFilesDir(fileName);
+		String destFilePath = fileDir.getAbsolutePath()+File.separator+fileName;
+		return destFilePath;
+	}
 
 	/**
 	 * 安装APK
@@ -151,7 +156,8 @@ public class PhoneTool {
 	 */
 	public static void notifyAndInstallApk(Activity from, String apkFileString) {
 		String name = HttpUtils.getUrlFileName(apkFileString).split("\\|")[0];
-		String filename = Configs.ASDKROOT + from.getPackageName() + File.separator + name;
+//		String filename = Configs.ASDKROOT  + name;
+		String filename = getDataFileFullPath(from,name);
 		if (!Configs.SDEXIST) {
 			filename = Configs.ASDKROOT  + name;
 		}
