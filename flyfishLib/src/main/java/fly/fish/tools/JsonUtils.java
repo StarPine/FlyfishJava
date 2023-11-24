@@ -30,8 +30,18 @@ public class JsonUtils {
         return data;
     }
     
+    public String getString(String key,String defValue) {
+        String data = defValue;
+        try {
+            data = jsonObject.getString(key);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
+
     public int getInt(String key, int defValue) {
-        int data = -1;
+        int data = defValue;
         try {
             data = jsonObject.getInt(key);
         } catch (Exception e) {
@@ -41,7 +51,7 @@ public class JsonUtils {
     }
     
     public boolean getBoolean(String key, boolean defValue) {
-        boolean data = false;
+        boolean data = defValue;
         try {
             data = jsonObject.getBoolean(key);
         } catch (Exception e) {

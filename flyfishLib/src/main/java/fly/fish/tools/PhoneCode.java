@@ -79,13 +79,11 @@ public class PhoneCode extends RelativeLayout {
                         String data = editable.toString().trim();
                         if (data.length() >= 4) {
                             //将string转换成List
-                            List<String> list = Arrays.asList(data.split(""));
-                            //Arrays.asList没有实现add和remove方法，继承的AbstractList，需要将list放进java.util.ArrayList中
-                            codes = new ArrayList<String>(list);
-//                            if (EmptyUtils.isNotEmpty(codes) && codes.size() > 6) {
-//                                //使用data.split("")方法会将""放进第一下标里需要去掉
-//                                codes.remove(0);
-//                            }
+                            String[] split = data.split("");
+                            for (String s : split) {
+                                if (!s.equals("") && !s.equals(" "))
+                                    codes.add(s);
+                            }
                         } else {
                             codes.add(data);
                         }
