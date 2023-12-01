@@ -191,12 +191,8 @@ public class MyServiceHandler extends Handler {
              */
             if (service.re1 == null || service.re1.equals("")) {
                 service.getGameArgs().setInit(false);
-                try {
-                    ASDKReport.getInstance().startSDKReport(MyApplication.context, EventManager.SDK_EVENT_INIT_FAIL);
-                    service.getIlistener().initback("2");
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
+                ASDKReport.getInstance().startSDKReport(MyApplication.context, EventManager.SDK_EVENT_INIT_FAIL);
+                initbackToMainUI("2");
                 // sendEmptyMessage(3);
             } else {
 
@@ -242,13 +238,9 @@ public class MyServiceHandler extends Handler {
                     service.getGameArgs().setInit(true);
 
                     if (service.getIlistener() != null) {
-                        try {
-                            MLog.s("servicehandler---success----re == 4");
-                            ASDKReport.getInstance().startSDKReport(MyApplication.context, EventManager.SDK_EVENT_INIT_SUCCESS);
-                            service.getIlistener().initback("0");
-                        } catch (RemoteException e) {
-                            e.printStackTrace();
-                        }
+                        MLog.s("servicehandler---success----re == 4");
+                        ASDKReport.getInstance().startSDKReport(MyApplication.context, EventManager.SDK_EVENT_INIT_SUCCESS);
+                        initbackToMainUI("0");
                     } else {
                         MLog.s("servicehandler---failure-----re == 4");
                     }
@@ -257,13 +249,9 @@ public class MyServiceHandler extends Handler {
                     service.getGameArgs().setInit(false);
 
                     if (service.getIlistener() != null) {
-                        try {
                             MLog.s("servicehandler---success----re == 5");
                             ASDKReport.getInstance().startSDKReport(MyApplication.context, EventManager.SDK_EVENT_INIT_FAIL);
-                            service.getIlistener().initback("1");
-                        } catch (RemoteException e) {
-                            e.printStackTrace();
-                        }
+                            initbackToMainUI("1");
                     } else {
                         MLog.s("servicehandler---failure-----re == 5");
                     }
@@ -272,13 +260,9 @@ public class MyServiceHandler extends Handler {
 
                     app.getGameArgs().setInit(false);
                     if (service.getIlistener() != null) {
-                        try {
-                            MLog.s("servicehandler---success----else");
-                            ASDKReport.getInstance().startSDKReport(MyApplication.context, EventManager.SDK_EVENT_INIT_FAIL);
-                            service.getIlistener().initback("2");
-                        } catch (RemoteException e) {
-                            e.printStackTrace();
-                        }
+                        MLog.s("servicehandler---success----else");
+                        ASDKReport.getInstance().startSDKReport(MyApplication.context, EventManager.SDK_EVENT_INIT_FAIL);
+                        initbackToMainUI("2");
                     } else {
                         MLog.s("servicehandler---failure-----else");
                     }
@@ -287,5 +271,16 @@ public class MyServiceHandler extends Handler {
                 }
             }
         }
+    }
+
+    private void initbackToMainUI(String status) {
+        new Handler(Looper.getMainLooper()).post(() -> {
+            try {
+                service.getIlistener().initback(status);
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+
+        });
     }
 }
