@@ -14,10 +14,10 @@ import java.lang.reflect.Method;
 import fly.fish.aidl.CallBackListener;
 import fly.fish.aidl.MyRemoteService;
 import fly.fish.dialog.CloseAccountCallBack;
-import fly.fish.othersdk.AImageCapturer;
-import fly.fish.othersdk.ExitCallBack;
+import fly.fish.impl.AImageCapturer;
+import fly.fish.impl.ExitCallBack;
 //import fly.fish.othersdk.ForADresult;
-import fly.fish.othersdk.GetCertificationInfoCallback;
+import fly.fish.impl.GetCertificationInfoCallback;
 import fly.fish.tools.FilesTool;
 import fly.fish.tools.MLog;
 

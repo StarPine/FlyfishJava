@@ -31,6 +31,8 @@ import fly.fish.asdk.ChargeActivity;
 import fly.fish.asdk.LoginActivity;
 import fly.fish.asdk.MyApplication;
 import fly.fish.beans.GameArgs;
+import fly.fish.impl.GetCertificationInfoCallback;
+import fly.fish.impl.ISdk;
 import fly.fish.tools.HttpUtils;
 import fly.fish.tools.MLog;
 import fly.fish.tools.PhoneTool;
@@ -39,7 +41,7 @@ import fly.fish.tools.PhoneTool;
  * @author 56547
  *
  */
-public class Asdk implements ISdk{
+public class Asdk implements ISdk {
 	private Class<?> clazzReyun = null;//ry
 	private Class<?> clazz_mp = null;//MH
 	private Class<?> clazz_onekeylogin = null;//onekeylogin

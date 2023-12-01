@@ -1,4 +1,4 @@
-package fly.fish.othersdk;
+package fly.fish.impl;
 
 public interface GetCertificationInfoCallback {
 

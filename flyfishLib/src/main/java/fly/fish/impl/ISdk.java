@@ -1,4 +1,4 @@
-package fly.fish.othersdk;
+package fly.fish.impl;
 
 import android.app.Activity;
 import android.app.Application;

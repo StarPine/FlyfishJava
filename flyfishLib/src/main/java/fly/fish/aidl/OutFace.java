@@ -13,7 +13,6 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,12 +27,11 @@ import fly.fish.asdk.MyApplication;
 import fly.fish.asdk.MyCrashHandler;
 import fly.fish.asdk.SkipActivity;
 import fly.fish.dialog.CloseAccountCallBack;
-import fly.fish.othersdk.ExitCallBack;
-import fly.fish.othersdk.GetCertificationInfoCallback;
+import fly.fish.impl.ExitCallBack;
+import fly.fish.impl.GetCertificationInfoCallback;
 import fly.fish.othersdk.JGSHaretools;
 import fly.fish.tools.FilesTool;
 import fly.fish.tools.MLog;
-import fly.fish.tools.OthPhone;
 
 public class OutFace {
     private static String d = "fly.fish.aidl.IMyTaskBinder";
