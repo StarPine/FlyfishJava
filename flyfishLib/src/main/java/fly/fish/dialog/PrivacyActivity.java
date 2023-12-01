@@ -77,7 +77,6 @@ public class PrivacyActivity extends Activity {
                 OutFace.setCheckState(ischeck);
                 OutFace.setOneLoginCheck(oneLoginCheck);
                 OutFace.setisreq(isrequ);
-                OthPhone.setisreq(isrequ);
                 state = jsonUtils.getString("state");
                 qx_url = jsonUtils.getString("qxurl");
                 ys_url = jsonUtils.getString("ysurl");

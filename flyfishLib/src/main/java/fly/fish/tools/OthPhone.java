@@ -18,6 +18,10 @@ import java.lang.reflect.Method;
 
 import fly.fish.dialog.DialgTool;
 
+/**
+ * 从8.0.0开始移除
+ */
+@Deprecated
 public class OthPhone {
 
 

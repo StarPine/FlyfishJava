@@ -126,7 +126,7 @@ public class AsdkActivity extends MyActivity {
 			public void onClick(DialogInterface dialog, int which) {
 				AsdkActivity.this.finish();
 				try {
-					OutFace.getInstance().getmActivity().finish();
+					OutFace.getInstance(null).getmActivity().finish();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
