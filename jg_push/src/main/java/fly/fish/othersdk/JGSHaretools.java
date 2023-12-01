@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -56,6 +57,7 @@ public class JGSHaretools {
     private static String  TZlist  ,FXlist;
 
     public static void othshare(Activity activity, int code ){
+        initData(activity);
         System.out.println("forasdk   JGshare==");
 
         try {
@@ -110,8 +112,23 @@ public class JGSHaretools {
 
     }
 
-    public static void othJgshare(Activity activity, int code ,File file){
+    private static void initData(Activity activity) {
+        SharedPreferences sharedPreferences = activity.getSharedPreferences("user_info", 0);
+        String othersdkextdata4 = sharedPreferences.getString("othersdkextdata4", "");
+        try {
+            JSONObject jsonObject2 = new JSONObject(othersdkextdata4);
+            String tzlist=jsonObject2.getString("tzlist");
+            String fxlist=jsonObject2.getString("fxlist");
+//            MLog.a("AESSecurity-set",  "<------ tzlist ------> " + tzlist);
+//            MLog.a("AESSecurity-set",  "<------ fxlist ------> " + fxlist);
+            setdata(tzlist,fxlist);
+        }catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public static void othJgshare(Activity activity, int code ,File file){
+        initData(activity);
         init(activity);
 
 
@@ -214,8 +231,6 @@ public class JGSHaretools {
 
     public static void JGinit(Context context){
         JShareInterface.setDebugMode(true);
-
-
 
         PlatformConfig platformConfig = new PlatformConfig()
                 .setQQ(JGQQappid,JGQQappkey)
