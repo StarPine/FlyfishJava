@@ -15,7 +15,7 @@ import com.tencent.mm.sdk.openapi.WXAPIFactory;
 
 import fly.fish.aidl.MyRemoteService;
 import fly.fish.beans.GameArgs;
-import fly.fish.othersdk.WXinSDK;
+import fly.fish.wechat.WXinSDK;
 import fly.fish.tools.MLog;
 
 /**

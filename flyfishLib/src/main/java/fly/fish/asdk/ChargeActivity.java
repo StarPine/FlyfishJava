@@ -7,7 +7,6 @@ package fly.fish.asdk;
 import java.util.HashMap;
 import java.util.Map;
 
-import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -24,9 +23,8 @@ import android.widget.LinearLayout;
 import fly.fish.aidl.MyRemoteService;
 import fly.fish.aidl.OutFace;
 import fly.fish.beans.GameArgs;
-import fly.fish.othersdk.WXinSDK;
-import fly.fish.othersdk.YXWebActivity;
-import fly.fish.tools.FilesTool;
+import fly.fish.wechat.WXinSDK;
+import fly.fish.wechat.YXWebActivity;
 import fly.fish.tools.LuaTools;
 import fly.fish.tools.MLog;
 

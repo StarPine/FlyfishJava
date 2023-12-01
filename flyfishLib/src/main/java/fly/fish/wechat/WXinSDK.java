@@ -1,12 +1,7 @@
-package fly.fish.othersdk;
-
-import org.keplerproject.luajava.LuaState;
+package fly.fish.wechat;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 
 //import com.switfpass.pay.MainApplication;
 //import com.switfpass.pay.activity.PayPlugin;
@@ -15,10 +10,6 @@ import android.os.Message;
 //import com.wechatsdk.Entry;
 //import com.wechatsdk.info.ReturnCodeInfo;
 
-import fly.fish.aidl.MyRemoteService;
-import fly.fish.asdk.MyApplication;
-import fly.fish.beans.GameArgs;
-import fly.fish.tools.LuaTools;
 import fly.fish.tools.MLog;
 
 public class WXinSDK {

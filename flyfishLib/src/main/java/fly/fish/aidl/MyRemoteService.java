@@ -27,8 +27,6 @@ import fly.fish.asdk.MyApplication;
 import fly.fish.asdk.SkipActivity;
 import fly.fish.beans.GameArgs;
 import fly.fish.config.Configs;
-import fly.fish.dialog.PrivacyActivity;
-import fly.fish.othersdk.Asdk;
 import fly.fish.report.ASDKReport;
 import fly.fish.report.EventManager;
 import fly.fish.tools.FilesTool;
