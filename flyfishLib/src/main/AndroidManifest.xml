@@ -32,6 +32,11 @@
     <queries>
         <!-- 指定微信包名-->
         <package android:name="com.tencent.mm" />
+        <!-- QQ相关包名-->
+        <package android:name="com.tencent.mobileqq" />
+        <package android:name="com.tencent.tim" />
+        <package android:name="com.tencent.minihd.qq" />
+        <package android:name="com.tencent.qqlite" />
     </queries>
 
     <application
