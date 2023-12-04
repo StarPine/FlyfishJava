@@ -14,4 +14,10 @@ public class StatusCode {
     public static final String PAY_SUCCESS = "0";
     public static final String PAY_FAIL = "1";
     public static final String PAY_REVIEW = "2";
+
+    //数据上报 "场景id（0-登陆上报，1-创建角色上报，2-升级上报，3-退出时上报）"
+    public static final String UPLOAD_LOGIN = "0";
+    public static final String UPLOAD_CREAT = "1";
+    public static final String UPLOAD_UPDATE = "2";
+    public static final String UPLOAD_EXIT_GAME = "3";
 }
