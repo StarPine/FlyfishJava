@@ -11,6 +11,8 @@ import fly.fish.report.EventManager;
 import fly.fish.tools.FilesTool;
 import fly.fish.tools.LuaTools;
 import fly.fish.tools.MLog;
+import fly.fish.tools.ManifestInfo;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -272,22 +274,16 @@ public class LoginActivity extends MyActivity {
 			ASDKReport.getInstance().startSDKReport(this, EventManager.SDK_EVENT_CLOSE_LOGIN_VIEW);
 
 			// 通知远程服务更新头文件
-			/*
-			 * Intent intent=new Intent(this, MyRemoteService.class); Bundle bu
-			 * = new Bundle(); bu.putString("sessionid","0");
-			 * bu.putString("accountid","0"); bu.putString("status","1");
-			 * bu.putString("flag","login"); bu.putString("key",
-			 * MyApplication.getAppContext().getGameArgs().getKey());
-			 * intent.putExtras(bu); startService(intent);
-			 */
+			boolean metaBoolean = ManifestInfo.getMetaBoolean(this, "ENABLE_CLOSE_LOGIN", true);
+			if (metaBoolean) {
+				synchronized (mLuaState) {
+					mLuaState.getField(LuaState.LUA_GLOBALSINDEX, "loginCallBack");
+					LuaTools.dbcall(mLuaState, 0, 0);// 代表0个参数，0个返回值
+				}
 
-			// 通知远程服务更新头文件
-//			synchronized (mLuaState) {
-//				mLuaState.getField(LuaState.LUA_GLOBALSINDEX, "loginCallBack");
-//				LuaTools.dbcall(mLuaState, 0, 0);// 代表0个参数，0个返回值
-//			}
-//
-//			return super.onKeyDown(keyCode, event);
+				return super.onKeyDown(keyCode, event);
+			}
+
 			return true;
 		}
 		return super.onKeyDown(keyCode, event);
