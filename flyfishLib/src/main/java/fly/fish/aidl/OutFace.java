@@ -26,12 +26,14 @@ import fly.fish.asdk.LoginActivity;
 import fly.fish.asdk.MyApplication;
 import fly.fish.asdk.MyCrashHandler;
 import fly.fish.asdk.SkipActivity;
+import fly.fish.config.StatusCode;
 import fly.fish.dialog.CloseAccountCallBack;
 import fly.fish.impl.ExitCallBack;
 import fly.fish.impl.GetCertificationInfoCallback;
 import fly.fish.othersdk.JGSHaretools;
 import fly.fish.tools.FilesTool;
 import fly.fish.tools.MLog;
+import fly.fish.tools.PhoneTool;
 
 public class OutFace {
     private static String d = "fly.fish.aidl.IMyTaskBinder";
@@ -75,12 +77,12 @@ public class OutFace {
 
     private Intent mIntent;
     private IMyTaskBinder ibinder = null;
-    private ITestListener callback = null;
+    private ITestListener listener = null;
 
     private String Publisher;
     private String cpid = null;
     private String gameid = null;
-    private String key = null;
+    private String gameKey = null;
     private String gamename = null;
 
     private MyBroadCast broadcast;
@@ -127,13 +129,22 @@ public class OutFace {
         quit(activity);
     }
 
+    @Deprecated
     public void outInGame(String abc) {
         SkipActivity.othInGame(abc);
+    }
+
+    public void uploadData(String roleData) {
+        SkipActivity.othInGame(roleData);
     }
 
     // 社区
     public void outForum(Activity activity) {
         SkipActivity.callPerformFeatureBBS(activity);
+    }
+
+    public String getDeviceId(Context context) {
+        return  PhoneTool.getIMEI(context);
     }
 
     public void outNewIntent(Activity act, Intent intent) {
@@ -177,7 +188,23 @@ public class OutFace {
         MyCrashHandler mCrashHandler = MyCrashHandler.getInstance();
         mCrashHandler.init(activity.getApplicationContext());
         requestPermission();
-        SkipActivity.othInitLaunch(activity, isLandscape, callback);
+        SkipActivity.othInitLaunch(activity, isLandscape, new CallBackListener() {
+            @Override
+            public void callback(int code, boolean isHasExitBox) {
+                //兼容旧版本初始化
+                if (code == 0){
+                    if (listener != null)
+                        callback.callback(code,isHasExitBox);
+                }else {
+                    try {
+                        if (listener != null)
+                            listener.initback(StatusCode.INIT_FAIL);
+                    } catch (RemoteException e) {
+
+                    }
+                }
+            }
+        });
 
     }
 
@@ -202,8 +229,8 @@ public class OutFace {
             System.out.println("onServiceConnected init ----> " + ibinder);
             if (ibinder != null) {
                 try {
-                    ibinder.registerCallBack(callback, key);
-                    ibinder.init(cpid, gameid, key, gamename);
+                    ibinder.registerCallBack(listener, gameKey);
+                    ibinder.init(cpid, gameid, gameKey, gamename);
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
@@ -253,7 +280,7 @@ public class OutFace {
     }
 
     public void callBack(String key, FlyFishSDK callback) {
-        this.callback = callback;
+        this.listener = callback;
         if (ibinder != null) {
             try {
                 ibinder.registerCallBack(callback, key);
@@ -276,7 +303,7 @@ public class OutFace {
         // 先保存参数
         this.cpid = cpid;
         this.gameid = gameid;
-        this.key = key;
+        this.gameKey = key;
         this.gamename = MyApplication.getAppContext().getApplicationInfo().loadLabel(MyApplication.getAppContext().getPackageManager()).toString();
 
         // 判断是走sdk还是jar包
@@ -304,6 +331,10 @@ public class OutFace {
         SkipActivity.CloseAccountWithUserInfo(act, userInfo, exitcallback);
     }
 
+    public void login(Activity act){
+        login(act,"meself",gameKey);
+    }
+
     /**
      * 登陆接口
      *
@@ -319,7 +350,7 @@ public class OutFace {
         localBundle.putString("gameid", gameid);
         localBundle.putString("gamename", gamename);
         localBundle.putString("callBackData", callBackData);
-        localBundle.putString("key", key);
+        localBundle.putString("key", gameKey);
         localBundle.putString("pid", Binder.getCallingPid() + "");
         localBundle.putString("mode", "login");
 
@@ -330,30 +361,30 @@ public class OutFace {
     /**
      * 充值接口
      *
-     * @param merchantsOrder 支付订单
+     * @param customorderid 支付订单
      * @param url            回调接口
-     * @param account        支付金额
+     * @param sum        支付金额
      * @param desc           商品描述
      * @param callBackData   自定义参数
      * @throws RemoteException
      */
-    public void pay(final Activity act, final String merchantsOrder, String url, final String account, final String desc, final String callBackData, String key) {
-        pay(act, merchantsOrder, url, account, "", desc, callBackData, key);
+    public void pay(final Activity act, final String customorderid, String url, final String sum, final String desc, final String callBackData, String key) {
+        pay(act, customorderid, url, sum, "", desc, callBackData, key);
     }
 
 
     /**
      * 充值接口
      *
-     * @param merchantsOrder 支付订单
+     * @param customorderid 支付订单
      * @param url            回调接口
-     * @param account        支付金额
+     * @param sum        支付金额
      * @param feepoint       计费点
      * @param desc           商品描述
      * @param callBackData   自定义参数
      * @throws RemoteException
      */
-    public void pay(Activity act, String merchantsOrder, String url, String account, String feepoint, String desc, String callBackData, String key) {
+    public void pay(Activity act, String customorderid, String url, String sum, String feepoint, String desc, String callBackData, String key) {
 
         mActivity = act;
         mIntent = new Intent();
@@ -363,9 +394,9 @@ public class OutFace {
         localBundle.putString("gameid", gameid);
         localBundle.putString("gamename", gamename);
 
-        localBundle.putString("merchantsOrder", merchantsOrder);
+        localBundle.putString("merchantsOrder", customorderid);
         localBundle.putString("url", url);
-        localBundle.putString("account", account);
+        localBundle.putString("account", sum);
         localBundle.putString("feepoint", feepoint);
         localBundle.putString("desc", desc);
         localBundle.putString("callBackData", callBackData);
@@ -422,7 +453,7 @@ public class OutFace {
         }
         cpid = null;
         gameid = null;
-        key = null;
+        gameKey = null;
         gamename = null;
         mInstance = null;
         System.out.println("---------asdk--exit--end-----------");
