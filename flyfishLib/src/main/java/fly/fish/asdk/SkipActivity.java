@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Objects;
 
 import fly.fish.aidl.CallBackListener;
 import fly.fish.aidl.MyRemoteService;
@@ -18,6 +19,9 @@ import fly.fish.impl.AImageCapturer;
 import fly.fish.impl.ExitCallBack;
 //import fly.fish.othersdk.ForADresult;
 import fly.fish.impl.GetCertificationInfoCallback;
+import fly.fish.impl.ISdk;
+import fly.fish.open.impl.CommonCallback;
+import fly.fish.open.impl.SimpleCallback;
 import fly.fish.tools.FilesTool;
 import fly.fish.tools.MLog;
 
@@ -398,36 +402,41 @@ public class SkipActivity extends Activity {
         Method method = getMethod("setExtdata", String.class);
         invoke(method, extdata1);
     }
-    /* public static void Closead(boolean isclose){
-        try {
-            Method method = getMethod("closead",boolean.class);
-            invoke(method, isclose);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+
+    public static void commonApi1(Object... objects) {
+        Object[] data = objects;
+        Method method = getMethod("commonApi1", Object[].class);
+        invoke(method, (Object) data);
     }
-    public static void loadad(Activity activity,String adid){
-        try {
-            Method method = getMethod("loadad",Activity.class,String.class);
-            invoke(method, activity,adid);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+
+    public static void commonApi2(Object... objects) {
+        Object[] data = objects;
+        Method method = getMethod("commonApi2", Object[].class);
+        invoke(method, (Object) data);
     }
-    public static void  setadback( ForADresult back){
-        try {
-            Method method = getMethod("setadback", ForADresult.class);
-            invoke(method, back );
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }*/
-  /* public  static void skishare(Activity activity, String code, File file){
 
-        Method method = getMethod("JGshare",Activity.class, String.class,File.class);
-        invoke(method,activity, code,file);
-    }*/
+    public static Object commonApi3(Context context, Object... objects) {
+        Object[] data = objects;
+        Method method = getMethod("commonApi3", Context.class, Object[].class);
+        return invoke(method, context, (Object) data);
+    }
 
+    public static Object commonApi4(Context context, Object... objects) {
+        Object[] data = objects;
+        Method method = getMethod("commonApi4", Context.class, Object[].class);
+        return invoke(method, context, (Object) data);
+    }
 
+    public static void commonApi5(Context context, SimpleCallback callback, Object... objects) {
+        Object[] data = objects;
+        Method method = getMethod("commonApi5", Context.class, SimpleCallback.class, Object[].class);
+        invoke(method, context, callback, data);
+    }
+
+    public static void commonApi6(Context context, CommonCallback callback, Object... objects) {
+        Object[] data = objects;
+        Method method = getMethod("commonApi6", Context.class, CommonCallback.class, Object[].class);
+        invoke(method, context, callback, (Object) data);
+    }
 
 }

@@ -2,9 +2,12 @@ package fly.fish.impl;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 
 import fly.fish.aidl.CallBackListener;
+import fly.fish.open.impl.CommonCallback;
+import fly.fish.open.impl.SimpleCallback;
 
 public interface ISdk {
 
@@ -56,6 +59,30 @@ public interface ISdk {
     }
 
     default void onDestroy(Activity activity) {
+    }
+
+    default void commonApi1(Object... objects) {
+
+    }
+
+    default void commonApi2(Object... objects) {
+
+    }
+
+    default Object commonApi3(Context context, Object... objects) {
+        return null;
+    }
+
+    default Object commonApi4(Context context, Object... objects) {
+        return null;
+    }
+
+    default void commonApi5(Context context, SimpleCallback callback, Object... objects) {
+
+    }
+
+    default void commonApi6(Context context, CommonCallback callback, Object... objects) {
+
     }
 
 }

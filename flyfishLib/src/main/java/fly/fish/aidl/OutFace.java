@@ -30,6 +30,8 @@ import fly.fish.config.StatusCode;
 import fly.fish.dialog.CloseAccountCallBack;
 import fly.fish.impl.ExitCallBack;
 import fly.fish.impl.GetCertificationInfoCallback;
+import fly.fish.open.impl.CommonCallback;
+import fly.fish.open.impl.SimpleCallback;
 import fly.fish.othersdk.JGSHaretools;
 import fly.fish.tools.FilesTool;
 import fly.fish.tools.MLog;
@@ -627,6 +629,34 @@ public class OutFace {
 
     public void othopenForumPage() {
         SkipActivity.sdkopenForumPage();
+    }
+
+    /**
+     * 通用扩展接口-预留
+     * @param objects
+     */
+    public void commonApi1(Object... objects) {
+        SkipActivity.commonApi1(objects);
+    }
+
+    public void commonApi2(Object... objects) {
+        SkipActivity.commonApi2(objects);
+    }
+
+    public Object commonApi3(Context context, Object... objects) {
+        return SkipActivity.commonApi3(context,objects);
+    }
+
+    public Object commonApi4(Context context, Object... objects) {
+        return SkipActivity.commonApi4(context,objects);
+    }
+
+    public void commonApi5(Context context, SimpleCallback callback, Object... objects) {
+        SkipActivity.commonApi5(context,callback,objects);
+    }
+
+    public void commonApi6(Context context, CommonCallback callback, Object... objects) {
+        SkipActivity.commonApi6(context,callback,objects);
     }
 
 }
