@@ -19,7 +19,9 @@ public interface ISdk {
 
     void loginSDK(Activity activity, Intent intent);
 
-    void paySDK(Activity activity, Intent intent);
+    default void paySDK(Activity activity, Intent intent){}
+
+    void paySDK(Activity activity, Intent intent, String order, String paynotifyurl, String extra1, String extra2, String extdata3);
 
     void submitData(String data);
 

@@ -242,7 +242,7 @@ public class Asdk implements ISdk {
 		
 	}
 	//支付
-	public void paySDK(Activity act, Intent intent){
+	public void paySDK(Activity activity, Intent intent, String order, String paynotifyurl, String extra1, String extra2, String extdata3){
 		Bundle bundle = intent.getExtras();
 		//ry下单设置
 		if(clazzReyun !=null){
@@ -253,7 +253,7 @@ public class Asdk implements ISdk {
 		if(clazzReyun !=null){
 			Method method = getMethod(clazzReyun, "reyunPay", Activity.class,Intent.class);
 			try {
-				boolean ob = (Boolean)method.invoke(null, act,intent);
+				boolean ob = (Boolean)method.invoke(null, activity,intent);
 				if(ob){//对应SWHT的云端环境
 					return;
 				}
@@ -268,9 +268,10 @@ public class Asdk implements ISdk {
 			}
 		}
 		
-		intent.setClass(act, ChargeActivity.class);
-		act.startActivity(intent);
+		intent.setClass(activity, ChargeActivity.class);
+		activity.startActivity(intent);
 	}
+
 	public void submitData(String data){
 		//ry
 		if(clazzReyun !=null){

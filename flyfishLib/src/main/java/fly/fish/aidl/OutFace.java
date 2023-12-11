@@ -407,8 +407,8 @@ public class OutFace {
         localBundle.putString("mode", "pay");
         localBundle.putString("flag", "getOrder");
         mIntent.putExtras(localBundle);
-
-        if (Publisher.startsWith("asdk") || Publisher.startsWith("qgsdk") || Publisher.startsWith("baichuansdk") || Publisher.startsWith("qdasdk") || Publisher.startsWith("dxcpsasdk")) {
+        String channelClassName = FilesTool.getChannelOpenClassName();
+        if (channelClassName.equals("fly.fish.othersdk.Asdk")){
             SkipActivity.asdkPay(act, this.mIntent);
         } else {
             String orderExtdata = SkipActivity.getOrderExtdata();

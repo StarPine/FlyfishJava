@@ -360,8 +360,9 @@ public class SkipActivity extends Activity {
     // 阿游戏支付跳转
     public static void asdkPay(Activity act, Intent mIntent) {
     	System.out.println("SkipActivity  ------asdkPay-------paySDK-----");
-        Method method = getMethod("paySDK", Activity.class, Intent.class);
-        invoke(method, act, mIntent);
+        Method method = getMethod("paySDK", Activity.class, Intent.class,
+                String.class, String.class, String.class, String.class,String.class);
+        invoke(method, act, mIntent, null, null, null, null, null);
     }
 
     // 热云登录上报
