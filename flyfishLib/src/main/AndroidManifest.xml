@@ -179,7 +179,7 @@
         <!-- 以上可设置横竖屏 -->
 
         <activity
-            android:name="fly.fish.othersdk.YXWebActivity"
+            android:name="fly.fish.wechat.YXWebActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:exported="false"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />

@@ -42,7 +42,7 @@ android {
             java {
                 srcDirs = ['src/main/java']
                 excludes = ['libs/msa_mdid_1.0.13.jar']
-                if (IS_OPEN.toBoolean()){
+                if (is_channel_merge.toBoolean()){
                     excludes = ['fly/fish/othersdk/*.java']
                 }
             }
@@ -76,6 +76,7 @@ tasks.configureEach { task ->
 
 dependencies {
     implementation fileTree(include: ['*.jar','*.aar'], dir: 'libs')
+    compileOnly files("libs/msa_mdid_1.0.13.jar")
 //    compileOnly fileTree(include: ['*.jar','*.aar'], dir: 'libs')
     implementation project(':jg_push')
 }
@@ -90,6 +91,7 @@ afterEvaluate {
             from file(aarPath)
             rename("flyfishLib-release.aar", "${rootProject.ext.sdkName}_${rootProject.ext.hostVersionName}_${releaseTime()}_cp.aar")
             into lib_out
+            exclude { details -> details.file.name.endsWith('msa_mdid_1.0.13.jar') }
         }
         copy {
             from zipTree(aarPath)
@@ -97,13 +99,13 @@ afterEvaluate {
             rename("classes.jar", "${rootProject.ext.sdkName}_${rootProject.ext.hostVersionName}_${releaseTime()}.jar")
             into lib_out_libs
         }
-        copy {
-            from file("./libs")
-            into(lib_out_libs)
-        }
-        copy {
-            from file("./src/main/assets")
-            into(lib_out_assets)
-        }
+//        copy {
+//            from file("./libs")
+//            into(lib_out_libs)
+//        }
+//        copy {
+//            from file("./src/main/assets")
+//            into(lib_out_assets)
+//        }
     }
 }
