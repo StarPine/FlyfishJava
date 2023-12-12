@@ -251,42 +251,26 @@ public class PhoneTool {
 		}
 
 		//获取设备的imei号，如获取到则直接返回并保存
-		try {
-			if (TextUtils.isEmpty(devicesId)) {
-				TelephonyManager mTelephonyMgr = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-				devicesId = mTelephonyMgr.getDeviceId();
-				devicesFlag = "I";
-			}
-		} catch (Exception e) {
-			MLog.a(TAG,"好吧没得到IMEI");
+		if (TextUtils.isEmpty(devicesId)) {
+			devicesId = DeviceInfo.getImei(context);
+			devicesFlag = "I";
 		}
 
-		try {
-			//获取设备的ANDROID_ID+SERIAL硬件序列号
-			if (TextUtils.isEmpty(devicesId)) {
-				String androidId = Settings.System.getString(context.getContentResolver(), Settings.System.ANDROID_ID);
-				String serial= Build.SERIAL;
-				devicesId = androidId + serial;
-				devicesFlag = "A";
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		//获取设备的ANDROID_ID
+		if (TextUtils.isEmpty(devicesId)) {
+			devicesId = DeviceInfo.getAndroidId(context);
+			devicesFlag = "A";
 		}
 
 		if (TextUtils.isEmpty(devicesId)) {
-			devicesId = UUID.randomUUID().toString().replace("-", "");
+			devicesId = DeviceInfo.getUUID();
 			devicesFlag = "U";
 		}
 
 		//生成随机数
 		if (TextUtils.isEmpty(devicesId)) {
-			devicesId=System.currentTimeMillis()+getRandomCode();
+			devicesId = DeviceInfo.getDiyDeviceId(MyApplication.context);
 			devicesFlag = "Z";
-		}
-
-		if (!devicesFlag.equals("I") && !devicesFlag.equals("O")){
-			//为了统一格式对设备的唯一标识进行md5加密 最终生成32位字符串
-			devicesId = MD5Util.getMD5String(devicesId);
 		}
 
 		SharedPreferences.Editor editor = sharedPreferences.edit();

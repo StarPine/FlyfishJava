@@ -25,6 +25,7 @@ import java.net.URLEncoder;
 import java.util.Map;
 
 import org.apache.http.conn.ConnectTimeoutException;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.keplerproject.luajava.LuaState;
 
@@ -62,6 +63,7 @@ public class HttpUtils {
 	public static String cookiestat = null;
 	public final static String KEY = "48fhd5748sayuh12";
 	private static String sTag = "HttpUtils";
+	private static String URL_UPLOAD_DEVICE_INFO = "http://iospingtai.xinxinjoy.com:8084/outerinterface/setuserdevice.php?";
 	/**
 	 * 数据包是否要升级po
 	 * 
@@ -71,6 +73,23 @@ public class HttpUtils {
 	public static boolean isUpdate() {
 		String gamenumber = MyApplication.getAppContext().getGameArgs().getPrefixx();
 		return false;
+	}
+
+	public static void uploadUserDeviceInfo(Context context,String type){
+		JSONObject param = new JSONObject();
+		try {
+			param.put("imei",DeviceInfo.getImei(context));
+			param.put("android",DeviceInfo.getAndroidId(context));
+			param.put("oaid",DeviceInfo.getOAID());
+			param.put("diy",DeviceInfo.getDiyDeviceId(context));
+			param.put("versionName",AppUtils.getAppVersionName(context));
+			param.put("versionCode",AppUtils.getAppVersionCode(context));
+			param.put("pack",AppUtils.getPackageName(context));
+			param.put("type",type);
+		} catch (JSONException e) {
+		}
+		postMethod(URL_UPLOAD_DEVICE_INFO,param.toString(),"utf-8");
+
 	}
 
 	/**

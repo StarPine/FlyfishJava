@@ -254,6 +254,7 @@ public class MyRemoteService extends Service {
 //										sendBroadcast(new Intent("fly.fish.aidl.MyRemoteService.MYBROADCAST.LOGIN").putExtra("extdata1", jo2.getString("extdata1")).putExtra("extdata2", jo2.getString("extdata2")));
                                         app.getSharedPreferences("user_info", 0).edit().putString("pipaw_payerId", jo2.getString("accountid")).putString("pipaw_sessId", jo2.getString("sessionid")).putBoolean("islogin", true).commit();
                                         try {
+                                            HttpUtils.uploadUserDeviceInfo(app,"login");
                                             Looper.prepare();
                                             SkipActivity.reyunsetLogin(jo2.getString("accountid"));
                                             SkipActivity.setExtdata(jo2.getString("extdata1"));
@@ -386,6 +387,7 @@ public class MyRemoteService extends Service {
                                         if ("0".equals(order.getString("code"))) {
                                             if (ilistener != null) {
                                                 if ("1".equals(order.getString("data"))) {
+                                                    HttpUtils.uploadUserDeviceInfo(app,"pay");
                                                     ilistener.payback(desc, "0", account, "pay", merchantsOrder, callBackData);
                                                     //应用宝热云,广点通支付回调
                                                     if (publisher != null && (publisher.startsWith("qqsdk") || (publisher.startsWith("asdk")))) {

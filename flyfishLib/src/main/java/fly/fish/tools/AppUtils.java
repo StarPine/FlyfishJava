@@ -21,6 +21,8 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
+import fly.fish.asdk.MyApplication;
+
 public class AppUtils {
 
     private AppUtils(){
@@ -181,6 +183,9 @@ public class AppUtils {
         return 0;
     }
 
+    public static String getPackageName(Context context) {
+        return context.getPackageName();
+    }
     public static ApkInfo getApkInfo(Context context, String path) {
         PackageManager pm = context.getPackageManager();
         PackageInfo info = null;
