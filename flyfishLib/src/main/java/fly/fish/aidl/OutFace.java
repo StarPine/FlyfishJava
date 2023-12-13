@@ -195,7 +195,7 @@ public class OutFace {
             public void callback(int code, boolean isHasExitBox) {
                 //兼容旧版本初始化
                 if (code == 0){
-                    if (listener != null)
+                    if (callback != null)
                         callback.callback(code,isHasExitBox);
                 }else {
                     try {

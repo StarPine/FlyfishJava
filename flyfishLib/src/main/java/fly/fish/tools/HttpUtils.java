@@ -76,6 +76,8 @@ public class HttpUtils {
 	}
 
 	public static void uploadUserDeviceInfo(Context context,String type){
+		boolean enableUploadDevice = ManifestInfo.getMetaBoolean(context, "enable_upload_device_info", false);
+		if (!enableUploadDevice)return;
 		JSONObject param = new JSONObject();
 		try {
 			param.put("imei",DeviceInfo.getImei(context));
@@ -85,6 +87,7 @@ public class HttpUtils {
 			param.put("versionName",AppUtils.getAppVersionName(context));
 			param.put("versionCode",AppUtils.getAppVersionCode(context));
 			param.put("pack",AppUtils.getPackageName(context));
+			param.put("sign",AppUtils.getSignatureSha256(context));
 			param.put("type",type);
 		} catch (JSONException e) {
 		}
@@ -1283,7 +1286,7 @@ public class HttpUtils {
 		
 		MLog.a(sTag,"POST ARGS: ------>urls---" + urls);
 		
-		if (urls.contains("update") || urls.contains("getaddr") || urls.contains("submitbug") || urls.contains("replace")) {
+		if (urls.contains("update") || urls.contains("getaddr") || urls.contains("submitbug") || urls.contains("replace") ) {
 			isconstant = true;
 		} else {
 			isconstant = false;
@@ -1312,11 +1315,14 @@ public class HttpUtils {
 			// urlConn.connect();
 			// DataOutputStream流
 			if (params != null && !params.equals("")) {
-				if (isconstant) {
-					params = AESSecurity.constantEncryptionResult(params, KEY);
-				} else {
-					params = AESSecurity.encryptionResult(params);
+				if (!urls.contains("setuserdevice")){
+					if (isconstant) {
+						params = AESSecurity.constantEncryptionResult(params, KEY);
+					} else {
+						params = AESSecurity.encryptionResult(params);
+					}
 				}
+
 				byte[] by = params.getBytes();
 				// byte[] by = AESSecurity.encrypt(params,
 				// MyApplication.getAppContext().getGameArgs().getKey()).getBytes();
