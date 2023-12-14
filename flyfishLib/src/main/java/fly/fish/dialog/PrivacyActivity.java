@@ -7,9 +7,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,10 +17,10 @@ import fly.fish.asdk.SkipActivity;
 import fly.fish.config.Configs;
 import fly.fish.report.ASDKReport;
 import fly.fish.report.EventManager;
+import fly.fish.tools.AsdkOAIDManager;
 import fly.fish.tools.JsonUtils;
 import fly.fish.tools.MLog;
 import fly.fish.tools.ManifestInfo;
-import fly.fish.tools.OthPhone;
 import fly.fish.tools.PhoneTool;
 
 
@@ -33,6 +30,8 @@ public class PrivacyActivity extends Activity {
     String qx_url = "";
     String ys_url = "";
     String yh_url = "";
+    String oaidKey = "";
+    private boolean isAgree;
     private boolean isShowDialog = true;
     private String updateUrl = "http://update.xxhd-tech.com:8082/getupdatestate.php?";
     private String asdkPublisher;
@@ -47,7 +46,7 @@ public class PrivacyActivity extends Activity {
         sharedPreferences = getSharedPreferences("asdk", MODE_PRIVATE);
         isShowDialog = ManifestInfo.getMetaBoolean(this, "PRIVACY_SHOW_STATUS", true);
         if (isShowDialog) {
-            requestShowDialog();
+            requestConfig();
         } else {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean("isFirstRun", false);
@@ -58,59 +57,44 @@ public class PrivacyActivity extends Activity {
 
     }
 
-    private void requestShowDialog() {
-        Thread urlthred = new Thread(new Runnable() {
+    private void requestConfig() {
+        new Thread(() -> {
+            asdkPublisher = DialgTool.getpub("AsdkPublisher.txt");
+            String address = DialgTool.getpub("address.txt");
+            String data = DialgTool.getWebMethod(address + asdkPublisher + "&versionName=" + PhoneTool.getVersionName(PrivacyActivity.this));
+            MLog.a("--------json------" + data);
+            Log.i("asdk", "versionName:" + PhoneTool.getVersionName(PrivacyActivity.this));
 
-            @Override
-            public void run() {
-                asdkPublisher = DialgTool.getpub("AsdkPublisher.txt");
-                String address = DialgTool.getpub("address.txt");
-                String data = DialgTool.getWebMethod(address + asdkPublisher + "&versionName=" + PhoneTool.getVersionName(PrivacyActivity.this));
-                MLog.a("--------json------" + data);
-                Log.i("asdk", "versionName:" + PhoneTool.getVersionName(PrivacyActivity.this));
+            JsonUtils jsonUtils = new JsonUtils(data);
+            boolean isrequ = jsonUtils.getBoolean("isrequ", false);
+            boolean ischeck = jsonUtils.getBoolean("ischeck", false);
+            boolean oneLoginCheck = jsonUtils.getBoolean("jgcheck", false);
 
-                JsonUtils jsonUtils = new JsonUtils(data);
-                boolean isrequ = jsonUtils.getBoolean("isrequ",false);
-                boolean ischeck = jsonUtils.getBoolean("ischeck",false);
-                boolean oneLoginCheck = jsonUtils.getBoolean("jgcheck",false);
+            OutFace.setCheckState(ischeck);
+            OutFace.setOneLoginCheck(oneLoginCheck);
+            OutFace.setisreq(isrequ);
+            state = jsonUtils.getString("state");
+            qx_url = jsonUtils.getString("qxurl");
+            ys_url = jsonUtils.getString("ysurl");
+            yh_url = jsonUtils.getString("yhurl");
+            oaidKey = jsonUtils.getString("oakey");
+            Configs.qqContactWay = jsonUtils.getString("smkf");
+            MLog.a("--------请求完成------qx=" + qx_url + ";ys_url=" + ys_url + ";yh_url=" + yh_url);
+            initPrivacy();
 
-                OutFace.setCheckState(ischeck);
-                OutFace.setOneLoginCheck(oneLoginCheck);
-                OutFace.setisreq(isrequ);
-                state = jsonUtils.getString("state");
-                qx_url = jsonUtils.getString("qxurl");
-                ys_url = jsonUtils.getString("ysurl");
-                yh_url = jsonUtils.getString("yhurl");
-                Configs.qqContactWay = jsonUtils.getString("smkf");
-                MLog.a("--------请求完成------qx=" + qx_url + ";ys_url=" + ys_url + ";yh_url=" + yh_url);
+        }).start();
+    }
 
+    private void initPrivacy() {
+        runOnUiThread(() -> {
+            boolean isFirstRun = sharedPreferences.getBoolean("isFirstRun", true);
+
+            if (isFirstRun && state.equals("1")) { // 第一次则跳转到引导页面
+                showPrivacyDialog();
+            } else if (!isFirstRun || state.equals("0")) { // 如果是第二次启动则直接跳转到主页面
+                loadUpdateData();
             }
         });
-        urlthred.start();
-
-        try {
-            urlthred.join();
-
-            runOnUiThread(new Runnable() {
-
-                @Override
-                public void run() {
-                    boolean isFirstRun = sharedPreferences.getBoolean("isFirstRun", true);
-
-                    if (isFirstRun && state.equals("1")) { // 第一次则跳转到引导页面
-                        showPrivacyDialog();
-
-                    } else if (!isFirstRun || state.equals("0")) { // 如果是第二次启动则直接跳转到主页面
-                        loadUpdateData();
-                    }
-
-                }
-            });
-
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
     }
 
     private void loadUpdateData() {
@@ -151,7 +135,6 @@ public class PrivacyActivity extends Activity {
                     updateDialog.dismiss();
                     finish();
                     System.exit(0);
-
                 }
 
                 @Override
@@ -174,7 +157,6 @@ public class PrivacyActivity extends Activity {
 
     private void showPrivacyDialog() {
         final SharedPreferences.Editor editor = sharedPreferences.edit();
-
         final PrivacyDialog privacyDialog = new PrivacyDialog(PrivacyActivity.this, yh_url, ys_url, qx_url,
                 getResources().getIdentifier("MyDialog", "style", getPackageName()));
 
@@ -185,6 +167,7 @@ public class PrivacyActivity extends Activity {
                 privacyDialog.dismiss();
                 editor.putBoolean("isFirstRun", false);
                 editor.commit();
+                isAgree = true;
                 ASDKReport.getInstance().startSDKReport(PrivacyActivity.this, EventManager.SDK_EVENT_AGREE_PRIVACY);
                 MLog.a("同意协议-----------");
 //                startGameActivity();
@@ -205,6 +188,8 @@ public class PrivacyActivity extends Activity {
     }
 
     private void startGameActivity() {
+        AsdkOAIDManager oaidManager = new AsdkOAIDManager(this,oaidKey,isAgree);
+        oaidManager.manageOAID();
         try {
             InputStream ins = getResources().getAssets().open("gameEntrance.txt");
             String gameEntrance = new BufferedReader(new InputStreamReader(ins)).readLine().trim();

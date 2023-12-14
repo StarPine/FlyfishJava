@@ -75,9 +75,9 @@ tasks.configureEach { task ->
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar','*.aar'], dir: 'libs')
-    compileOnly files("libs/msa_mdid_1.0.13.jar")
-//    compileOnly fileTree(include: ['*.jar','*.aar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+//    implementation fileTree(include: ['*.aar'], dir: 'libs')
+    compileOnly fileTree(include: ['*.aar'], dir: 'libs')
     implementation project(':jg_push')
 }
 
@@ -87,16 +87,22 @@ afterEvaluate {
         def lib_out_libs = file(rootProject.ext.outputDir + "/lib_out/libs")
         def lib_out_assets = file(rootProject.ext.outputDir + "/lib_out/assets")
         def aarPath = "./build/outputs/aar/flyfishLib-release.aar"
+        def newAarName = "${rootProject.ext.sdkName}_${rootProject.ext.hostVersionName}_${releaseTime()}_cp.aar"
+        def newJarName = "${rootProject.ext.sdkName}_${rootProject.ext.hostVersionName}_${releaseTime()}_cp.jar"
+        if (is_channel_merge.toBoolean()){
+            newAarName = "${rootProject.ext.sdkName}_${rootProject.ext.hostVersionName}_${releaseTime()}_channel.aar"
+            newJarName = "${rootProject.ext.sdkName}_${rootProject.ext.hostVersionName}_${releaseTime()}_channel.jar"
+        }
         copy {
             from file(aarPath)
-            rename("flyfishLib-release.aar", "${rootProject.ext.sdkName}_${rootProject.ext.hostVersionName}_${releaseTime()}_cp.aar")
+            rename("flyfishLib-release.aar", newAarName)
             into lib_out
             exclude { details -> details.file.name.endsWith('msa_mdid_1.0.13.jar') }
         }
         copy {
             from zipTree(aarPath)
             include "classes.jar"
-            rename("classes.jar", "${rootProject.ext.sdkName}_${rootProject.ext.hostVersionName}_${releaseTime()}.jar")
+            rename("classes.jar", newJarName)
             into lib_out_libs
         }
 //        copy {
