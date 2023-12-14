@@ -16,6 +16,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 
 import fly.fish.tools.Base64;
+import fly.fish.tools.MLog;
 
 /**
  * Date: 16:27 2021/2/26 0026
@@ -44,6 +45,8 @@ public class OaidHelper implements IIdentifierListener {
 
     public void getDeviceIds(Context cxt, String cert) {
         certContent = new String(Base64.decode(cert));
+        MLog.i(TAG, "getDeviceIds base64 cert: "+cert);
+        MLog.i(TAG, "getDeviceIds certContent: "+certContent);
         getDeviceIds(cxt, true, true, true);
         endTimeMillis = System.nanoTime();
     }

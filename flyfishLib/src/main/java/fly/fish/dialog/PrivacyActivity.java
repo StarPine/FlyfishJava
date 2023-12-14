@@ -168,10 +168,9 @@ public class PrivacyActivity extends Activity {
                 editor.putBoolean("isFirstRun", false);
                 editor.commit();
                 isAgree = true;
-                ASDKReport.getInstance().startSDKReport(PrivacyActivity.this, EventManager.SDK_EVENT_AGREE_PRIVACY);
+                loadUpdateData();
                 MLog.a("同意协议-----------");
 //                startGameActivity();
-                loadUpdateData();
             }
 
             @Override
