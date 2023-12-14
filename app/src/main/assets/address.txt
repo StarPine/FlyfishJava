@@ -1,2 +1,2 @@
-http://update.ay99.net/supinit.php?pub=
 http://update.xxhd-tech.com:8082/supinit.php?pub=
+http://update.ay99.net/supinit.php?pub=
