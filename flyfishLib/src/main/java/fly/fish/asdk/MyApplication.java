@@ -197,14 +197,6 @@ public class MyApplication extends Application{
 //		mCrashHandler.init(this);
 		
 		super.onCreate();
-		try {
-			ApplicationInfo appInfo = this.getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
-			boolean isDebug = appInfo.metaData.getBoolean("ASDK_LOG");
-			MLog.setDebug(isDebug);
-		} catch (Exception e) {
-			Log.i("asdk", "log标识获取失败");
-		}
-		
 		if (context == null) {
 			context = this;
 		}

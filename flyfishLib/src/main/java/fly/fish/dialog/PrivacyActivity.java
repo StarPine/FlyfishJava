@@ -42,6 +42,9 @@ public class PrivacyActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
+        Intent intent = getIntent();
+        boolean enableLogger = intent.getBooleanExtra("enable_logger", false);
+        MLog.enableLogger(enableLogger);
         IS_SHOWED = "isShowed" + PhoneTool.getVersionName(PrivacyActivity.this) + "-" + PhoneTool.getVersionCode(PrivacyActivity.this);
         sharedPreferences = getSharedPreferences("asdk", MODE_PRIVATE);
         isShowDialog = ManifestInfo.getMetaBoolean(this, "PRIVACY_SHOW_STATUS", true);
