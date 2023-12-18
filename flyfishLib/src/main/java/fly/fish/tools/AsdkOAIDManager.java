@@ -7,7 +7,7 @@ import android.util.Log;
 import com.starpine.oaid.OAIDManager;
 
 import fly.fish.asdk.MyApplication;
-import fly.fish.othersdk.OaidHelper;
+import fly.fish.oaid.OaidHelper;
 import fly.fish.report.ASDKReport;
 import fly.fish.report.EventManager;
 
@@ -23,18 +23,23 @@ public class AsdkOAIDManager {
     }
 
     public void manageOAID() {
-        if (TextUtils.isEmpty(oaidKey)) {
-            OAIDManager.getOAID(context, deviceId -> {
-                String oaId = deviceId.getOaId();
-                Log.i("ASDK", "OAID versinon 1.0.13: " + oaId);
-                setOaid(oaId);
-            });
-        } else {
-            new OaidHelper(ids -> {
-                Log.i("ASDK", "OAID versinon 2.2.0: " + ids);
-                setOaid(ids);
-            }).getDeviceIds(context, oaidKey);
+        try {
+            if (TextUtils.isEmpty(oaidKey)) {
+                OAIDManager.getOAID(context, deviceId -> {
+                    String oaId = deviceId.getOaId();
+                    Log.i("ASDK", "OAID versinon 1.0.13: " + oaId);
+                    setOaid(oaId);
+                });
+            } else {
+                new OaidHelper(ids -> {
+                    Log.i("ASDK", "OAID versinon 2.2.0: " + ids);
+                    setOaid(ids);
+                }).getDeviceIds(context, oaidKey);
+            }
+        }catch (Exception e){
+         e.printStackTrace();
         }
+
     }
 
     private void setOaid(String ids) {

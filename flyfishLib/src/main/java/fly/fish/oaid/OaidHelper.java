@@ -1,4 +1,4 @@
-package fly.fish.othersdk;
+package fly.fish.oaid;
 
 import android.content.Context;
 import android.util.Log;
