@@ -1,5 +1,7 @@
 package fly.fish.config;
 
+import fly.fish.asdk.BuildConfig;
+
 public class Configs {
 	/** 随版本发布的BV */
 	public static String BV = "20170331";
@@ -36,9 +38,25 @@ public class Configs {
 	public static Class<Character> tchar = Character.TYPE;
 	public static Class<Byte> tbyte = Byte.TYPE;
 	public static Class<Boolean> tboolean = Boolean.TYPE;
-
 	/** 对象类型 */
 	public static Class<String> tstring = String.class;
+
+	/** 母包日志开关 */
+	public final static boolean isEnableLog = BuildConfig.ENABLE_MAIN_GAME_LOG;
+
+	/** 一键登录启动开关 */
+	public static boolean isEnableOneKeyLogin = false;
+
+	/** 权限启动开关 */
+	public static boolean isEnableRequestPermission = false;
+
+	/** 正式模式启动开关
+	 * "隐私勾选规则：
+	 * true：首次勾选，后续不再需要手动勾选
+	 * false：每次登录游戏都需要手动勾选隐私"
+	 * */
+	public static boolean isEnableFormalMode = false;
+
 	/** 客服qq*/
 	public static String qqContactWay = "";
 

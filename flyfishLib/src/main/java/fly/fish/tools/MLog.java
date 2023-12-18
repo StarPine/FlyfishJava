@@ -2,6 +2,8 @@ package fly.fish.tools;
 
 import android.util.Log;
 
+import fly.fish.config.Configs;
+
 public class MLog {
     private static final String TAG = "ASDk";
     private static boolean isLog = false;
@@ -22,12 +24,18 @@ public class MLog {
     }
 
     private static boolean isaBoolean() {
-        return debug || isLog;
+        return debug || isLog || Configs.isEnableLog;
     }
 
     public static void i(String tag, String msg) {
         if (isaBoolean()) {
             Log.i(tag, msg);
+        }
+    }
+
+    public static void i(String tag, String format, Object... args) {
+        if (isaBoolean()) {
+            Log.i(tag, String.format(format, args));
         }
     }
 

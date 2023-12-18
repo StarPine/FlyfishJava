@@ -20,12 +20,14 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import fly.fish.asdk.BuildConfig;
 import fly.fish.asdk.LoginActivity;
 import fly.fish.asdk.MyApplication;
 import fly.fish.asdk.MyCrashHandler;
 import fly.fish.asdk.SkipActivity;
+import fly.fish.config.Configs;
 import fly.fish.config.StatusCode;
 import fly.fish.dialog.CloseAccountCallBack;
 import fly.fish.impl.ExitCallBack;
@@ -41,17 +43,27 @@ public class OutFace {
     private static String d = "fly.fish.aidl.IMyTaskBinder";
     private String DOWN_ACTION = MyApplication.getAppContext().getPackageName() + ".fly.fish.aidl.MyRemoteService.MYBROADCAST";
 
+    public static final String TAG = "asdk_log";
     public static final String SDK_VERSION_NAME = BuildConfig.SDK_VERSION_NAME;
     public static final int SDK_VERSION_CODE = BuildConfig.SDK_VERSION_CODE;
 
     public static Activity mActivity;
     private static volatile OutFace mInstance;
 
-    //控制是否请求敏感权限
-    public static boolean isRequestPermission = false;
-    //控制是否默认同意隐私协议
-    private static boolean checkState = false;
-    private static boolean oneLoginCheck = false;
+    private Intent mIntent;
+    private IMyTaskBinder ibinder = null;
+    private ITestListener listener = null;
+
+    private String Publisher;
+    private String cpid = null;
+    private String gameid = null;
+    private String gameKey = null;
+    private String gamename = null;
+
+    private MyBroadCast broadcast;
+    private boolean isRegitered = false;
+
+    private Intent service;
 
     /**
      * @Deprecated 从8.0.0版本开始移除
@@ -77,71 +89,73 @@ public class OutFace {
         return mActivity;
     }
 
-    private Intent mIntent;
-    private IMyTaskBinder ibinder = null;
-    private ITestListener listener = null;
-
-    private String Publisher;
-    private String cpid = null;
-    private String gameid = null;
-    private String gameKey = null;
-    private String gamename = null;
-
-    private MyBroadCast broadcast;
-    private boolean isRegitered = false;
-
-    private Intent service;
-
     public void outActivityResult(Activity act, int requestCode, int resultCode, Intent data) {
+        MLog.i(TAG, "outActivityResult: ");
         SkipActivity.othActivityResult(act, requestCode, resultCode, data, mIntent);
     }
 
     public void outOnCreate(Activity activity) {
+        MLog.i(TAG, "outOnCreate: ");
         mActivity = activity;
         SkipActivity.othInit(activity);
     }
 
     public void outOnCreate(Activity activity, Bundle savedInstanceState) {
+        MLog.i(TAG, "outOnCreate: savedInstanceState");
         mActivity = activity;
         SkipActivity.othInit(activity, savedInstanceState);
     }
 
     public void outOnStart(Activity activity) {
+        MLog.i(TAG, "outOnStart: ");
         SkipActivity.othOnStart(activity);
     }
 
     public void outOnResume(Activity act) {
+        MLog.i(TAG, "outOnResume: ");
         SkipActivity.othOnResume(act);
     }
 
     public void outOnPause(Activity act) {
+        MLog.i(TAG, "outOnPause: ");
         SkipActivity.othOnPuse(act);
     }
 
     public void outOnStop(Activity act) {
+        MLog.i(TAG, "outOnStop: ");
         SkipActivity.othOnStop(act);
     }
 
     public void onSaveInstanceState(Activity act, Bundle outState) {
+        MLog.i(TAG, "onSaveInstanceState: ");
         SkipActivity.onSaveInstanceState(act, outState);
     }
 
     public void outDestroy(Activity activity) {
+        MLog.i(TAG, "outDestroy: ");
         SkipActivity.othDestroy(activity);
         quit(activity);
     }
 
+    /**
+     * 旧的角色上报接口
+     * @deprecated use {@link #uploadData(String)}
+     * @param abc
+     */
     @Deprecated
     public void outInGame(String abc) {
+        MLog.i(TAG, "outInGame: "+abc);
         SkipActivity.othInGame(abc);
     }
 
     public void uploadData(String roleData) {
+        MLog.i(TAG, "uploadData: "+roleData);
         SkipActivity.othInGame(roleData);
     }
 
     // 社区
     public void outForum(Activity activity) {
+        MLog.i(TAG, "outForum: ");
         SkipActivity.callPerformFeatureBBS(activity);
     }
 
@@ -150,42 +164,52 @@ public class OutFace {
     }
 
     public void outNewIntent(Activity act, Intent intent) {
+        MLog.i(TAG, "outNewIntent: ");
         SkipActivity.othNewIntent(act, intent);
     }
 
     public void outRestart(Activity act) {
+        MLog.i(TAG, "outRestart: ");
         SkipActivity.othRestart(act);
     }
 
     public void outBackPressed(Activity activity) {
+        MLog.i(TAG, "outBackPressed: ");
         SkipActivity.othBackPressed(activity);
     }
 
     public void outConfigurationChanged(Configuration newConfig) {
+        MLog.i(TAG, "outConfigurationChanged: ");
         SkipActivity.othConfigurationChanged(newConfig);
     }
 
     public void outQuit(Activity act) {
+        MLog.i(TAG, "outQuit: ");
         SkipActivity.othQuit(act);
     }
 
     public void outQuitCallBack(Activity act, ExitCallBack exitcallback) {
+        MLog.i(TAG, "outQuitCallBack: ");
         SkipActivity.outQuitCallBack(act, exitcallback);
     }
 
     public void outLogout(Activity act) {
+        MLog.i(TAG, "outLogout: ");
         SkipActivity.othLogout(act);
     }
 
     public void outonWindowFocusChanged(boolean hasFocus) {
+        MLog.i(TAG, "outonWindowFocusChanged: ");
         SkipActivity.othonWindowFocusChanged(hasFocus);
     }
 
     public void getCertificateInfo(Activity act, GetCertificationInfoCallback callback) {
+        MLog.i(TAG, "getCertificateInfo: ");
         SkipActivity.getCertificateInfo(act, callback);
     }
 
     public void outInitLaunch(final Activity activity, final boolean isLandscape, final CallBackListener callback) {
+        MLog.i(TAG, "outInitLaunch: ");
         mActivity = activity;
         MyCrashHandler mCrashHandler = MyCrashHandler.getInstance();
         mCrashHandler.init(activity.getApplicationContext());
@@ -215,6 +239,7 @@ public class OutFace {
     }
 
     public void onRequestPermissionsResult(Activity paramActivity, int requestCode, String[] permissions, int[] grantResults) {
+        MLog.i(TAG, "onRequestPermissionsResult: ");
         SkipActivity.onRequestPermissionsResult(paramActivity, requestCode, permissions, grantResults);
     }
 
@@ -302,6 +327,7 @@ public class OutFace {
      */
     public boolean init(String cpid, String gameid, String key, String gamename) {
 
+        MLog.i(TAG, "init: ");
         // 先保存参数
         this.cpid = cpid;
         this.gameid = gameid;
@@ -330,6 +356,7 @@ public class OutFace {
     }
 
     public void outCloseAccountWithUserInfo(Activity act, String userInfo, CloseAccountCallBack exitcallback) {
+        MLog.i(TAG, "outCloseAccountWithUserInfo: ");
         SkipActivity.CloseAccountWithUserInfo(act, userInfo, exitcallback);
     }
 
@@ -344,7 +371,7 @@ public class OutFace {
      * @throws RemoteException
      */
     public void login(Activity act, String callBackData, String key) {
-
+        MLog.i(TAG, "login: ");
         mActivity = act;
         mIntent = new Intent();
         Bundle localBundle = new Bundle();
@@ -363,31 +390,30 @@ public class OutFace {
     /**
      * 充值接口
      *
-     * @param customorderid 支付订单
-     * @param url            回调接口
+     * @param customOrderId 支付订单
+     * @param payCallBackUrl            回调接口
      * @param sum        支付金额
      * @param desc           商品描述
      * @param callBackData   自定义参数
      * @throws RemoteException
      */
-    public void pay(final Activity act, final String customorderid, String url, final String sum, final String desc, final String callBackData, String key) {
-        pay(act, customorderid, url, sum, "", desc, callBackData, key);
+    public void pay(final Activity act, final String customOrderId, String payCallBackUrl, final String sum, final String desc, final String callBackData, String key) {
+        pay(act, customOrderId, payCallBackUrl, sum, "", desc, callBackData, key);
     }
-
 
     /**
      * 充值接口
      *
-     * @param customorderid 支付订单
-     * @param url            回调接口
-     * @param sum        支付金额
-     * @param feepoint       计费点
-     * @param desc           商品描述
-     * @param callBackData   自定义参数
+     * @param customOrderId     支付订单
+     * @param payCallBackUrl    回调接口
+     * @param sum               支付金额
+     * @param feePoint          计费点
+     * @param desc              商品描述
+     * @param callBackData      自定义参数
      * @throws RemoteException
      */
-    public void pay(Activity act, String customorderid, String url, String sum, String feepoint, String desc, String callBackData, String key) {
-
+    public void pay(Activity act, String customOrderId, String payCallBackUrl, String sum, String feePoint, String desc, String callBackData, String key) {
+        MLog.i(TAG, "pay: ");
         mActivity = act;
         mIntent = new Intent();
         Bundle localBundle = new Bundle();
@@ -396,10 +422,10 @@ public class OutFace {
         localBundle.putString("gameid", gameid);
         localBundle.putString("gamename", gamename);
 
-        localBundle.putString("merchantsOrder", customorderid);
-        localBundle.putString("url", url);
+        localBundle.putString("merchantsOrder", customOrderId);
+        localBundle.putString("url", payCallBackUrl);
         localBundle.putString("account", sum);
-        localBundle.putString("feepoint", feepoint);
+        localBundle.putString("feepoint", feePoint);
         localBundle.putString("desc", desc);
         localBundle.putString("callBackData", callBackData);
         localBundle.putString("key", key);
@@ -426,8 +452,9 @@ public class OutFace {
      * @param callBackData   自定义参数
      * @throws RemoteException
      */
+    @Deprecated
     public void query(String merchantsOrder, String callBackData, String key) {
-        // checkBind(3, merchantsOrder, callBackData, key);
+        MLog.i(TAG, "query: ");
     }
 
     /**
@@ -435,8 +462,8 @@ public class OutFace {
      *
      * @throws RemoteException
      */
-    public void quit(final Activity activity) {
-
+    public void quit(Activity activity) {
+        MLog.i(TAG, "quit: ");
         if (MyApplication.getAppContext() != null) {
             if (ibinder != null) {
                 Intent service = null;
@@ -453,6 +480,7 @@ public class OutFace {
                 isRegitered = false;
             }
         }
+
         cpid = null;
         gameid = null;
         gameKey = null;
@@ -491,7 +519,6 @@ public class OutFace {
 
     }
 
-
     private boolean isLandScape = false;
     private String packageName = "";
     private IGhostWindowService mBind = null;
@@ -510,7 +537,7 @@ public class OutFace {
                     mBind = IGhostWindowService.Stub.asInterface(service);
                     if (mBind != null) {
                         mBind.initGhostWindow();
-                        mBind.showGhostWindow(packageName, isLandScape);
+                        mBind.showGhostWindow( packageName, isLandScape);
                         mBind.hideGhostWindow();
                         mBind.showChatWindow();
                     }
@@ -570,45 +597,27 @@ public class OutFace {
 
     //跳转小程序
     public void outshare(Activity activity, int code) {
-
+        MLog.i(TAG, "outshare: ");
         JGSHaretools.othshare(activity, code);
     }
 
     //分享
     public void outJGshare(Activity activity, int code, File file) {
-
+        MLog.i(TAG, "outJGshare: ");
         JGSHaretools.othJgshare(activity, code, file);
     }
 
-
-    public static void setOneLoginCheck(boolean ischeck) {
-        oneLoginCheck = ischeck;
-    }
-
     public static boolean getOneLoginCheck() {
-        return oneLoginCheck;
+        return Configs.isEnableOneKeyLogin;
     }
 
     //获取审核状态
     public boolean getCheckState() {
-        return checkState;
-    }
-
-    public static void setisreq(boolean isreq) {
-        isRequestPermission = isreq;
-    }
-
-    /**
-     * 是否选中隐私（控制提审模式）
-     *
-     * @param
-     */
-    public static void setCheckState(boolean isCheck) {
-        checkState = isCheck;
+        return Configs.isEnableFormalMode;
     }
 
     public static void requestPermission() {
-        if (isRequestPermission) {
+        if (Configs.isEnableRequestPermission) {
             if (Build.VERSION.SDK_INT < 23) {
                 return;
             }
@@ -628,6 +637,7 @@ public class OutFace {
     }
 
     public void othopenForumPage() {
+        MLog.i(TAG, "othopenForumPage: ");
         SkipActivity.sdkopenForumPage();
     }
 
@@ -636,26 +646,32 @@ public class OutFace {
      * @param objects
      */
     public void commonApi1(Object... objects) {
+        MLog.i(TAG, "commonApi1: ");
         SkipActivity.commonApi1(objects);
     }
 
     public void commonApi2(Object... objects) {
+        MLog.i(TAG, "commonApi2: ");
         SkipActivity.commonApi2(objects);
     }
 
     public Object commonApi3(Context context, Object... objects) {
+        MLog.i(TAG, "commonApi3: ");
         return SkipActivity.commonApi3(context,objects);
     }
 
     public Object commonApi4(Context context, Object... objects) {
+        MLog.i(TAG, "commonApi4: ");
         return SkipActivity.commonApi4(context,objects);
     }
 
     public void commonApi5(Context context, SimpleCallback callback, Object... objects) {
+        MLog.i(TAG, "commonApi5: ");
         SkipActivity.commonApi5(context,callback,objects);
     }
 
     public void commonApi6(Context context, CommonCallback callback, Object... objects) {
+        MLog.i(TAG, "commonApi6: ");
         SkipActivity.commonApi6(context,callback,objects);
     }
 

@@ -5,14 +5,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import fly.fish.aidl.OutFace;
 import fly.fish.asdk.SkipActivity;
 import fly.fish.config.Configs;
 import fly.fish.report.ASDKReport;
@@ -66,23 +64,19 @@ public class PrivacyActivity extends Activity {
             String address = DialgTool.getpub("address.txt");
             String data = DialgTool.getWebMethod(address + asdkPublisher + "&versionName=" + PhoneTool.getVersionName(PrivacyActivity.this));
             MLog.a("--------json------" + data);
-            Log.i("asdk", "versionName:" + PhoneTool.getVersionName(PrivacyActivity.this));
 
             JsonUtils jsonUtils = new JsonUtils(data);
-            boolean isrequ = jsonUtils.getBoolean("isrequ", false);
-            boolean ischeck = jsonUtils.getBoolean("ischeck", false);
-            boolean oneLoginCheck = jsonUtils.getBoolean("jgcheck", false);
 
-            OutFace.setCheckState(ischeck);
-            OutFace.setOneLoginCheck(oneLoginCheck);
-            OutFace.setisreq(isrequ);
             state = jsonUtils.getString("state");
             qx_url = jsonUtils.getString("qxurl");
             ys_url = jsonUtils.getString("ysurl");
             yh_url = jsonUtils.getString("yhurl");
             oaidKey = jsonUtils.getString("oakey");
+
+            Configs.isEnableRequestPermission = jsonUtils.getBoolean("isrequ", false);
+            Configs.isEnableFormalMode = jsonUtils.getBoolean("ischeck", false);
+            Configs.isEnableOneKeyLogin = jsonUtils.getBoolean("jgcheck", false);
             Configs.qqContactWay = jsonUtils.getString("smkf");
-            MLog.a("--------请求完成------qx=" + qx_url + ";ys_url=" + ys_url + ";yh_url=" + yh_url);
             initPrivacy();
 
         }).start();
@@ -132,7 +126,7 @@ public class PrivacyActivity extends Activity {
                 public void doCofirm() {
 
                     //运营需求：强更的状态下也不进行二次弹出
-                    noLongerShowUpdate();
+                    noAgainShowUpdate();
 
                     SkipActivity.update(PrivacyActivity.this);
                     updateDialog.dismiss();
@@ -144,7 +138,7 @@ public class PrivacyActivity extends Activity {
                 public void doCancel() {
                     updateDialog.dismiss();
                     startGameActivity();
-                    noLongerShowUpdate();
+                    noAgainShowUpdate();
                 }
             });
             updateDialog.show();
@@ -152,7 +146,7 @@ public class PrivacyActivity extends Activity {
 
     }
 
-    private void noLongerShowUpdate() {
+    private void noAgainShowUpdate() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(IS_SHOWED, true);
         editor.apply();
