@@ -66,6 +66,8 @@ public class EventManager {
     public static final String SDK_EVENT_CHANNEL_LOGIN_FAIL = "Q004";               //执行渠道登录失败
     public static final String SDK_EVENT_SDK_LOGIN_SUCCESS = "Q005";                //执行SDK登录成功
     public static final String SDK_EVENT_SDK_LOGIN_FAIL = "Q006";                   //执行SDK登录失败
+    public static final String SDK_EVENT_CHANNEL_LOGIN_AGREE_IMPOWER = "Q007";      //渠道登录同意授权
+    public static final String SDK_EVENT_CHANNEL_LOGIN_CANCEL_IMPOWER = "Q008";     //渠道登录取消授权
 
     public static final String SDK_EVENT_TT_INIT = "L001";                          //准备执行头条sdk初始化上报
     public static final String SDK_EVENT_TT_REGISTER = "L002";                      //准备执行头条sdk注册上报
