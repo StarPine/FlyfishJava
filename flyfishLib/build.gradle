@@ -16,6 +16,11 @@ android {
 
         buildConfigField "String", "SDK_VERSION_NAME", "\"${rootProject.ext.hostVersionName}\""
         buildConfigField "int", "SDK_VERSION_CODE", "${rootProject.ext.hostVersionCode}"
+        if (is_channel_merge.toBoolean()){
+            buildConfigField "boolean", "ENABLE_MAIN_GAME_LOG", "false"
+        }else {
+            buildConfigField "boolean", "ENABLE_MAIN_GAME_LOG", "true"
+        }
 
     }
     packagingOptions {
@@ -76,8 +81,8 @@ tasks.configureEach { task ->
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-//    implementation fileTree(include: ['*.aar'], dir: 'libs')
-    compileOnly fileTree(include: ['*.aar'], dir: 'libs')
+    implementation fileTree(include: ['*.aar'], dir: 'libs')
+//    compileOnly fileTree(include: ['*.aar'], dir: 'libs')
     implementation project(':jg_push')
 }
 
