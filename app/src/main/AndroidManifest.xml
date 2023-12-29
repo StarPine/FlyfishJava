@@ -1,28 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.flyfishjava"
-    >
+    package="com.example.flyfishjava">
 
     <application
         android:name="fly.fish.asdk.MyApplication"
-        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:icon="@drawable/a_launcher"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Light.NoTitleBar.Fullscreen"
-        >
-        <activity android:name="com.example.flyfishjava.MainActivity"
+        android:usesCleartextTraffic="true"
+        tools:replace="android:allowBackup">
+        <activity
+            android:name="com.example.flyfishjava.MainActivity"
             android:configChanges="orientation|keyboardHidden|navigation|screenSize"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:launchMode="standard">
+            android:launchMode="standard"
+            android:screenOrientation="portrait">
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.MAIN" />-->
+            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+
+            <!--            </intent-filter>-->
+        </activity>
+        <activity
+            android:name="fly.fish.act.WelcomeActivity"
+            android:configChanges="orientation|keyboardHidden|navigation|screenSize"
+            android:launchMode="standard"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+
+            </intent-filter>
         </activity>
 
         <!-- 极光参数Required -->
-<!--        <meta-data android:name="JPUSH_APPKEY" android:value="27bf8cf6a5d48b37b5a8d97f"/>-->
-<!--        <meta-data android:name="JPUSH_CHANNEL" android:value="381fc138f517d63280d2c3d7"/>-->
-        <meta-data android:name="ASDK_LOG" android:value="true"/>
+        <!--        <meta-data android:name="JPUSH_APPKEY" android:value="27bf8cf6a5d48b37b5a8d97f"/>-->
+        <!--        <meta-data android:name="JPUSH_CHANNEL" android:value="381fc138f517d63280d2c3d7"/>-->
+        <meta-data
+            android:name="ASDK_LOG"
+            android:value="true" />
+<!--<meta-data-->
+<!--            android:name="WELCOME_TIME"-->
+<!--            android:value="5000" />-->
 
     </application>
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="fly.fish.jg">
+
     <application>
         <!--  极光配置 start-->
         <!-- since 2.0.0 optional 可选项，使用一键登录功能必须添加  -->
@@ -8,34 +9,33 @@
         <activity
             android:name="com.cmic.sso.sdk.activity.LoginAuthActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/ay_dialog_style"
+            android:launchMode="singleTop"
             android:screenOrientation="unspecified"
-            android:launchMode="singleTop">
-        </activity>
+            android:theme="@style/ay_dialog_style"></activity>
         <!-- since 2.0.0 optional 可选项，使用一键登录功能必须添加  -->
         <!-- since 2.1.1 optional 可选项，通过screenOrientation设置授权页面横竖屏展示  -->
-        <activity android:name="cn.jiguang.verifysdk.CtLoginActivity"
+        <activity
+            android:name="cn.jiguang.verifysdk.CtLoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/ay_dialog_style"
+            android:launchMode="singleTop"
             android:screenOrientation="unspecified"
-            android:launchMode="singleTop">
-        </activity>
+            android:theme="@style/ay_dialog_style"></activity>
 
         <!-- Rich push 核心功能 since 2.0.6-->
         <activity
             android:name="cn.jpush.android.ui.PopWinActivity"
-            android:theme="@style/MyDialogStyle"
-            android:exported="false">
-        </activity>
+            android:exported="false"
+            android:theme="@style/MyDialogStyle"></activity>
 
         <!-- Required SDK核心功能-->
         <activity
             android:name="cn.jpush.android.ui.PushActivity"
             android:configChanges="orientation|keyboardHidden"
-            android:theme="@android:style/Theme.NoTitleBar"
-            android:exported="false">
+            android:exported="false"
+            android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
                 <action android:name="cn.jpush.android.ui.PushActivity" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="${applicationId}" />
             </intent-filter>
@@ -45,6 +45,7 @@
         <!-- 可配置android:process参数将PushService放在其他进程中 -->
         <service
             android:name="cn.jpush.android.service.PushService"
+            android:exported="false"
             android:process=":pushcore">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.REGISTER" />
@@ -56,34 +57,34 @@
 
         <!-- since 3.0.9 Required SDK 核心功能-->
         <provider
-            android:authorities="${applicationId}.DataProvider"
             android:name="cn.jpush.android.service.DataProvider"
-            android:process=":pushcore"
+            android:authorities="${applicationId}.DataProvider"
             android:exported="false"
-            />
+            android:process=":pushcore" />
         <!-- 可选，如果使用静态Activity方式拉起，该组件必须声明 -->
-        <activity android:name="cn.jpush.android.service.DActivity"
+        <activity
+            android:name="cn.jpush.android.service.DActivity"
             android:enabled="true"
             android:exported="true"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:taskAffinity="jpush.custom">
+            android:taskAffinity="jpush.custom"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
-                <action android:name="cn.jpush.android.intent.DActivity"/>
+                <action android:name="cn.jpush.android.intent.DActivity" />
                 <category android:name="${applicationId}" />
             </intent-filter>
         </activity>
 
         <!-- since 3.1.0 Required SDK 核心功能-->
         <provider
-            android:authorities="${applicationId}.DownloadProvider"
             android:name="cn.jpush.android.service.DownloadProvider"
-            android:exported="true"
-            />
+            android:authorities="${applicationId}.DownloadProvider"
+            android:exported="true" />
 
         <!-- Required SDK核心功能-->
         <receiver
             android:name="cn.jpush.android.service.PushReceiver"
-            android:enabled="true">
+            android:enabled="true"
+            android:exported="false">
             <intent-filter android:priority="1000">
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />   <!--Required  显示通知栏 -->
                 <category android:name="${applicationId}" />
@@ -91,11 +92,15 @@
         </receiver>
 
         <!-- 3.5.0新增，用于定时展示功能 -->
-        <receiver android:name="cn.jpush.android.service.SchedulerReceiver" android:exported="false"/>
+        <receiver
+            android:name="cn.jpush.android.service.SchedulerReceiver"
+            android:exported="false" />
 
         <!-- User defined.  For test only  用户自定义接收消息器,3.0.7开始支持,目前新tag/alias接口设置结果会在该广播接收器对应的方法中回调，extends JPushMessageReceiver-->
         <!--since 3.3.0 接收JPush相关事件-->
-        <receiver android:name="com.android.zs.push.PushMessageReceiver">
+        <receiver
+            android:name="com.android.zs.push.PushMessageReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="cn.jpush.android.intent.RECEIVE_MESSAGE" />
                 <category android:name="${applicationId}"></category>
@@ -117,7 +122,8 @@
         <!-- since 3.3.0 Required SDK 核心功能-->
         <!-- 可配置android:process参数将PushService放在其他进程中 -->
         <!--User defined.  For test only 继承自cn.jpush.android.service.JCommonService-->
-        <service android:name="com.android.zs.push.PushService"
+        <service
+            android:name="com.android.zs.push.PushService"
             android:enabled="true"
             android:exported="false"
             android:process=":pushcore">
@@ -127,8 +133,13 @@
         </service>
         <!-- since 3.5.6 新增华硕通道  -->
         <receiver android:name="cn.jpush.android.asus.AsusPushMessageReceiver"></receiver>
-        <meta-data android:name="JPUSH_APPKEY" android:value="JPUSH_APPKEY_VALUE"/>
-        <meta-data android:name="JPUSH_CHANNEL" android:value="JPUSH_CHANNEL_VALUE"/>
+
+        <meta-data
+            android:name="JPUSH_APPKEY"
+            android:value="JPUSH_APPKEY_VALUE" />
+        <meta-data
+            android:name="JPUSH_CHANNEL"
+            android:value="JPUSH_CHANNEL_VALUE" />
 
         <!--        极光配置  end-->
     </application>
