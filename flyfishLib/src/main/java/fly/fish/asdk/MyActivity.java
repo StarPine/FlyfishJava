@@ -51,10 +51,10 @@ public class MyActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		MLog.s(this + " ----> onCreate");
 		// 隐去标题栏（应用程序的名字）
-		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		// 隐去状态栏部分(电池等图标和一切修饰部分)
 //		this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		// 设置竖屏
