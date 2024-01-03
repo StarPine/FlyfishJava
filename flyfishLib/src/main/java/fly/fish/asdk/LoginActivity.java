@@ -34,6 +34,7 @@ public class LoginActivity extends MyActivity {
 	private LinearLayout mLayout;
 	private EditText account;
 	private EditText password;
+	private boolean isKeyDownCallBack = false;
 	public String tag = "LoginActivity";
 	public LoginActivity() {
 		super();
@@ -61,11 +62,14 @@ public class LoginActivity extends MyActivity {
 
 	@Override
 	public void finish() {
-		MLog.a(tag,this + " ---->LoginActivity finish  is runing!!");
-		//			synchronized (mLuaState) {
-//				mLuaState.getField(LuaState.LUA_GLOBALSINDEX, "loginCallBack");
-//				LuaTools.dbcall(mLuaState, 0, 0);// 代表0个参数，0个返回值
-//			}
+		MLog.a(tag, this + " ---->LoginActivity finish  is runing!!");
+		if (!isKeyDownCallBack){
+			synchronized (mLuaState) {
+				mLuaState.getField(LuaState.LUA_GLOBALSINDEX, "loginCallBack");
+				LuaTools.dbcall(mLuaState, 0, 0);// 代表0个参数，0个返回值
+			}
+		}
+
 		super.finish();
 	}
 
@@ -276,6 +280,7 @@ public class LoginActivity extends MyActivity {
 			// 通知远程服务更新头文件
 			boolean metaBoolean = ManifestInfo.getMetaBoolean(this, "ENABLE_CLOSE_LOGIN", true);
 			if (metaBoolean) {
+				isKeyDownCallBack = true;
 				synchronized (mLuaState) {
 					mLuaState.getField(LuaState.LUA_GLOBALSINDEX, "loginCallBack");
 					LuaTools.dbcall(mLuaState, 0, 0);// 代表0个参数，0个返回值
