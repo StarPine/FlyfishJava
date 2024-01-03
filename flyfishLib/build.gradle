@@ -16,7 +16,7 @@ android {
 
         buildConfigField "String", "SDK_VERSION_NAME", "\"${rootProject.ext.hostVersionName}\""
         buildConfigField "int", "SDK_VERSION_CODE", "${rootProject.ext.hostVersionCode}"
-        if (is_channel_merge.toBoolean()){
+        if (isChannelRes.toBoolean() || isApk.toBoolean()){
             buildConfigField "boolean", "ENABLE_MAIN_GAME_LOG", "false"
         }else {
             buildConfigField "boolean", "ENABLE_MAIN_GAME_LOG", "true"
@@ -47,7 +47,7 @@ android {
             java {
                 srcDirs = ['src/main/java']
                 excludes = ['libs/msa_mdid_1.0.13.jar']
-                if (is_channel_merge.toBoolean()){
+                if (isChannelRes.toBoolean()){
                     excludes = ['fly/fish/othersdk/*.java']
                 }
             }
@@ -94,7 +94,7 @@ afterEvaluate {
         def aarPath = "./build/outputs/aar/flyfishLib-release.aar"
         def newAarName = "${rootProject.ext.sdkName}_${rootProject.ext.hostVersionName}_${releaseTime()}_cp.aar"
         def newJarName = "${rootProject.ext.sdkName}_${rootProject.ext.hostVersionName}_${releaseTime()}_cp.jar"
-        if (is_channel_merge.toBoolean()){
+        if (isChannelRes.toBoolean()){
             newAarName = "${rootProject.ext.sdkName}_${rootProject.ext.hostVersionName}_${releaseTime()}_channel.aar"
             newJarName = "${rootProject.ext.sdkName}_${rootProject.ext.hostVersionName}_${releaseTime()}_channel.jar"
         }

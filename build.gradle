@@ -3,8 +3,12 @@ ext {
 
     sdkName = "asdk"
     hostVersionCode = 705
-    hostVersionName = "7.0.5.002"
+    hostVersionName = "7.0.5.${releaseTime()}"
     outputDir = rootDir.getAbsolutePath() + "/_outputs_${sdkName}_V${hostVersionCode}/"
+}
+
+def releaseTime() {
+    return new Date().format("yyyyMMdd", TimeZone.getTimeZone("GMT+08:00"))
 }
 
 buildscript {
