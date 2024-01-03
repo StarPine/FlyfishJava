@@ -1,18 +1,5 @@
 package fly.fish.asdk;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import org.keplerproject.luajava.LuaState;
-import org.keplerproject.luajava.LuaStateFactory;
- 
-
- 
-
-
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
@@ -21,14 +8,19 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
-//import android.support.multidex.MultiDex;
-import android.util.Log;
-import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
+
+import org.keplerproject.luajava.LuaState;
+import org.keplerproject.luajava.LuaStateFactory;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import fly.fish.aidl.ITestListener;
 import fly.fish.aidl.MyRemoteService;
 import fly.fish.beans.GameArgs;
@@ -40,6 +32,8 @@ import fly.fish.impl.HttpErrorHandler;
 import fly.fish.tools.Dao;
 import fly.fish.tools.FilesTool;
 import fly.fish.tools.MLog;
+
+//import android.support.multidex.MultiDex;
 
 //百度（ android.support.multidex.MultiDexApplication）
 //悟饭4.0 （com.csfuse.sdk.VSFuseApplication）
@@ -257,7 +251,7 @@ public class MyApplication extends Application{
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		SkipActivity.APPConfigurationChanged(this,newConfig);
+		SkipActivity.applicationOnConfigurationChanged(this,newConfig);
 		
 	}
 
@@ -354,7 +348,7 @@ public class MyApplication extends Application{
 	public void onTerminate() {
 		super.onTerminate();
 		// 防止内存泄露，清理相关数据务必调用SDK结束接口
-		SkipActivity.APPOnTerminate(this);
+		SkipActivity.onTerminate(this);
 		
 	}
 	

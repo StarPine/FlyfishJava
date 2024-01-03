@@ -91,39 +91,39 @@ public class OutFace {
 
     public void outActivityResult(Activity act, int requestCode, int resultCode, Intent data) {
         MLog.i(TAG, "outActivityResult: ");
-        SkipActivity.othActivityResult(act, requestCode, resultCode, data, mIntent);
+        SkipActivity.onActivityResult(act, requestCode, resultCode, data);
     }
 
     public void outOnCreate(Activity activity) {
         MLog.i(TAG, "outOnCreate: ");
         mActivity = activity;
-        SkipActivity.othInit(activity);
+        SkipActivity.initSDK(activity);
     }
 
     public void outOnCreate(Activity activity, Bundle savedInstanceState) {
         MLog.i(TAG, "outOnCreate: savedInstanceState");
         mActivity = activity;
-        SkipActivity.othInit(activity, savedInstanceState);
+        SkipActivity.initSDK(activity, savedInstanceState);
     }
 
     public void outOnStart(Activity activity) {
         MLog.i(TAG, "outOnStart: ");
-        SkipActivity.othOnStart(activity);
+        SkipActivity.onStart(activity);
     }
 
     public void outOnResume(Activity act) {
         MLog.i(TAG, "outOnResume: ");
-        SkipActivity.othOnResume(act);
+        SkipActivity.onResume(act);
     }
 
     public void outOnPause(Activity act) {
         MLog.i(TAG, "outOnPause: ");
-        SkipActivity.othOnPuse(act);
+        SkipActivity.onPause(act);
     }
 
     public void outOnStop(Activity act) {
         MLog.i(TAG, "outOnStop: ");
-        SkipActivity.othOnStop(act);
+        SkipActivity.onStop(act);
     }
 
     public void onSaveInstanceState(Activity act, Bundle outState) {
@@ -133,7 +133,7 @@ public class OutFace {
 
     public void outDestroy(Activity activity) {
         MLog.i(TAG, "outDestroy: ");
-        SkipActivity.othDestroy(activity);
+        SkipActivity.onDestroy(activity);
         quit(activity);
     }
 
@@ -144,13 +144,12 @@ public class OutFace {
      */
     @Deprecated
     public void outInGame(String abc) {
-        MLog.i(TAG, "outInGame: "+abc);
-        SkipActivity.othInGame(abc);
+        uploadData(abc);
     }
 
     public void uploadData(String roleData) {
         MLog.i(TAG, "uploadData: "+roleData);
-        SkipActivity.othInGame(roleData);
+        SkipActivity.uploadData(roleData);
     }
 
     // 社区
@@ -165,27 +164,27 @@ public class OutFace {
 
     public void outNewIntent(Activity act, Intent intent) {
         MLog.i(TAG, "outNewIntent: ");
-        SkipActivity.othNewIntent(act, intent);
+        SkipActivity.onNewIntent(act, intent);
     }
 
     public void outRestart(Activity act) {
         MLog.i(TAG, "outRestart: ");
-        SkipActivity.othRestart(act);
+        SkipActivity.onRestart(act);
     }
 
     public void outBackPressed(Activity activity) {
         MLog.i(TAG, "outBackPressed: ");
-        SkipActivity.othBackPressed(activity);
+        SkipActivity.onBackPressed(activity);
     }
 
     public void outConfigurationChanged(Configuration newConfig) {
         MLog.i(TAG, "outConfigurationChanged: ");
-        SkipActivity.othConfigurationChanged(newConfig);
+        SkipActivity.onConfigurationChanged(newConfig);
     }
 
     public void outQuit(Activity act) {
         MLog.i(TAG, "outQuit: ");
-        SkipActivity.othQuit(act);
+        SkipActivity.exit(act);
     }
 
     public void outQuitCallBack(Activity act, ExitCallBack exitcallback) {
@@ -195,12 +194,12 @@ public class OutFace {
 
     public void outLogout(Activity act) {
         MLog.i(TAG, "outLogout: ");
-        SkipActivity.othLogout(act);
+        SkipActivity.logout(act);
     }
 
     public void outonWindowFocusChanged(boolean hasFocus) {
         MLog.i(TAG, "outonWindowFocusChanged: ");
-        SkipActivity.othonWindowFocusChanged(hasFocus);
+        SkipActivity.onWindowFocusChanged(hasFocus);
     }
 
     public void getCertificateInfo(Activity act, GetCertificationInfoCallback callback) {
@@ -214,7 +213,7 @@ public class OutFace {
         MyCrashHandler mCrashHandler = MyCrashHandler.getInstance();
         mCrashHandler.init(activity.getApplicationContext());
         requestPermission();
-        SkipActivity.othInitLaunch(activity, isLandscape, new CallBackListener() {
+        SkipActivity.initLaunch(activity, isLandscape, new CallBackListener() {
             @Override
             public void callback(int code, boolean isHasExitBox) {
                 //兼容旧版本初始化
@@ -384,7 +383,7 @@ public class OutFace {
         localBundle.putString("mode", "login");
 
         mIntent.putExtras(localBundle);
-        SkipActivity.othLogin(act, mIntent);
+        SkipActivity.loginSDK(act, mIntent);
     }
 
     /**
