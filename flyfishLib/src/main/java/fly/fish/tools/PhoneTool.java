@@ -2628,7 +2628,7 @@ public class PhoneTool {
 	private final static String submit_maiidan_url = "http://iospingtai.xinxinjoy.com:8084/outerinterface/maidian.php?";
 
 	public static void finisA(){
-		LoginActivity.getNei().finish();
+		LoginActivity.getActivity().finish();
 	}
 	
 	private static void getMaidiantype(){
