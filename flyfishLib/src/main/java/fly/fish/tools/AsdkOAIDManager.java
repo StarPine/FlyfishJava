@@ -26,6 +26,8 @@ public class AsdkOAIDManager {
         try {
             if (TextUtils.isEmpty(oaidKey)) {
                 OAIDManager.getOAID(context, deviceId -> {
+//                    deviceId = null;
+                    if (deviceId == null)return;
                     String oaId = deviceId.getOaId();
                     Log.i("ASDK", "OAID versinon 1.0.13: " + oaId);
                     setOaid(oaId);
