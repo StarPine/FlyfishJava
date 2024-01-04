@@ -208,6 +208,7 @@ public class MyApplication extends Application{
 		logicmain = new LogicMain();
 		checkSD();
 		initLuaState();
+		MLog.setLogModel(this);
 
 		// 解析头文件
 		// parseData();

@@ -16,11 +16,6 @@ android {
 
         buildConfigField "String", "SDK_VERSION_NAME", "\"${rootProject.ext.hostVersionName}\""
         buildConfigField "int", "SDK_VERSION_CODE", "${rootProject.ext.hostVersionCode}"
-        if (isChannelRes.toBoolean() || isApk.toBoolean()){
-            buildConfigField "boolean", "ENABLE_MAIN_GAME_LOG", "false"
-        }else {
-            buildConfigField "boolean", "ENABLE_MAIN_GAME_LOG", "true"
-        }
 
     }
     packagingOptions {

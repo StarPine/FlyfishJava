@@ -31,13 +31,17 @@ import org.w3c.dom.NodeList;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Build;
 import android.os.Environment;
 import android.os.StatFs;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.PermissionChecker;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
@@ -1281,6 +1285,38 @@ public class FilesTool {
 			}, 1500);
 		} else {
 			mcallback.callback(0, isHasExitBox);
+		}
+	}
+
+	/**
+	 * 判断SD卡是否存在
+	 */
+	public static boolean isSDCardExists() {
+		return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
+	}
+
+	/**
+	 * 获取存储目录
+	 */
+	public static File getStorageDir(Context context) {
+		File sdDir;
+		if (isSDCardExists()) {
+			sdDir = Environment.getExternalStorageDirectory();
+		} else {
+			sdDir = context.getCacheDir();
+		}
+		return sdDir;
+	}
+
+	public static boolean isPermissionGranted(Context ctx, String permission) {
+		if (Build.VERSION.SDK_INT < 23) {
+			return true;
+		} else {
+			if (ctx.getApplicationInfo().targetSdkVersion >= 23) {
+				return ContextCompat.checkSelfPermission(ctx, permission) == PackageManager.PERMISSION_GRANTED;
+			} else {
+				return PermissionChecker.checkSelfPermission(ctx, permission) == PackageManager.PERMISSION_GRANTED;
+			}
 		}
 	}
 }

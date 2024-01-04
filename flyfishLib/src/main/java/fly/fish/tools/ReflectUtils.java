@@ -9,11 +9,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * 反射工具
+ * 反射工具类
  */
 public class ReflectUtils {
 
     private static volatile ReflectUtils mInstance;
+    private final String TAG = "reflect_log";
     private Map<String, Object> instanceMap = new HashMap<>(4);
     private Method method;
     private Object object;
@@ -78,17 +79,17 @@ public class ReflectUtils {
     }
 
     private void pramsLog(Object[] prams) {
-        MLog.i("method_log", "method: "+ method);
+        MLog.i(TAG, "method: "+ method);
         if (prams == null)return;
         int length = prams.length;
         if (length <= 0)return;
         for (Object pram : prams) {
             if (pram instanceof String){
-                MLog.i("method_log", "prams: "+(String) pram);
+                MLog.i(TAG, "prams: "+(String) pram);
             }else if (pram instanceof Activity){
-                MLog.i("method_log", "prams: "+(Activity) pram);
+                MLog.i(TAG, "prams: "+(Activity) pram);
             }else if (pram instanceof Boolean){
-                MLog.i("method_log", "prams: "+(Boolean) pram);
+                MLog.i(TAG, "prams: "+(Boolean) pram);
             }
         }
     }

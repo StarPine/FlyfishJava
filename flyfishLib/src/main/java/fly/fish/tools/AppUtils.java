@@ -48,6 +48,17 @@ public class AppUtils {
         return null;
     }
 
+    /**
+     * 判断是否为主进程
+     * @param context
+     * @return
+     */
+    public static boolean isMainProcess(Context context) {
+        String processName = AppUtils.getProcessName(context);
+        String packageName = AppUtils.getPackageName(context);
+        return processName.equals(packageName);
+    }
+
     // 获取应用程序签名的MD5值
     public static String getSignatureMD5(Context context) {
         return getSignatureDigest(context,"MD5");

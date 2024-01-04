@@ -41,9 +41,6 @@ public class Configs {
 	/** 对象类型 */
 	public static Class<String> tstring = String.class;
 
-	/** 母包日志开关 */
-	public final static boolean isEnableLog = BuildConfig.ENABLE_MAIN_GAME_LOG;
-
 	/** 一键登录启动开关 */
 	public static boolean isEnableOneKeyLogin = false;
 
