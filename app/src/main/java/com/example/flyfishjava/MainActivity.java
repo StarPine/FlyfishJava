@@ -1,21 +1,13 @@
 package com.example.flyfishjava;
 
-import android.Manifest;
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.graphics.BitmapFactory;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -31,25 +23,18 @@ import android.widget.Toast;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import fly.fish.aidl.CallBackListener;
 import fly.fish.aidl.OutFace;
-import fly.fish.asdk.MyActivity;
-import fly.fish.report.EventManager;
-import fly.fish.report.ASDKReport;
+import fly.fish.config.StatusCode;
+import fly.fish.tools.AppUtils;
+import fly.fish.tools.MD5Util;
 import fly.fish.tools.MLog;
-import fly.fish.tools.OthPhone;
-import fly.fish.tools.PhoneTool;
 
 public class MainActivity extends Activity {
 
-    private OutFace out;
+    private static final String TAG = "MainActivity";
+    private OutFace outFace;
     private boolean isinit;
     private boolean hasExitBox;
 
@@ -84,61 +69,18 @@ public class MainActivity extends Activity {
 //    private String gamename = "dhxj";
 
     private String cpid = "100079";
-    private String gameid = "100584";
-    private String gamekey = "d157306a5d4e9813";
-    private String gamename = "jdzc";
+    private String gameid = "100983";
+    private String gamekey = "3f7f8bf5d3038c12";
+    private String gamename = "jzzd";
+
+//    private String cpid = "100079";
+//    private String gameid = "100584";
+//    private String gamekey = "d157306a5d4e9813";
+//    private String gamename = "jdzc";
 
 
     //余额，角色id，帮派，VIP等级，服务器名称，角色等级，服务器id，角色名称，阵营（若没有可不传）
     String userinfo = "{\"ingot\":\"1000\",\"playerId\":\"0001040C0000002A\",\"factionName\":\"丐帮\",\"vipLevel\":\"20\",\"serverName\":\"五虎上将\",\"playerLevel\":\"200\",\"serverId\":\"100\",\"playerName\":\"赖瑾萱\",\"campId\":\"3\"}";
-
-    public OutFace.FlyFishSDK callback = new OutFace.FlyFishSDK() {
-
-        @Override
-        public void initback(String status) {
-            System.out.println("initback ----> " + status);
-            OthPhone.Initgetnum(MainActivity.this);
-            String s = OthPhone.ForAsdkGetnum();
-            MLog.a("ddddd"+s);
-            if ("0".equals(status)){
-                isinit = true;
-                out.login(MainActivity.this, "myself", gamekey);
-            }else {
-                if (dialog != null && dialog.isShowing()) {
-                    dialog.dismiss();
-                    dialog = null;
-                }
-                System.out.println("初始化失败");
-            }
-        }
-
-        @Override
-        public void loginback(String sessionid, String accountid, String status, String customstring) {
-            System.out.println("loginback ----> " + sessionid + " = " + accountid + " = " + status + " = " + customstring);
-            if (dialog != null && dialog.isShowing()) {
-                dialog.dismiss();
-                dialog = null;
-            }
-            if ("0".equals(status))
-                handler.sendEmptyMessage(0);
-            else if("2".equals(status)){//帐号注销
-                handler.sendEmptyMessage(1);
-            }else{
-                Toast.makeText(MainActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        @Override
-        public void payback(String msg, String status, String sum, String chargetype, String customorgerid, String customstring) {
-            System.out.println("payback ----> " + msg + " = " + status + " = " + sum + "=" + chargetype + " = " + customorgerid + " = " + customstring);
-        }
-
-        @Override
-        public void queryback(String status, String sum, String chargetype, String customstring) {
-            System.out.println("queryback ----> " + status + " = " + sum + "=" + chargetype + " = " + customstring);
-        }
-
-    };
 
     Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -146,7 +88,7 @@ public class MainActivity extends Activity {
             int first = MainActivity.this.getResources().getIdentifier("first", "layout", MainActivity.this.getPackageName());
             switch (msg.what) {
                 case 0:
-                    out.outInGame(userinfo);//传入角色信息
+                    outFace.outInGame(userinfo);//传入角色信息
                     MainActivity.this.setContentView(main);
                     break;
                 case 1:
@@ -163,23 +105,79 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         // 隐去标题栏（应用程序的名字）
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        MLog.setDebug(true);
-        out = OutFace.getInstance();
-        out.setDebug(true);
-        out.outInitLaunch(this, true, new CallBackListener() {
+        outFace = OutFace.getInstance();
+        outFace.outOnCreate(MainActivity.this);
+        outFace.outOnCreate(MainActivity.this,savedInstanceState);
+        outFace.callBack(gamekey,new OutFace.FlyFishSDK() {
+
+            @Override
+            public void initback(String status) {
+                System.out.println("initback ----> " + status);
+                switch (status){
+                    case StatusCode.INIT_SUCCESS:
+                        Log.i(TAG, "initback: 初始化成功");
+                        isinit = true;
+                        outFace.login(MainActivity.this, "myself", gamekey);
+                        break;
+                    case StatusCode.INIT_FAIL:
+                        if (dialog != null && dialog.isShowing()) {
+                            dialog.dismiss();
+                            dialog = null;
+                        }
+                        Log.i(TAG, "initback: 初始化成功");
+                        break;
+                }
+            }
+
+            @Override
+            public void loginback(String sessionid, String accountid, String status, String customstring) {
+                System.out.println("loginback ----> " + sessionid + " = " + accountid + " = " + status + " = " + customstring);
+                if (dialog != null && dialog.isShowing()) {
+                    dialog.dismiss();
+                    dialog = null;
+                }
+                switch (status){
+                    case StatusCode.LOGIN_SUCCESS:
+                        handler.sendEmptyMessage(0);
+                        break;
+                    case StatusCode.LOGIN_FAIL:
+                        Toast.makeText(MainActivity.this, "登录失败", Toast.LENGTH_SHORT).show();
+                        break;
+                    case StatusCode.LOGOUT_SUCCESS:
+                        handler.sendEmptyMessage(1);
+                        break;
+                }
+
+            }
+
+            @Override
+            public void payback(String msg, String status, String sum, String chargetype, String customorgerid, String customstring) {
+                System.out.println("payback ----> " + msg + " = " + status + " = " + sum + "=" + chargetype + " = " + customorgerid + " = " + customstring);
+                switch (status){
+                    case StatusCode.PAY_SUCCESS:
+                        break;
+                    case StatusCode.PAY_FAIL:
+
+                        break;
+                    case StatusCode.PAY_REVIEW:
+
+                        break;
+                }
+            }
+
+
+        });
+        outFace.outInitLaunch(this, true, new CallBackListener() {
 
             @Override
             public void callback(int code, boolean isHasExitBox) {
-                //code:0成功,1失败;isHasExitBox:true有退出框,false:无退出框
+                //isHasExitBox:true有退出框,false:无退出框
                 handler.sendEmptyMessage(1);
                 hasExitBox = isHasExitBox;
 
             }
         });
-        //out.onSaveInstanceState(MainActivity.this,savedInstanceState);
-        out.outOnCreate(MainActivity.this);
-        out.outOnCreate(MainActivity.this,savedInstanceState);
-        out.callBack(gamekey,callback);
+
     }
 
 
@@ -216,39 +214,39 @@ public class MainActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        out.outOnResume(this);
+        outFace.outOnResume(this);
     }
 
     @Override
     protected void onRestart() {
         // TODO Auto-generated method stub
         super.onRestart();
-        out.outRestart(this);
+        outFace.outRestart(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        out.outOnPause(this);
+        outFace.outOnPause(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        out.outOnStop(this);
+        outFace.outOnStop(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        out.outDestroy(this);
+        outFace.outDestroy(this);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
-        out.outActivityResult(this, requestCode, resultCode, data);
+        outFace.outActivityResult(this, requestCode, resultCode, data);
     }
 
     private ProgressDialog dialog = null;
@@ -258,15 +256,16 @@ public class MainActivity extends Activity {
      * @param view
      */
     public void login(View view) {
+        String signatureMD5 = MD5Util.getMD5String("S223423B4rLzby5Fl");
+        Log.i(TAG, "signatureMD5: "+signatureMD5);
 //        if (true){
 //            ASDKReport.getInstance().startSDKReport(this,EventManager.SDK_EVENT_SHOW_ONEKEY_LOGIN);
 //            return;
 //        }
-
+        outFace.commonApi5(this, data -> Log.i("asdk", "commonApi5: "+data),"daada",666);
         String appkey= getAppKey(this);
-        MLog.setDebug(true);
         MLog.a("appkey---------"+appkey);
-        MLog.a("getCheckState---------"+out.getCheckState());
+        MLog.a("getCheckState---------"+ outFace.getCheckState());
 
         if (dialog == null) {
             dialog = new ProgressDialog(this);
@@ -279,12 +278,12 @@ public class MainActivity extends Activity {
             this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    out.login(MainActivity.this, "myself", gamekey);
+                    outFace.login(MainActivity.this, "myself", gamekey);
                 }
             });
 
         }else{
-            out.init(cpid, gameid, gamekey, gamename);
+            outFace.init(cpid, gameid, gamekey, gamename);
         }
     }
 
@@ -302,8 +301,9 @@ public class MainActivity extends Activity {
 
     @Override
     public void onBackPressed() {
+        Log.i(TAG, "onBackPressed: ");
         if(hasExitBox){//调用sdk的退出框
-            out.outQuit(this);
+            outFace.outQuit(this);
         }else{
             //调用游戏自带的退出框
             AlertDialog.Builder builder =new AlertDialog.Builder(this);
@@ -314,7 +314,7 @@ public class MainActivity extends Activity {
                         public void onClick(DialogInterface dialog, int which) {
                             dialog.dismiss();
                             //执行游戏退出
-                            out.outQuit(MainActivity.this);
+                            outFace.outQuit(MainActivity.this);
                             MainActivity.this.finish();
                             System.exit(0);
                         }
@@ -331,7 +331,7 @@ public class MainActivity extends Activity {
 
     public void getoaid(View view) {
 //        Toast.makeText(this,"oaid："+ PhoneTool.getOAID(),Toast.LENGTH_SHORT).show();
-        Toast.makeText(this,"devid："+ PhoneTool.getIMEI(this),Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"devid："+ OutFace.getInstance().getDeviceId(this),Toast.LENGTH_SHORT).show();
 
     }
 
@@ -344,27 +344,27 @@ public class MainActivity extends Activity {
             if (isinit) {
                 //订单号，回调URL，充值金额，商品描述，游戏自定义参数
 
-                out.pay(this, System.currentTimeMillis() + "", "", "0.01","12","1元礼包", "myself", gamekey);
+                outFace.pay(this, System.currentTimeMillis() + "", "", "0.01","12","1元礼包", "myself", gamekey);
             } else {
-                out.init(cpid, gameid, gamekey, gamename);
+                outFace.init(cpid, gameid, gamekey, gamename);
             }
         }
     }
 
     //跳转小程序
     public void jumpApplet(View view) {
-        out.outshare(this,2);
+        OutFace.getInstance().outshare(this,2);
     }
 
     public void auditState(View view) {
-        Toast.makeText(this,"当前审核状态："+out.getCheckState(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"当前审核状态："+ outFace.getCheckState(),Toast.LENGTH_SHORT).show();
     }
 
     public void share(View view) {
 //        FilesTool.copyAssetsToFiles("fenxiang.png","/data/data/" + getPackageName() + "/files/fenxiang.png");
 //        File file = new File("/data/data/" + getPackageName() + "/files/fenxiang.png");
         File file = finddecodeFactoryTestConfigFile("fenxiang.png", this);
-        out.outJGshare(this,2,file);
+        outFace.outJGshare(this,2,file);
     }
 
     /**
