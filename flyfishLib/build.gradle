@@ -60,7 +60,7 @@ android {
 
 // 获取当前系统时间
 def releaseTime() {
-    return new Date().format("yyyyMMddHHmm", TimeZone.getTimeZone("GMT+08:00"))
+    return new Date().format("HHmm", TimeZone.getTimeZone("GMT+08:00"))
 }
 
 tasks.configureEach { task ->

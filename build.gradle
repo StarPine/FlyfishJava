@@ -8,7 +8,7 @@ ext {
 }
 
 def releaseTime() {
-    return new Date().format("yyyyMMdd", TimeZone.getTimeZone("GMT+08:00"))
+    return new Date().format("yyMMdd", TimeZone.getTimeZone("GMT+08:00"))
 }
 
 buildscript {

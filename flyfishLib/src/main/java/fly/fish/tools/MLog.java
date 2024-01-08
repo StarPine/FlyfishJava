@@ -9,8 +9,8 @@ import java.io.File;
 import fly.fish.config.Configs;
 
 public class MLog {
-    private static final String TAG = "ASDk";
-    private static boolean isLog = false;
+    private static final String TAG = "ASDK";
+    private static boolean isLogger = false;
     private static boolean debug = false;
 
     public static void enableLogger(boolean enable) {
