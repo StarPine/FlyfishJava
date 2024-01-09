@@ -162,7 +162,7 @@ public class MainActivity extends Activity {
                         showToast("支付失败 ："+sum);
                         break;
                     case StatusCode.PAY_REVIEW:
-                        showToast("取消支付 ："+sum);
+//                        showToast("取消支付 ："+sum);
                         break;
                 }
             }

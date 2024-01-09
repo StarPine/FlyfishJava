@@ -37,9 +37,8 @@ public class PaymentTypeDisplayActivity extends Activity {
     private TextView productAmount;
     private ImageView checkWxpay;
     private ImageView checkAlipay;
-    private static final String TYPE_WX_WEB_PAY = "23";
-    private static final String TYPE_ALIPAY = "1";
-    private int payType = 0;//支付宝：0，微信：1
+    private static final String TYPE_WX_WEB_PAY = "23";//微信h5支付
+    private static final String TYPE_ALIPAY = "1";//阿里支付
     private int alipayId = 0;
     private int wechatPayId = 0;
     private String selectPayId = "";
@@ -126,6 +125,7 @@ public class PaymentTypeDisplayActivity extends Activity {
                 if (payName.equals("alipay")) {
                     remark = JsonUtils.getString(jsonObject, "remark");
                     alipayId = payId;
+                    selectPayId = String.valueOf(alipayId);
                 } else if (payName.equals("vxwappay")) {
                     wechatPayId = payId;
                 }
@@ -159,18 +159,15 @@ public class PaymentTypeDisplayActivity extends Activity {
     /**
      * 开始支付
      *
-     * @param paytypeid
      */
-    private void startPay(int paytypeid) {
-        selectPayId = String.valueOf(paytypeid);
-
+    private void startPay() {
         showLoading();
         switch (selectPayId) {
             case TYPE_WX_WEB_PAY:
                 Map<String, Object> payInfo = new HashMap<>();
                 payInfo.put("sum", sum);
                 payInfo.put("callbackurl", callbackurl);
-                payInfo.put("paytypeid", paytypeid + "");
+                payInfo.put("paytypeid", selectPayId);
                 payInfo.put("customorderid", customorderid);
                 payInfo.put("accountid", accountId);
                 payInfo.put("custominfo", callBackData);
@@ -267,7 +264,7 @@ public class PaymentTypeDisplayActivity extends Activity {
         itemAlipay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                payType = 0;
+                selectPayId = String.valueOf(alipayId);
                 checkAlipay.setImageResource(icon_checkbox_select);
                 checkWxpay.setImageResource(icon_checkbox_default);
             }
@@ -275,7 +272,7 @@ public class PaymentTypeDisplayActivity extends Activity {
         itemWxpay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                payType = 1;
+                selectPayId = String.valueOf(wechatPayId);
                 checkWxpay.setImageResource(icon_checkbox_select);
                 checkAlipay.setImageResource(icon_checkbox_default);
             }
@@ -283,11 +280,7 @@ public class PaymentTypeDisplayActivity extends Activity {
         confimPay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (payType == 0) {
-                    startPay(alipayId);
-                } else {
-                    startPay(wechatPayId);
-                }
+                    startPay();
             }
         });
     }
