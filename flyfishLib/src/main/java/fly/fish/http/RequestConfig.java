@@ -1,4 +1,4 @@
-package fly.fish.report;
+package fly.fish.http;
 
 public class RequestConfig {
     private String body;
