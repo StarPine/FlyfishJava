@@ -15,9 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-import org.keplerproject.luajava.LuaState;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +27,6 @@ import fly.fish.http.RequestConfig;
 import fly.fish.http.RequestUtils;
 import fly.fish.tools.AppUtils;
 import fly.fish.tools.JsonUtils;
-import fly.fish.tools.LuaTools;
 import fly.fish.tools.ResUtils;
 import fly.fish.tools.StringUtils;
 import fly.fish.wechat.WXinSDK;
@@ -60,6 +57,7 @@ public class PaymentTypeDisplayActivity extends Activity {
     private String desc;
     private String callBackData;
     private String remark;
+    private String accountId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +82,15 @@ public class PaymentTypeDisplayActivity extends Activity {
         confimPay.setText("确认支付 ￥" + sum);
         productDesc.setText(desc);
         productAmount.setText("￥ " + sum);
+
+        GameArgs gameArgs = MyApplication.getAppContext().getGameArgs();
+        gameArgs.setSelf(callBackData);
+        gameArgs.setCustomorderid(customorderid);
+        gameArgs.setCallbackurl(callbackurl);
+        gameArgs.setSum(sum);
+        gameArgs.setDesc(desc);
+        accountId = gameArgs.getAccount_id();
+
         new Thread(() -> {
             SharedPreferences sharedPreferences = MyApplication.context.getSharedPreferences("user_info", 0);
             payserver = sharedPreferences.getString("payserver", "");
@@ -107,6 +114,11 @@ public class PaymentTypeDisplayActivity extends Activity {
         String msg = JsonUtils.getString(result, "msg");
 
         if (code == 0) {
+            hideLoading();
+            if (jsonArray == null || jsonArray.length() <= 0) {
+                payCancelCallback();
+                return;
+            }
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = JsonUtils.getJSONObject(jsonArray, i);
                 int payId = JsonUtils.getInt(jsonObject, "pay_id");
@@ -118,7 +130,6 @@ public class PaymentTypeDisplayActivity extends Activity {
                     wechatPayId = payId;
                 }
             }
-            hideLoading();
         } else if (code == -1) {
             showToast(msg);
         }
@@ -152,12 +163,7 @@ public class PaymentTypeDisplayActivity extends Activity {
      */
     private void startPay(int paytypeid) {
         selectPayId = String.valueOf(paytypeid);
-        GameArgs gameArgs = MyApplication.getAppContext().getGameArgs();
-        gameArgs.setSelf(callBackData);
-        gameArgs.setCustomorderid(customorderid);
-        gameArgs.setCallbackurl(callbackurl);
-        gameArgs.setSum(sum);
-        gameArgs.setDesc(desc);
+
         showLoading();
         switch (selectPayId) {
             case TYPE_WX_WEB_PAY:
@@ -166,7 +172,7 @@ public class PaymentTypeDisplayActivity extends Activity {
                 payInfo.put("callbackurl", callbackurl);
                 payInfo.put("paytypeid", paytypeid + "");
                 payInfo.put("customorderid", customorderid);
-                payInfo.put("accountid", gameArgs.getAccount_id());
+                payInfo.put("accountid", accountId);
                 payInfo.put("custominfo", callBackData);
                 payInfo.put("desc", desc);
                 payInfo.put("bundleid", AppUtils.getPackageName(this));
@@ -204,12 +210,12 @@ public class PaymentTypeDisplayActivity extends Activity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            cancelCallback();
+            payCancelCallback();
         }
         return super.onKeyDown(keyCode, event);
     }
 
-    public void cancelCallback() {
+    public void payCancelCallback() {
         Intent intent = new Intent(this, MyRemoteService.class);
         Bundle bu = new Bundle();
 
