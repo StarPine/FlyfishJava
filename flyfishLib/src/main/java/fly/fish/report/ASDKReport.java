@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fly.fish.aidl.OutFace;
+import fly.fish.http.RequestConfig;
+import fly.fish.http.RequestUtils;
 import fly.fish.tools.AppUtils;
 import fly.fish.tools.FilesTool;
 import fly.fish.tools.MD5Util;

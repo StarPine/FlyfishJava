@@ -65,18 +65,16 @@ public class PrivacyActivity extends Activity {
             String data = DialgTool.getWebMethod(address + asdkPublisher + "&versionName=" + PhoneTool.getVersionName(PrivacyActivity.this));
             MLog.a("--------json------" + data);
 
-            JsonUtils jsonUtils = new JsonUtils(data);
+            state = JsonUtils.getString(data,"state");
+            qx_url = JsonUtils.getString(data,"qxurl");
+            ys_url = JsonUtils.getString(data,"ysurl");
+            yh_url = JsonUtils.getString(data,"yhurl");
+            oaidKey = JsonUtils.getString(data,"oakey");
 
-            state = jsonUtils.getString("state");
-            qx_url = jsonUtils.getString("qxurl");
-            ys_url = jsonUtils.getString("ysurl");
-            yh_url = jsonUtils.getString("yhurl");
-            oaidKey = jsonUtils.getString("oakey");
-
-            Configs.isEnableRequestPermission = jsonUtils.getBoolean("isrequ", false);
-            Configs.isEnableFormalMode = jsonUtils.getBoolean("ischeck", false);
-            Configs.isEnableOneKeyLogin = jsonUtils.getBoolean("jgcheck", false);
-            Configs.qqContactWay = jsonUtils.getString("smkf");
+            Configs.isEnableRequestPermission = JsonUtils.getBoolean(data,"isrequ", false);
+            Configs.isEnableFormalMode = JsonUtils.getBoolean(data,"ischeck", false);
+            Configs.isEnableOneKeyLogin = JsonUtils.getBoolean(data,"jgcheck", false);
+            Configs.qqContactWay = JsonUtils.getString(data,"smkf");
             initPrivacy();
 
         }).start();
@@ -109,10 +107,9 @@ public class PrivacyActivity extends Activity {
 
     private void showUpdateDialog(String updateData) {
         runOnUiThread(() -> {
-            JsonUtils jsonUtils = new JsonUtils(updateData);
-            String updateTitle = jsonUtils.getString("updateTitle");
-            String updateContent = jsonUtils.getString("updateContent");
-            int updateStatus = jsonUtils.getInt("updateStatus", 0);
+            String updateTitle = JsonUtils.getString(updateData,"updateTitle");
+            String updateContent = JsonUtils.getString(updateData,"updateContent");
+            int updateStatus = JsonUtils.getInt(updateData,"updateStatus", 0);
             boolean isShowed = sharedPreferences.getBoolean(IS_SHOWED, false);
             if (updateStatus == 0 || isShowed) {
                 startGameActivity();

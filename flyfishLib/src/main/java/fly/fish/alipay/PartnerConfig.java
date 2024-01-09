@@ -28,6 +28,24 @@ public class PartnerConfig {
 	public static String RSA_PRIVATE = "";
 	public static String RSA_ALIPAY_PUBLIC = "";
 	public static String ALIPAY_PLUGIN_NAME = "";
+	public static String QQ = "";
+	public static String PHONE = "";
+
+	public static String getQQ() {
+		return QQ;
+	}
+
+	public static void setQQ(String QQ) {
+		PartnerConfig.QQ = QQ;
+	}
+
+	public static String getPHONE() {
+		return PHONE;
+	}
+
+	public static void setPHONE(String PHONE) {
+		PartnerConfig.PHONE = PHONE;
+	}
 
 	public static String getPARTNER2() {
 		return PARTNER;

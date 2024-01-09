@@ -30,6 +30,7 @@ import fly.fish.aidl.OutFace;
 import fly.fish.asdk.ChargeActivity;
 import fly.fish.asdk.LoginActivity;
 import fly.fish.asdk.MyApplication;
+import fly.fish.asdk.PaymentTypeDisplayActivity;
 import fly.fish.beans.GameArgs;
 import fly.fish.impl.GetCertificationInfoCallback;
 import fly.fish.impl.ISdk;
@@ -268,7 +269,8 @@ public class Asdk implements ISdk {
 			}
 		}
 		
-		intent.setClass(activity, ChargeActivity.class);
+//		intent.setClass(activity, ChargeActivity.class);
+		intent.setClass(activity, PaymentTypeDisplayActivity.class);
 		activity.startActivity(intent);
 	}
 

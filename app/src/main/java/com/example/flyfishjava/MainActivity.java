@@ -26,6 +26,7 @@ import java.io.InputStream;
 
 import fly.fish.aidl.CallBackListener;
 import fly.fish.aidl.OutFace;
+import fly.fish.asdk.PaymentTypeDisplayActivity;
 import fly.fish.config.StatusCode;
 import fly.fish.tools.AppUtils;
 import fly.fish.tools.MD5Util;
@@ -155,12 +156,13 @@ public class MainActivity extends Activity {
                 System.out.println("payback ----> " + msg + " = " + status + " = " + sum + "=" + chargetype + " = " + customorgerid + " = " + customstring);
                 switch (status){
                     case StatusCode.PAY_SUCCESS:
+                        showToast("支付成功 ："+sum);
                         break;
                     case StatusCode.PAY_FAIL:
-
+                        showToast("支付失败 ："+sum);
                         break;
                     case StatusCode.PAY_REVIEW:
-
+                        showToast("取消支付 ："+sum);
                         break;
                 }
             }
@@ -178,6 +180,12 @@ public class MainActivity extends Activity {
             }
         });
 
+    }
+
+    private void showToast(String msg) {
+        runOnUiThread(() -> {
+            Toast.makeText(this,  msg, Toast.LENGTH_SHORT).show();
+        });
     }
 
 
@@ -256,8 +264,9 @@ public class MainActivity extends Activity {
      * @param view
      */
     public void login(View view) {
-        String signatureMD5 = MD5Util.getMD5String("S223423B4rLzby5Fl");
-        Log.i(TAG, "signatureMD5: "+signatureMD5);
+//        Intent intent = new Intent(this, PaymentTypeDisplayActivity.class);
+//        startActivity(intent);
+//        if (true)return;
 //        if (true){
 //            ASDKReport.getInstance().startSDKReport(this,EventManager.SDK_EVENT_SHOW_ONEKEY_LOGIN);
 //            return;
