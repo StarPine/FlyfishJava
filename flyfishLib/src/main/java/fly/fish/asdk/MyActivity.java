@@ -13,6 +13,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -51,8 +52,15 @@ public class MyActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
 		super.onCreate(savedInstanceState);
+		WindowManager.LayoutParams lp = getWindow().getAttributes();
+		lp.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
+		lp.flags |= WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;//大部分手机可以生效
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {//特殊手机还需加这个才能生效
+			lp.layoutInDisplayCutoutMode = WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_SHORT_EDGES;
+		}
 		MLog.s(this + " ----> onCreate");
 		// 隐去标题栏（应用程序的名字）
 		// 隐去状态栏部分(电池等图标和一切修饰部分)
