@@ -41,10 +41,10 @@ public class YXWebActivity extends Activity {
 	String url;
 	@Override
 	protected void onCreate(Bundle savedInstanceState){
-		super.onCreate(savedInstanceState);
 		// 隐去标题栏（应用程序的名字）
 		this.requestWindowFeature(Window.FEATURE_NO_TITLE);
-		
+		super.onCreate(savedInstanceState);
+
 		Intent intent =getIntent(); 
 		url=intent.getStringExtra("user_protocol_url");
 		if(url==null){
