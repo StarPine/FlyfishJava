@@ -60,7 +60,9 @@ public class ASDKReport {
     private static final String KEY_SYSTEM = "system";
     private static final String KEY_DH = "dh";
     private static final String KEY_PB = "pb";
-    private static final String KEY_VERSION = "version";
+    private static final String KEY_VERSION = "version";//SDK版本
+    private static final String KEY_VERSION_NAME = "version_name";//app versionName
+    private static final String KEY_VERSION_CODE = "version_code";//app versionCode
 
     public static final String KEY_GAME_ID = "gameid";
     public static final String KEY_ACCOUNT_ID = "accountid";
@@ -290,6 +292,8 @@ public class ASDKReport {
         sdkParamsMap.put(KEY_GID, getGID(context));
         sdkParamsMap.put(KEY_DH, sdkEvent);
         sdkParamsMap.put(KEY_VERSION, OutFace.SDK_VERSION_NAME);
+        sdkParamsMap.put(KEY_VERSION_NAME, AppUtils.getAppVersionName(context));
+        sdkParamsMap.put(KEY_VERSION_CODE, AppUtils.getAppVersionCode(context));
         return map2JsonString(sdkParamsMap);
     }
 
