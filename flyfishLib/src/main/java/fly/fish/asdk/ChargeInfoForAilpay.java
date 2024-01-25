@@ -13,6 +13,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
@@ -181,12 +182,13 @@ public class ChargeInfoForAilpay extends MyActivity implements Callback, Runnabl
 		mContext = ChargeInfoForAilpay.this;
 		MLog.s("TTTTTTTTT ---------> " + context);
 		// check to see if the MobileSecurePay is already installed.
-		
+		SharedPreferences sharedPreferences = MyApplication.context.getSharedPreferences("user_info", 0);
+		String alipayNotifyUrl = sharedPreferences.getString("notify_url", "");
 		String gamename = context.getApplicationInfo().loadLabel(context.getPackageManager()).toString();
 		try {
 			// prepare the order info.
 			// 准备订单信息
-			String orderInfo = getOrderInfo(total_fee, customorderid, notify_url,gamename);
+			String orderInfo = getOrderInfo(total_fee, customorderid, alipayNotifyUrl,gamename);
 			MLog.a("Alipay", "orderInfo:"+orderInfo);
 			// 这里根据签名方式对订单信息进行签名
 			String sign = sign(orderInfo);
