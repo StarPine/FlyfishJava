@@ -151,7 +151,7 @@ public class PhoneTool {
 
 	/**
 	 * 安装APK
-	 * 
+	 *
 	 * @param apkFileString
 	 */
 	public static void notifyAndInstallApk(Activity from, String apkFileString) {
@@ -194,7 +194,7 @@ public class PhoneTool {
 	 * tm.getLine1Number(); //取出MSISDN，很可能为空(電話號碼) String imei
 	 * =tm.getSimSerialNumber(); //取出ICCID String imsi =tm.getSubscriberId();
 	 * //取出IMEI
-	 * 
+	 *
 	 * @return
 	 */
 	public static String getIMEI(Context context) {
@@ -294,7 +294,7 @@ public class PhoneTool {
 					//持久化操作, 进行保存到SD卡中
 					MyApplication.context.getSharedPreferences("user_info", 0).edit().putString("device_id", deviceId).commit();
 					saveDeviceID(deviceId, con);
-					
+
 				}
 			}else if(flag==1){
 				isgetDeId = true;
@@ -334,7 +334,7 @@ public class PhoneTool {
         }
         try {
             //获取设备的ANDROID_ID+SERIAL硬件序列号
-        	deviceId = Settings.System.getString(context.getContentResolver(), Settings.System.ANDROID_ID); 
+        	deviceId = Settings.System.getString(context.getContentResolver(), Settings.System.ANDROID_ID);
         	String serial= Build.SERIAL;
             s.append(deviceId).append(serial);
         } catch (Exception e) {
@@ -448,16 +448,16 @@ public class PhoneTool {
     //处理设备号
     public static void managerIMEI(final Activity activity){
     	new Thread(new Runnable() {
-			
+
 			@Override
 			public void run() {
 				//sd卡读取
 				String readDeviceID = readDeviceID(activity);
 				//app缓存读取
 				String spDeviceID = MyApplication.context.getSharedPreferences("user_info", 0).getString("device_id", readDeviceID);
-				
+
                 if (readDeviceID==null||"".equals(readDeviceID)) {// sd卡缓存为空
-                    
+
                 	if(spDeviceID==null||"".equals(spDeviceID)){//app缓存为空
                 		readDeviceID = getDeviceId(activity);
                 	}else{////app缓存不为空
@@ -486,7 +486,7 @@ public class PhoneTool {
 
 	/**
 	 * 加密后的IMEI
-	 * 
+	 *
 	 * @param imei
 	 * @return
 	 */
@@ -508,7 +508,7 @@ public class PhoneTool {
 
 	/**
 	 * 判断有木有使用cmwap代理
-	 * 
+	 *
 	 * @return
 	 */
 	public static boolean isProxy(Context con) {
@@ -547,7 +547,7 @@ public class PhoneTool {
 
 	/**
 	 * 返回IP地址
-	 * 
+	 *
 	 * @return
 	 */
 	public static String getLocalIpAddress() {
@@ -607,7 +607,7 @@ public class PhoneTool {
 
 	/**
 	 * 判断网络连接是否打开
-	 * 
+	 *
 	 * @param context
 	 * @return
 	 */
@@ -661,7 +661,7 @@ public class PhoneTool {
 		 * ProvidersName = "中国移动"; } else if (operator.equals("46001")) {
 		 * ProvidersName = "中国联通"; } else if (operator.equals("46003")) {
 		 * ProvidersName = "中国电信"; }
-		 * 
+		 *
 		 * Configuration conf =
 		 * AsdkActivity.asdk.getResources().getConfiguration();
 		 * if(conf.mcc==460){//中国 if(conf.mnc==0 || conf.mnc==2){ ProvidersName
@@ -712,21 +712,23 @@ public class PhoneTool {
 		MLog.a("version:"+version);
 		return version;
 	}
-	
+
 
 	/**
 	 * 获取手机信息
 	 */
 	public static String getPhoneInfo(Context con) {
-		TelephonyManager tm = (TelephonyManager) con.getSystemService(Context.TELEPHONY_SERVICE);
-		String mtyb = Build.BRAND;// 手机品牌
-		String mtype = Build.MODEL; // 手机型号
-		String version = Build.VERSION.RELEASE;// 版本
-		String imei = tm.getDeviceId();// IMEI
-		String imsi = tm.getSubscriberId();// IMSI
-		String serviceName = tm.getSimOperatorName(); // 运营商
-		String numer = tm.getLine1Number(); // 手机号码
-		return imei + "|" + version + "|" + mtype + "|" + mtyb;
+		try {
+			TelephonyManager tm = (TelephonyManager) con.getSystemService(Context.TELEPHONY_SERVICE);
+			String mtyb = Build.BRAND;// 手机品牌
+			String mtype = Build.MODEL; // 手机型号
+			String version = Build.VERSION.RELEASE;// 版本
+			String imei = getIMEI(con);// IMEI
+			return imei + "|" + version + "|" + mtype + "|" + mtyb;
+		}catch (Exception e){
+			return "";
+		}
+
 	}
 
 	/**

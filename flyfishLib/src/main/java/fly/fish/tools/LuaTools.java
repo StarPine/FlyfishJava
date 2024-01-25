@@ -5,7 +5,10 @@ import org.keplerproject.luajava.LuaException;
 import org.keplerproject.luajava.LuaObject;
 import org.keplerproject.luajava.LuaState;
 
+import android.app.Activity;
 import android.content.DialogInterface.OnClickListener;
+import android.widget.Toast;
+
 import fly.fish.asdk.MyApplication;
 import fly.fish.impl.HttpCallBack;
 import fly.fish.impl.HttpErrorHandler;
@@ -52,6 +55,7 @@ public class LuaTools {
 
 			/* 要上传到服务器 */
 			MyApplication app = MyApplication.getAppContext();
+			Toast.makeText(MyApplication.context,s, Toast.LENGTH_LONG).show();
 			final String ss = app.getGameArgs().getAccount_id() + "|" + PhoneTool.getPhoneInfo(MyApplication.context) + "|" + s;
 			new Thread(new Runnable() {
 				@Override
