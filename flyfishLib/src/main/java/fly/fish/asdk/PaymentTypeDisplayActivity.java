@@ -174,7 +174,7 @@ public class PaymentTypeDisplayActivity extends Activity {
                 Map<String, Object> payInfo = new HashMap<>();
                 payInfo.put("sum", sum);
                 payInfo.put("callbackurl", callbackurl);
-                payInfo.put("paytypeid", selectPayId);
+                payInfo.put("paytypeid", String.valueOf(selectPayId));
                 payInfo.put("customorderid", customorderid);
                 payInfo.put("accountid", accountId);
                 payInfo.put("custominfo", callBackData);
@@ -207,7 +207,7 @@ public class PaymentTypeDisplayActivity extends Activity {
                 break;
             case TYPE_ALI_PAY:
                 Intent intent = new Intent(this, ChargeInfoForAilpay.class);
-                intent.putExtra("chargeTypeId", selectPayId);
+                intent.putExtra("chargeTypeId", String.valueOf(selectPayId));
                 intent.putExtra("chargeName", remark);
                 startActivity(intent);
                 hideLoading();
