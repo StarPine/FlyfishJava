@@ -46,6 +46,8 @@ public class Configs {
 
 	/** 权限启动开关 */
 	public static boolean isEnableRequestPermission = false;
+	/** 启动头条上报 */
+	public static boolean enableToutiaoReport = false;
 
 	/** 正式模式启动开关
 	 * "隐私勾选规则：
