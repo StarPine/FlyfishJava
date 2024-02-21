@@ -36,6 +36,9 @@ public class SkipActivity {
         ReflectUtils.getInstance()
                 .getMethod(channelClassName, "applicationOnCreate", Application.class)
                 .invoke(app);
+        ReflectUtils.getInstance()
+                .getMethod("fly.fish.othersdk.ADMergePlatform", "initAD", Application.class)
+                .invoke(app);
     }
 
     public static void applicationOnConfigurationChanged(MyApplication app, Configuration newConfig) {

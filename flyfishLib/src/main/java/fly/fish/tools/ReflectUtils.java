@@ -3,6 +3,7 @@ package fly.fish.tools;
 
 import android.app.Activity;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -32,8 +33,11 @@ public class ReflectUtils {
 
     private Class<?> getPlatformClass(String className) {
         try {
-            return Class.forName(className);
-        } catch (ClassNotFoundException e) {
+            Class<?> clazz = Class.forName(className);
+            Constructor con = clazz.getDeclaredConstructor();
+            con.setAccessible(true);
+            return clazz;
+        } catch (ClassNotFoundException | NoSuchMethodException e) {
             e.printStackTrace();
         }
         return null;

@@ -237,7 +237,7 @@ public class MyRemoteService extends Service {
                             String s = HttpUtils.postMethod(server, param_json, "utf-8");
 
 //							String s1 = HttpUtils.postMethod(server, "{\"username\":\"" + username + "\",\"sessionid\":" + "\"" + sessionid + "\",\"extend\":" + "\"" + extend+ "\"}", "utf-8");
-//							MLog.a(tag,s);
+							MLog.a(tag,s);
 
                             JSONObject jo1;
                             try {

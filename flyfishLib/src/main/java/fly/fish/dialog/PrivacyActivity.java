@@ -71,7 +71,7 @@ public class PrivacyActivity extends Activity {
             yh_url = JsonUtils.getString(data,"yhurl");
             oaidKey = JsonUtils.getString(data,"oakey");
 
-            Configs.enableToutiaoReport = JsonUtils.getBoolean(data,"istt", false);
+            Configs.enableToutiaoReport = JsonUtils.getBoolean(data,"istt", true);
             Configs.isEnableRequestPermission = JsonUtils.getBoolean(data,"isrequ", false);
             Configs.isEnableFormalMode = JsonUtils.getBoolean(data,"ischeck", false);
             Configs.isEnableOneKeyLogin = JsonUtils.getBoolean(data,"jgcheck", false);

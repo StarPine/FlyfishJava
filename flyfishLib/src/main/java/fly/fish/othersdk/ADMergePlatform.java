@@ -2,10 +2,12 @@ package fly.fish.othersdk;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Application;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -28,6 +30,11 @@ public class ADMergePlatform implements IVideo {
 
     private ADMergePlatform() {
 
+    }
+
+    @Override
+    public void initAD(Application application) {
+        Log.i(TAG, "initAD: ");
     }
 
     private void initData() {
