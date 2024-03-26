@@ -58,5 +58,7 @@ public class Configs {
 
 	/** 客服qq*/
 	public static String qqContactWay = "";
+	/** 头条扣量上报地址 */
+	public static String toutiaoReportUrl = "";
 
 }

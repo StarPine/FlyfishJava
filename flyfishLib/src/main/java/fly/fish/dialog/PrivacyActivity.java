@@ -76,6 +76,7 @@ public class PrivacyActivity extends Activity {
             Configs.isEnableFormalMode = JsonUtils.getBoolean(data,"ischeck", false);
             Configs.isEnableOneKeyLogin = JsonUtils.getBoolean(data,"jgcheck", false);
             Configs.qqContactWay = JsonUtils.getString(data,"smkf");
+            Configs.toutiaoReportUrl = JsonUtils.getString(data,"ttsb");
             initPrivacy();
 
         }).start();
