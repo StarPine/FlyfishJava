@@ -172,6 +172,20 @@ public class ASDKReport {
         }
     }
 
+    public void startSDKReport(Context context, String sdkEvent,Map<String, Object> dataMap) {
+        //是否打开SDK埋点,默认打开
+        boolean enableSdkReport = ManifestInfo.getMetaBoolean(context, "ENABLE_SDK_REPORT", true);
+        if (!enableSdkReport)return;
+        try {
+            String sdkReportParams = createSDKReportParams(context, sdkEvent,dataMap);
+            request(SDK_URL, sdkReportParams);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+
     private void startReport(Context context, @EventID int eventId, Map<String, Object> commonMap, Map<String, Object> customMap) {
 
         //拦截二次启动上报
@@ -277,6 +291,11 @@ public class ASDKReport {
      * @return
      */
     private String createSDKReportParams(Context context, String sdkEvent) {
+        Map<String, Object> sdkParamsMap = new HashMap<>();
+        return  createSDKReportParams(context,sdkEvent,sdkParamsMap);
+    }
+
+    private String createSDKReportParams(Context context, String sdkEvent,Map<String, Object> sdkParamsMap) {
 
         String publisher = OutFace.getInstance().getPublisher();
         if (TextUtils.isEmpty(publisher)) {
@@ -285,7 +304,6 @@ public class ASDKReport {
 
         boolean isRefuse = isRefuse(context);
 
-        Map<String, Object> sdkParamsMap = new HashMap<>();
         sdkParamsMap.put(KEY_PUB, publisher);
         sdkParamsMap.put(KEY_IMEI, isRefuse ? "" : PhoneTool.getIMEI(context));
         sdkParamsMap.put(KEY_SYSTEM, PhoneTool.getPT(context) + "|android" + PhoneTool.getOSVersion());
